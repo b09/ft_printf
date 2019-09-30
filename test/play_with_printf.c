@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/09/27 14:48:54 by bprado        ########   odam.nl         */
+/*   Updated: 2019/09/30 19:20:36 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,27 @@ int		main(void)
 	int num3 = 1;
 	t_pf_object str2;
 	int bitmask = 8;
-	// num2 = 1;
-	// num3 = 0;
-	// num3 = 3 << 3;
 
-	void	ft_putnbr2(long long n);
+	int number = 0;
 
-	// ft_putnbr2(9);
-	// ft_printf("this is a string with a number: %d\n", ft_putnbr(num3));
-	// ft_printf("this is a string with a string: %s\n", str);
-	// printf("%0d\n", 1);
-	// printf("u specifier: %u\n", (unsigned int)3147483647);
-	// printf("2nd u specifier: %u\n", -2147483645);
+	char *flags;
+	
+	flags = "#0- +";
+
+	// printf("result: %ld\n", ft_strchr_int(flags, '+'));
+
+	// printf("number before: %d\n", number);
+	// number |= HH_FLAG;
+	// printf("number after HH_FLAG: %d\n", number);
+	// number |= H_FLAG;
+	// printf("number after H_FLAG: %d\n", number);
+	// number |= HASH_FLAG;
+	// printf("number after: %d\n", number);
+
+	ft_printf("beans %#0- +");
 
 
-	ft_printf("beans");
-	// str2.str = str;
 
-	// printf("the string in str is the following: %0.5s", str2.str);
-	// printf("the string in str is the following: %d", num3);
 
 	return (0);
 }

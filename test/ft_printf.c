@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/09/27 17:38:19 by bprado        ########   odam.nl         */
+/*   Updated: 2019/09/30 19:21:57 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,15 @@
 
 void	parse_flags(t_pf_object *obj)
 {
-	if (obj->str[obj->i_str] == '#')
-		obj->sharp = 1;
-	if (obj->str[obj->i_str] == '0')
-		obj->zero = 1;
-	if (obj->str[obj->i_str] == '-')
-		obj->minus = 1;
-	if (obj->str[obj->i_str] == ' ')
-		obj->space = 1;
-	if (obj->str[obj->i_str] == '+')
-		obj->plus = 1;
+	char *flags;
+	
+	flags = "#0- +";
+	while (ft_strchr_int(flags, obj->str[obj->i_str]) != -1)
+	{
+		obj->flags |= 1 << ft_strchr_int(flags, obj->str[obj->i_str]);
+		obj->i_str++;
+	}
+
 }
 
 
@@ -184,13 +183,14 @@ int		ft_printf(const char * restrict format, ...)
 		if (obj.str[obj.i_str] == '%')
 		{
 			++obj.i_str;
-			parse_general(&obj, obj.ap);
-			print_output(&obj);
+			// parse_general(&obj, obj.ap);
+			parse_flags(&obj);
+			// print_output(&obj);
 		}
 		/*
 			a buffer func should be called where ft_putchar is, which loads buffer and when full prints output.
 		 */
-		ft_putchar(obj.str[obj.i_str]);
+		// ft_putchar(obj.str[obj.i_str]);
 		++obj.i_str;
 	}
 	va_end(obj.ap);
@@ -266,29 +266,23 @@ parse expression to populate struct
 struct members are format type, length modifier, flags, width, precision
    possible 
 writing to output 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 look up stdarg(3)
+
+
+
+
+
+struct created containing
+- length
+- etc
+
+input is a string
+- string contains format specifiers
+- f.s. define data type printed to screen?
+
+output is a number
+
+
 
 
 */

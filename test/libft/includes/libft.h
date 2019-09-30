@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/01/29 17:27:40 by bprado         #+#    #+#                */
-/*   Updated: 2019/07/09 19:28:19 by bprado        ########   odam.nl         */
+/*   Updated: 2019/09/30 18:45:54 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ char				*ft_strdup(const char *s1);
 char				*ft_strncat(char *s1, const char *s2, size_t n);
 size_t				ft_strlen(const char *s);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
+size_t				ft_strchr_int(const char *s, int c);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 t_list				*ft_lstnew(void const *content, size_t content_size);
 #endif

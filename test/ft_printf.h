@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/09/27 17:28:05 by bprado        ########   odam.nl         */
+/*   Updated: 2019/09/30 19:19:34 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,19 @@
 # include <stdarg.h> // for multi-parameters in ft_printf
 # include "libft/includes/libft.h"
 
-# define H_FLAG 			1 << 0;
-# define HH_FLAG 			1 << 1;
-# define L_FLAG 			1 << 2;
-# define LL_FLAG 			1 << 3;
-# define HASH_FLAG 			1 << 4;
-# define ZERO_FLAG 			1 << 5;
-# define MINUS_FLAG 		1 << 6;
-# define PLUS_FLAG 			1 << 7;
-# define SPACE_FLAG 		1 << 8;
+# define HASH_FLAG 			1 << 0;
+# define ZERO_FLAG 			1 << 1;
+# define MINUS_FLAG 		1 << 2;
+# define SPACE_FLAG 		1 << 3;
+# define PLUS_FLAG 			1 << 4;
+# define H_FLAG 			1 << 5;
+# define HH_FLAG 			1 << 6;
+# define L_FLAG 			1 << 7;
+# define LL_FLAG 			1 << 8;
+
+
+
+
 
 
 /*
@@ -54,7 +58,7 @@ typedef struct s_flags
 typedef struct	s_pf_object
 {
 	const char*	str;
-	int			flags;
+	short		flags;
 	char		output[20];
 	int			i_str;
 	int			width;
