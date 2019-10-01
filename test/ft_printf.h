@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/09/30 19:19:34 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/01 17:52:17 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@
 # include <stdarg.h> // for multi-parameters in ft_printf
 # include "libft/includes/libft.h"
 
-# define HASH_FLAG 			1 << 0;
-# define ZERO_FLAG 			1 << 1;
-# define MINUS_FLAG 		1 << 2;
-# define SPACE_FLAG 		1 << 3;
-# define PLUS_FLAG 			1 << 4;
-# define H_FLAG 			1 << 5;
-# define HH_FLAG 			1 << 6;
-# define L_FLAG 			1 << 7;
-# define LL_FLAG 			1 << 8;
+# define HASH_FLAG 			1 << 0
+# define ZERO_FLAG 			1 << 1
+# define MINUS_FLAG 		1 << 2
+# define SPACE_FLAG 		1 << 3
+# define PLUS_FLAG 			1 << 4
+# define H_FLAG 			1 << 5
+# define L_FLAG 			1 << 6
+# define HH_FLAG 			1 << 7
+# define LL_FLAG 			1 << 8
 
 
 

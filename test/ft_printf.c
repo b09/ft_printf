@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/09/30 19:21:57 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/01 19:01:06 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,140 +31,92 @@ void	parse_flags(t_pf_object *obj)
 		obj->flags |= 1 << ft_strchr_int(flags, obj->str[obj->i_str]);
 		obj->i_str++;
 	}
-
 }
 
-
-
-
-
-
-
-
-
-
-// void	parse_length(t_pf_object *obj)
-// {
-// 	if (obj->str[obj->i_str] == 'h')
-
-// }
-
-
-
-
-
-
-
-// void	parse_precision(t_pf_object *obj)
-// {
-
-// }
-
-
-
-
-
-
-
-// void	parse_width(t_pf_object *obj)
-// {
-	
-// }
-
-
-
-
-
-
-
-
-
-void	parse_specifier(t_pf_object *obj, va_list ap)
+void	parse_width(t_pf_object *obj)
 {
-	if (obj->str[obj->i_str] == 'd')
-		ft_putnbr(va_arg(ap, int));
-	if (obj->str[obj->i_str] == 's')
-		ft_putstr(va_arg(ap, char*));
-	if (obj->str[obj->i_str] == 'c')
-		ft_putchar(va_arg(ap, int));
-	if (obj->str[obj->i_str] == 'o')
-		ft_putnbr(va_arg(ap, unsigned int));
-	if (obj->str[obj->i_str] == 'i')
-		ft_putnbr(va_arg(ap, int));
-	if (obj->str[obj->i_str] == 'u')
-		ft_putnbr(va_arg(ap, unsigned int));
-	if (obj->str[obj->i_str] == 'x')
-		ft_putnbr(va_arg(ap, unsigned int));
-	if (obj->str[obj->i_str] == 'X')
-		ft_putnbr(va_arg(ap, unsigned int));
-	if (obj->str[obj->i_str] == 'f')
-		ft_putnbr(va_arg(ap, unsigned int));
-	if (obj->str[obj->i_str] == 'p')
-		ft_putnbr(va_arg(ap, unsigned int));
-	if (obj->str[obj->i_str] == '%')
-		ft_putnbr(va_arg(ap, unsigned int));
-}
-
-
-
-
-
-
-
-
-void	parse_general(t_pf_object *obj, va_list ap)
-{
-	// this could send to different functions depending on format specifier.
-	char	*flags;
-	// char	*length;
-	// char	*specifier;
-
-	flags = "#0- +";
-	// length = "lh"; <-- no needed
-	// specifier = "cspdiouxXf%";
-	
-	while (obj->str[obj->i_str + 1] != ' ' && obj->str[obj->i_str + 1] != 0)
-	{
-		if (ft_strchr(flags, obj->str[obj->i_str]))
-			parse_flags(obj);
-		// if (ft_strchr(obj->str[obj->i_str] == '.'))
-		// 	parse_precision(obj);
-		// if (ft_isdigit(obj->str[obj->i_str]))
-		// 	parse_width(obj);
-		// if (ft_strchr(length, obj->str[obj->i_str]))
-		// 	parse_length(obj);
+	obj->width = ft_atoi(&(obj->str[obj->i_str]));
+	while (ft_isdigit(obj->str[obj->i_str]))
 		++obj->i_str;
-	}
-	// if (ft_strchr(specifier, obj->str[obj->i_str]))
-	// 	parse_specifier(obj, ap);
 }
 
 
-
-
-
-
-
-
-
-
-
-void	print_output(t_pf_object *obj)
+void	parse_length(t_pf_object *obj)
 {
+	if (obj->str[obj->i_str] == 'l')
+	{
+		obj->flags |= (obj->str[obj->i_str + 1] == 'l') ? LL_FLAG : L_FLAG;
+		obj->i_str += (obj->str[obj->i_str + 1] == 'l') ? 2 : 1;
+	}
+	if (obj->str[obj->i_str] == 'h')
+	{
+		obj->flags |= (obj->str[obj->i_str + 1] == 'h') ? HH_FLAG : H_FLAG;
+		obj->i_str += (obj->str[obj->i_str + 1] == 'h') ? 2 : 1;
 
+	}
+}
+
+void	parse_precision(t_pf_object *obj)
+{
+	obj->precision = ft_atoi(&(obj->str[obj->i_str]));
+	while (ft_isdigit(obj->str[obj->i_str]))
+		++obj->i_str;
 }
 
 
 
 
 
+// void	parse_specifier(t_pf_object *obj, va_list ap)
+// {
+// 	if (obj->str[obj->i_str] == 'd')
+// 		ft_putnbr(va_arg(ap, int));
+// 	if (obj->str[obj->i_str] == 's')
+// 		ft_putstr(va_arg(ap, char*));
+// 	if (obj->str[obj->i_str] == 'c')
+// 		ft_putchar(va_arg(ap, int));
+// 	if (obj->str[obj->i_str] == 'o')
+// 		ft_putnbr(va_arg(ap, unsigned int));
+// 	if (obj->str[obj->i_str] == 'i')
+// 		ft_putnbr(va_arg(ap, int));
+// 	if (obj->str[obj->i_str] == 'u')
+// 		ft_putnbr(va_arg(ap, unsigned int));
+// 	if (obj->str[obj->i_str] == 'x')
+// 		ft_putnbr(va_arg(ap, unsigned int));
+// 	if (obj->str[obj->i_str] == 'X')
+// 		ft_putnbr(va_arg(ap, unsigned int));
+// 	if (obj->str[obj->i_str] == 'f')
+// 		ft_putnbr(va_arg(ap, unsigned int));
+// 	if (obj->str[obj->i_str] == 'p')
+// 		ft_putnbr(va_arg(ap, unsigned int));
+// 	if (obj->str[obj->i_str] == '%')
+// 		ft_putnbr(va_arg(ap, unsigned int));
+// }
 
 
 
 
+void	parse_general(t_pf_object *obj)
+{
+	parse_flags(obj);
+	parse_width(obj);
+	if (obj->str[obj->i_str] == '.')
+	{
+		obj->i_str++;
+		parse_precision(obj);
+	}
+	parse_length(obj);
+	// printf("obj flags: %d\n", obj->i_str);
+
+}
 
 
 
+
+// void	print_output(t_pf_object *obj)
+// {
+
+// }
 
 
 
@@ -183,8 +135,8 @@ int		ft_printf(const char * restrict format, ...)
 		if (obj.str[obj.i_str] == '%')
 		{
 			++obj.i_str;
-			// parse_general(&obj, obj.ap);
-			parse_flags(&obj);
+			parse_general(&obj);
+			// parse_flags(&obj);
 			// print_output(&obj);
 		}
 		/*
@@ -193,6 +145,9 @@ int		ft_printf(const char * restrict format, ...)
 		// ft_putchar(obj.str[obj.i_str]);
 		++obj.i_str;
 	}
+	printf("main function obj i_str: %d\n", obj.i_str);
+	printf("strlen %zu\n", ft_strlen(format));
+	printf("flags %hd\n", obj.flags);
 	va_end(obj.ap);
 	return (0);
 }
