@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/01 17:52:17 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/02 18:59:21 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 
 # include <stdio.h> //for testing printf
-# include <stdarg.h> // for multi-parameters in ft_printf
+# include <stdarg.h>
 # include "libft/includes/libft.h"
 
 # define HASH_FLAG 			1 << 0
@@ -33,27 +33,6 @@
 # define HH_FLAG 			1 << 7
 # define LL_FLAG 			1 << 8
 
-
-
-
-
-
-/*
-	will reimpliment s_flags as single int member is s_pf_object using bitwise operators
- */
-typedef struct s_flags
-{
-	char		h;
-	char		hh;
-	char		l;
-	char		ll;
-	char		hash;
-	char		zero;
-	char		minus;
-	char		plus;
-	char		space;
-	
-}				t_flags;
 
 typedef struct	s_pf_object
 {
@@ -70,23 +49,10 @@ typedef struct	s_pf_object
 	char		plus;
 	int			length;
 	va_list		ap;
-	// t_flags		flags;
-
 }				t_pf_object;
 
-int				ft_printf(const char * restrict format, ...);
+typedef void (*pointer_to_functions)(int);
 
-	// create bitmask containing all possible flags: ' ', -, +, 0, #
-	// the flags will only transform the data, by themselves they do nothing
-	// the field width takes the form of a nonnegative decimal integer.
-	// F_HASH
-	// F_ZERO 
-	// F_MINUS
-	// F_PLUS
-	// F_SPACE
-	// LL_LENGTH
-	// L_LENGTH
-	// H_LENTH
-	// HH_LENTH
+int				ft_printf(const char * restrict format, ...);
 
 #endif

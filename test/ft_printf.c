@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/01 19:01:06 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/02 19:05:10 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,27 @@
 // %[#,0,-, ,+] [1,2,3,4,5,6,7,8,9] [.,0,1,2,3,4,5,6,7,8,9] [h,hh,l,ll] [c,s,p,d,i,o,u,x,X,f,%]
 
 
-// void	parse_specifier()
-
-
-
 void	parse_flags(t_pf_object *obj)
 {
-	char *flags;
-	
-	flags = "#0- +";
-	while (ft_strchr_int(flags, obj->str[obj->i_str]) != -1)
+	while (ft_strchr_int("#0- +", obj->str[obj->i_str]) != -1)
 	{
-		obj->flags |= 1 << ft_strchr_int(flags, obj->str[obj->i_str]);
+		obj->flags |= 1 << ft_strchr_int("#0- +", obj->str[obj->i_str]);
 		obj->i_str++;
 	}
 }
 
+
 void	parse_width(t_pf_object *obj)
 {
 	obj->width = ft_atoi(&(obj->str[obj->i_str]));
+	while (ft_isdigit(obj->str[obj->i_str]))
+		++obj->i_str;
+}
+
+
+void	parse_precision(t_pf_object *obj)
+{
+	obj->precision = ft_atoi(&(obj->str[obj->i_str]));
 	while (ft_isdigit(obj->str[obj->i_str]))
 		++obj->i_str;
 }
@@ -56,44 +58,32 @@ void	parse_length(t_pf_object *obj)
 	}
 }
 
-void	parse_precision(t_pf_object *obj)
+
+void	parse_specifier(t_pf_object *obj)
 {
-	obj->precision = ft_atoi(&(obj->str[obj->i_str]));
-	while (ft_isdigit(obj->str[obj->i_str]))
-		++obj->i_str;
+	if (obj->str[obj->i_str] == 'd')
+		ft_putnbr(va_arg(obj->ap, int));
+	else if (obj->str[obj->i_str] == 's')
+		ft_putstr(va_arg(obj->ap, char*));
+	else if (obj->str[obj->i_str] == 'c')
+		ft_putchar(va_arg(obj->ap, int));
+	else if (obj->str[obj->i_str] == 'o')
+		ft_putnbr(va_arg(obj->ap, unsigned int));
+	else if (obj->str[obj->i_str] == 'i')
+		ft_putnbr(va_arg(obj->ap, int));
+	else if (obj->str[obj->i_str] == 'u')
+		ft_putnbr(va_arg(obj->ap, unsigned int));
+	else if (obj->str[obj->i_str] == 'x')
+		ft_putnbr(va_arg(obj->ap, unsigned int));
+	else if (obj->str[obj->i_str] == 'X')
+		ft_putnbr(va_arg(obj->ap, unsigned int));
+	else if (obj->str[obj->i_str] == 'f')
+		ft_putnbr(va_arg(obj->ap, unsigned int));
+	else if (obj->str[obj->i_str] == 'p')
+		ft_putnbr(va_arg(obj->ap, unsigned int));
+	else if (obj->str[obj->i_str] == '%')
+		ft_putnbr(va_arg(obj->ap, unsigned int));
 }
-
-
-
-
-
-// void	parse_specifier(t_pf_object *obj, va_list ap)
-// {
-// 	if (obj->str[obj->i_str] == 'd')
-// 		ft_putnbr(va_arg(ap, int));
-// 	if (obj->str[obj->i_str] == 's')
-// 		ft_putstr(va_arg(ap, char*));
-// 	if (obj->str[obj->i_str] == 'c')
-// 		ft_putchar(va_arg(ap, int));
-// 	if (obj->str[obj->i_str] == 'o')
-// 		ft_putnbr(va_arg(ap, unsigned int));
-// 	if (obj->str[obj->i_str] == 'i')
-// 		ft_putnbr(va_arg(ap, int));
-// 	if (obj->str[obj->i_str] == 'u')
-// 		ft_putnbr(va_arg(ap, unsigned int));
-// 	if (obj->str[obj->i_str] == 'x')
-// 		ft_putnbr(va_arg(ap, unsigned int));
-// 	if (obj->str[obj->i_str] == 'X')
-// 		ft_putnbr(va_arg(ap, unsigned int));
-// 	if (obj->str[obj->i_str] == 'f')
-// 		ft_putnbr(va_arg(ap, unsigned int));
-// 	if (obj->str[obj->i_str] == 'p')
-// 		ft_putnbr(va_arg(ap, unsigned int));
-// 	if (obj->str[obj->i_str] == '%')
-// 		ft_putnbr(va_arg(ap, unsigned int));
-// }
-
-
 
 
 void	parse_general(t_pf_object *obj)
@@ -106,11 +96,9 @@ void	parse_general(t_pf_object *obj)
 		parse_precision(obj);
 	}
 	parse_length(obj);
-	// printf("obj flags: %d\n", obj->i_str);
+	parse_specifier(obj);
 
 }
-
-
 
 
 // void	print_output(t_pf_object *obj)
@@ -122,13 +110,10 @@ void	parse_general(t_pf_object *obj)
 
 int		ft_printf(const char * restrict format, ...)
 {
-	long long	i;
-	// va_list		ap;
 	t_pf_object	obj;
 
 	ft_bzero(&obj, sizeof(obj));
 	obj.str = format;
-	i = 0;
 	va_start(obj.ap, format);
 	while (obj.str[obj.i_str] != 0)
 	{
@@ -136,18 +121,10 @@ int		ft_printf(const char * restrict format, ...)
 		{
 			++obj.i_str;
 			parse_general(&obj);
-			// parse_flags(&obj);
-			// print_output(&obj);
 		}
-		/*
-			a buffer func should be called where ft_putchar is, which loads buffer and when full prints output.
-		 */
-		// ft_putchar(obj.str[obj.i_str]);
+		ft_putchar(obj.str[obj.i_str]);
 		++obj.i_str;
 	}
-	printf("main function obj i_str: %d\n", obj.i_str);
-	printf("strlen %zu\n", ft_strlen(format));
-	printf("flags %hd\n", obj.flags);
 	va_end(obj.ap);
 	return (0);
 }

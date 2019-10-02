@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/01 18:10:48 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/02 18:37:50 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ int		main(void)
 	// number |= HASH_FLAG;
 	// printf("number after: %d\n", number);
 
-	ft_printf("beans %#0- +350000llhh");
+	ft_printf("beans %d", 12);
+	printf("\n");
 	// printf("ft_atoi with leading zeroes: %d\n", ft_atoi("beans"));
 // int f = 3;
 // printf("float: %03.8d\n", f);
