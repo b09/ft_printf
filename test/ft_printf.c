@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/02 19:05:10 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/18 20:22:15 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	parse_flags(t_pf_object *obj)
 		obj->i_str++;
 	}
 }
-
 
 void	parse_width(t_pf_object *obj)
 {
@@ -59,30 +58,91 @@ void	parse_length(t_pf_object *obj)
 }
 
 
+
+int		size_of_number(t_pf_object *obj)
+{
+
+}
+
+
+
+void	print_padding(t_pf_object *obj)
+{
+	int		length_to_print;
+
+	length_to_print = obj->width - size_of_number(obj);
+	while (0 < length_to_print--)
+		ft_putchar(' ');
+}
+
+
+
+
+void	print_number(t_pf_object *obj)
+{
+	if (obj->flags & MINUS_FLAG)
+	{
+		printf("inside print_number line 64l\n");
+		ft_putnbr((int)obj->u_output.u_int);
+		print_padding(obj);
+	}
+	else
+	{
+		print_padding(obj);
+		ft_putnbr((int)obj->u_output.u_int);
+	}
+	
+}
+
+// currently the function reaches parse_specifier and prints directly to the screen
+// instead, the function should call child-functions which print the output, while
+// also considering the flags which are on. In this case, a buffer should be populated
+
 void	parse_specifier(t_pf_object *obj)
 {
-	if (obj->str[obj->i_str] == 'd')
-		ft_putnbr(va_arg(obj->ap, int));
-	else if (obj->str[obj->i_str] == 's')
-		ft_putstr(va_arg(obj->ap, char*));
-	else if (obj->str[obj->i_str] == 'c')
-		ft_putchar(va_arg(obj->ap, int));
-	else if (obj->str[obj->i_str] == 'o')
-		ft_putnbr(va_arg(obj->ap, unsigned int));
-	else if (obj->str[obj->i_str] == 'i')
-		ft_putnbr(va_arg(obj->ap, int));
-	else if (obj->str[obj->i_str] == 'u')
-		ft_putnbr(va_arg(obj->ap, unsigned int));
-	else if (obj->str[obj->i_str] == 'x')
-		ft_putnbr(va_arg(obj->ap, unsigned int));
-	else if (obj->str[obj->i_str] == 'X')
-		ft_putnbr(va_arg(obj->ap, unsigned int));
-	else if (obj->str[obj->i_str] == 'f')
-		ft_putnbr(va_arg(obj->ap, unsigned int));
-	else if (obj->str[obj->i_str] == 'p')
-		ft_putnbr(va_arg(obj->ap, unsigned int));
-	else if (obj->str[obj->i_str] == '%')
-		ft_putnbr(va_arg(obj->ap, unsigned int));
+	if (ft_strchr_int("dscoiuxfp%", obj->str[obj->i_str]) > -1)
+	{
+		if (obj->str[obj->i_str] == 'd')
+		{
+			// obj->u_output.u_int = va_arg(obj->ap, int);
+			// while (obj->width--)
+			// 	ft_putchar(' ');
+			// // printf("hey\n");
+			// ft_putnbr(obj->u_output.u_int);
+			print_number(obj);
+		}
+
+		else if (obj->str[obj->i_str] == 's')
+			ft_putstr(va_arg(obj->ap, char*));
+
+		else if (obj->str[obj->i_str] == 'c')
+			ft_putchar(va_arg(obj->ap, int));
+
+		else if (obj->str[obj->i_str] == 'o')
+			ft_putnbr(va_arg(obj->ap, unsigned int));
+
+		else if (obj->str[obj->i_str] == 'i')
+			ft_putnbr(va_arg(obj->ap, int));
+
+		else if (obj->str[obj->i_str] == 'u')
+			ft_putnbr(va_arg(obj->ap, unsigned int));
+
+		else if (obj->str[obj->i_str] == 'x')
+			ft_putnbr(va_arg(obj->ap, unsigned int));
+
+		else if (obj->str[obj->i_str] == 'X')
+			ft_putnbr(va_arg(obj->ap, unsigned int));
+
+		else if (obj->str[obj->i_str] == 'f')
+			ft_putnbr(va_arg(obj->ap, unsigned int));
+
+		else if (obj->str[obj->i_str] == 'p')
+			ft_putnbr(va_arg(obj->ap, unsigned int));
+			
+		else if (obj->str[obj->i_str] == '%')
+			ft_putnbr(va_arg(obj->ap, unsigned int));
+		++obj->i_str;
+	}
 }
 
 
@@ -108,6 +168,9 @@ void	parse_general(t_pf_object *obj)
 
 
 
+
+
+
 int		ft_printf(const char * restrict format, ...)
 {
 	t_pf_object	obj;
@@ -122,7 +185,7 @@ int		ft_printf(const char * restrict format, ...)
 			++obj.i_str;
 			parse_general(&obj);
 		}
-		ft_putchar(obj.str[obj.i_str]);
+		// ft_putchar(obj.str[obj.i_str]);
 		++obj.i_str;
 	}
 	va_end(obj.ap);

@@ -6,15 +6,15 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/30 18:33:57 by bprado         #+#    #+#                */
-/*   Updated: 2019/09/30 18:45:09 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/03 19:48:24 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t		ft_strchr_int(const char *s, int c)
+ssize_t		ft_strchr_int(const char *s, int c)
 {
-	size_t		i;
+	ssize_t		i;
 
 	i = 0;
 	while (s[i] != 0)

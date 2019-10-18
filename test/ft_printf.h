@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/02 18:59:21 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/17 16:08:39 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,31 @@
 # define LL_FLAG 			1 << 8
 
 
-typedef struct	s_pf_object
+typedef union	_union_output
 {
-	const char*	str;
-	short		flags;
-	char		output[20];
-	int			i_str;
-	int			width;
-	int			precision;
-	char		sharp;
-	char		zero;
-	char		minus;
-	char		space;
-	char		plus;
-	int			length;
-	va_list		ap;
+	unsigned char		u_char;
+	unsigned short		u_short;
+	unsigned int		u_int;
+	unsigned long		u_lng;
+	unsigned long long	u_lnglng;
+	float				u_float;
+	double				u_dbl;
+	long double			u_lngdbl;
+	char*				u_pointer;
+		
+}				union_output;
+
+typedef struct	_t_pf_object
+{
+	const char*			str;
+	short				flags;
+	char				output[32];
+	union_output		u_output;
+	int					i_str;
+	int					width;
+	int					precision;
+	int					length;
+	va_list				ap;
 }				t_pf_object;
 
 typedef void (*pointer_to_functions)(int);

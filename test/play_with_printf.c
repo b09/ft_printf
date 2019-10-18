@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/02 18:37:50 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/18 20:21:04 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,34 @@ int		main(void)
 	
 	flags = "#0- +";
 
-	// printf("result: %ld\n", ft_strchr_int(flags, '+'));
 
-	// printf("number before: %d\n", number);
-	// number |= HH_FLAG;
-	// printf("number after HH_FLAG: %d\n", number);
-	// number |= H_FLAG;
-	// printf("number after H_FLAG: %d\n", number);
-	// number |= HASH_FLAG;
-	// printf("number after: %d\n", number);
+	char *pstr = "This will be a long enough string to be different";
 
-	ft_printf("beans %d", 12);
-	printf("\n");
-	// printf("ft_atoi with leading zeroes: %d\n", ft_atoi("beans"));
-// int f = 3;
-// printf("float: %03.8d\n", f);
-
+	ft_printf("beans %10d", num2);
+	// printf("\n->:%10send\n", "hello");
 
 
 	return (0);
 }
+
+// length of output without malloc
+// write a function which returns the lenght of integer variables
+
+/*
+	buffer holds numbeer
+	size_of_number() subtracted from obj.width
+	 
+
+ */
+
+
+
+
+
+
+
+
+
 
 /*
 	0011
