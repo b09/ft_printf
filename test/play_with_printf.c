@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/21 16:26:55 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/21 23:36:36 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int		main(void)
 	t_pf_object str2;
 	int bitmask = 8;
 
-	int number = 0;
 
 	char *flags;
 	
@@ -30,8 +29,9 @@ int		main(void)
 
 	char *pstr = "This will be a long enough string to be different";
 
-	// ft_printf("beans %-10d", num2);
-	printf("\n->:%10send\n", "hellohello");
+	int number = 255;
+	ft_printf("%-10d", number);
+	// printf("\n->:%10x:<-end\n", number);
 
 
 	return (0);
