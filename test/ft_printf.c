@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/21 23:44:31 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/21 23:50:19 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,33 +66,33 @@ void	parse_length(t_pf_object *obj)
 }
 
 // output must be cast according to h, hh, l, ll flags
-void	ft_putnbr_base(long long n, int base)
-{
-	char			a;
-	long long		i;
+// void	ft_putnbr_base(long long n, int base)
+// {
+// 	char			a;
+// 	long long		i;
 
-	if (n < 0)
-	{
-		n = -n;
-		write(1, "-", 1);
-	}
-	i = n;
-	if (i > (base - 1))
-	{
-		ft_putnbr_base(i / base, base);
-		ft_putnbr_base(i % base, base);
-	}
-	if (i <= (base - 1) && i < 10)
-	{
-		a = '0' + i;
-		write(1, &a, 1);
-	}
-	else if (i > 9 && i < 16 && base > 10)
-	{
-		a = 'a' + i - 10;
-		write(1, &a, 1);
-	}
-}
+// 	if (n < 0)
+// 	{
+// 		n = -n;
+// 		write(1, "-", 1);
+// 	}
+// 	i = n;
+// 	if (i > (base - 1))
+// 	{
+// 		ft_putnbr_base(i / base, base);
+// 		ft_putnbr_base(i % base, base);
+// 	}
+// 	if (i <= (base - 1) && i < 10)
+// 	{
+// 		a = '0' + i;
+// 		write(1, &a, 1);
+// 	}
+// 	else if (i > 9 && i < 16 && base > 10)
+// 	{
+// 		a = 'a' + i - 10;
+// 		write(1, &a, 1);
+// 	}
+// }
 
 // length_of_number not protected against negative numbers, larger than int numbers, etc
 
