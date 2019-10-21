@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/18 20:21:04 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/21 16:26:55 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int		main(void)
 
 	char *pstr = "This will be a long enough string to be different";
 
-	ft_printf("beans %10d", num2);
-	// printf("\n->:%10send\n", "hello");
+	// ft_printf("beans %-10d", num2);
+	printf("\n->:%10send\n", "hellohello");
 
 
 	return (0);
