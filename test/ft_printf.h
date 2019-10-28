@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/17 16:08:39 by bprado        ########   odam.nl         */
+/*   Updated: 2019/10/28 12:42:57 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,36 +23,32 @@
 # include <stdarg.h>
 # include "libft/includes/libft.h"
 
-# define HASH_FLAG 			1 << 0
-# define ZERO_FLAG 			1 << 1
-# define MINUS_FLAG 		1 << 2
-# define SPACE_FLAG 		1 << 3
-# define PLUS_FLAG 			1 << 4
-# define H_FLAG 			1 << 5
-# define L_FLAG 			1 << 6
-# define HH_FLAG 			1 << 7
-# define LL_FLAG 			1 << 8
+# define HASH_F 		1 << 0
+# define ZERO_F 		1 << 1
+# define MINUS_F 		1 << 2
+# define SPACE_F 		1 << 3
+# define PLUS_F 		1 << 4
+# define H_F 			1 << 5
+# define L_F 			1 << 6
+# define HH_F 			1 << 7
+# define LL_F 			1 << 8
+# define SIGNED_F		1 << 9
 
 
-typedef union	_union_output
+typedef union	u_union_output
 {
-	unsigned char		u_char;
-	unsigned short		u_short;
-	unsigned int		u_int;
-	unsigned long		u_lng;
 	unsigned long long	u_lnglng;
-	float				u_float;
-	double				u_dbl;
-	long double			u_lngdbl;
-	char*				u_pointer;
+	double				u_double;
+	void*				u_pointer;
 		
 }				union_output;
 
-typedef struct	_t_pf_object
+typedef struct	s_pf_object
 {
 	const char*			str;
 	short				flags;
-	char				output[32];
+	char				buffer[32];
+	int					ibuff;
 	union_output		u_output;
 	int					i_str;
 	int					width;
