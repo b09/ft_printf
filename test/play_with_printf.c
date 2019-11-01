@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/26 01:55:54 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/02 00:01:14 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ int		main(void)
 
 	// d -> print_number -> print_sign -> | <- print_padding -> length_of_number 
 
-	printf("%#04o:<-end\n", number);
-	ft_printf("%d", number);
-
-
+	// printf("%%:<-end\n");
+	ft_printf("%+010d", number);
 	return (0);
 }
 

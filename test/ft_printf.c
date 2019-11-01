@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/26 01:57:26 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/02 00:02:12 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@
 // %[#,0,-, ,+] [1,2,3,4,5,6,7,8,9] [.,0,1,2,3,4,5,6,7,8,9] [h,hh,l,ll] [c,s,p,d,i,o,u,x,X,f,%]
 
 
+void	print_character(char c, t_pf_object *obj)
+{
+	obj->ret++;
+	ft_putchar(c);
+}
+
+
 void	parse_flags(t_pf_object *obj)
 {
 	while (ft_strchr_int("#0- +", obj->str[obj->i_str]) != -1)
@@ -25,10 +32,11 @@ void	parse_flags(t_pf_object *obj)
 		obj->i_str++;
 	}
 	if (obj->flags & ZERO_F && obj->flags & MINUS_F)
-	{
 		obj->flags ^= ZERO_F;
 		// printf("parse_flags line 30\n");
-	}
+	if (obj->flags & SPACE_F && obj->flags & PLUS_F)
+		obj->flags ^= SPACE_F;
+	
 }
 
 void	parse_width(t_pf_object *obj)
@@ -176,7 +184,7 @@ void	print_padding(t_pf_object *obj, int length_of_output, char character)
 		--length_to_print;
 	// printf("line 179, print_padding: %d<-number\n", length_to_print);
 	while (0 < length_to_print--)
-		ft_putchar(character);
+		print_character(character, obj);
 }
 
 
@@ -192,13 +200,35 @@ void	print_padding(t_pf_object *obj, int length_of_output, char character)
 void	print_sign(t_pf_object *obj)
 {
 	
-	if ((long long)obj->u_output.u_lnglng >= 0)
-		ft_putchar('+');
-	else
-		ft_putchar('-');
+	if ((long long)obj->u_output.u_lnglng >= 0 && obj->flags & PLUS_F)
+		print_character('+', obj);
+	else if ((long long)obj->u_output.u_lnglng < 0)
+		print_character('-', obj);
 }
 
+void	print_space_flag(t_pf_object *obj)
+{
+	if (obj->flags & SPACE_F)
+		print_character(' ', obj);
+}
 
+void	print_hash_flag(t_pf_object *obj)
+{
+	if (obj->specifier == 'o')
+		print_character('0', obj);
+	else if (obj->specifier == 'x' || obj->specifier == 'p')
+	{
+		print_character('0', obj);
+		print_character('x', obj);
+	}
+	else if (obj->specifier == 'X')
+	{
+		print_character('0', obj);
+		print_character('X', obj);
+	}
+	else if (obj->specifier == 'f')
+		print_character('.', obj);
+}
 
 
 
@@ -211,47 +241,300 @@ void	print_sign(t_pf_object *obj)
 // if 0 padded and outout negative, - sign printed before 0's
 // if 0 padded and + flag, + sign printed before 0's
 
-void	print_number(t_pf_object *obj, char base)
+
+
+
+
+
+
+// void	print_number(t_pf_object *obj, char base)
+// {
+// 	parse_length(obj, 0);
+
+
+// 	if (obj->flags & MINUS_F && !(obj->flags & ZERO_F))
+// 	{
+// 		if (obj->flags & SIGNED_F && obj->flags & PLUS_F)
+// 			print_sign(obj);
+
+// 		ft_putnbr_base(obj->u_output.u_lnglng, base);
+// 		print_padding(obj, length_of_number(obj, base), ' ');
+// 	}
+
+// 	else if (!(obj->flags & MINUS_F) && !(obj->flags & ZERO_F))
+// 	{
+// 		print_padding(obj, length_of_number(obj, base), ' ');
+// 		if (obj->flags & SIGNED_F)
+// 			print_sign(obj);
+
+// 		ft_putnbr_base(obj->u_output.u_lnglng, base);
+// 	}
+
+
+// 	if (obj->flags & MINUS_F && obj->flags & ZERO_F)
+// 	{
+// 		if (obj->flags & SIGNED_F)
+// 			print_sign(obj);
+
+// 		ft_putnbr_base(obj->u_output.u_lnglng, base);
+// 		print_padding(obj, length_of_number(obj, base), '0');
+// 	}
+
+// 	else if (!(obj->flags & MINUS_F) && obj->flags & ZERO_F)
+// 	{
+// 		if (obj->flags & SIGNED_F)
+// 			print_sign(obj);
+// 		// printf("line 251, length_of_nuber: %dnumbers\n", length_of_number(obj, base));
+// 		print_padding(obj, length_of_number(obj, base), '0');
+// 		ft_putnbr_base(obj->u_output.u_lnglng, base);
+// 	}
+// }
+
+// %[#,0,-, ,+] [1,2,3,4,5,6,7,8,9] [.,0,1,2,3,4,5,6,7,8,9] [h,hh,l,ll] [c,s,p,d,i,o,u,x,X,f,%]
+// d / i ==   - + ' ' 0
+
+/*
+
+#,
+0,
+-, 
+space
++
+
+# 0
+# -
+# space
+# +
+
+# 0 -
+# 0 space
+# 0 +
+
+# 0 - space
+# 0 - +
+
+# 0 - space +
+
+ */
+// if - and 0, 0 off
+// if ' ' and +, ' ' off
+// order of priority 
+// +,	-,	sp,	#	
+void	print_d(t_pf_object *obj)
 {
+	obj->u_output.u_lnglng = va_arg(obj->ap, int);
+	// printf("arrived print_d number->%d\n", va_arg(obj->ap, int));
 	parse_length(obj, 0);
+	int base = 10;
 
-
-	if (obj->flags & MINUS_F && !(obj->flags & ZERO_F))
+	if (obj->flags & MINUS_F)
 	{
-		if (obj->flags & SIGNED_F && obj->flags & PLUS_F)
+		if (obj->flags & PLUS_F)
 			print_sign(obj);
 
 		ft_putnbr_base(obj->u_output.u_lnglng, base);
 		print_padding(obj, length_of_number(obj, base), ' ');
 	}
 
-	else if (!(obj->flags & MINUS_F) && !(obj->flags & ZERO_F))
+	else if (obj->flags & ZERO_F)
+	{
+		if (obj->flags & SIGNED_F)
+			print_sign(obj);
+		print_padding(obj, length_of_number(obj, base), '0');
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+	}
+	else
+	{
+		print_sign(obj);
+		print_padding(obj, length_of_number(obj, base), ' ');
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+	}
+	
+}
+
+void	invalid_format(t_pf_object *obj)
+{
+	ft_putstr("Not a valid format\n");
+}
+
+void	print_char(t_pf_object *obj)
+{
+	if (obj->flags & MINUS_F)
+	{
+		print_character(va_arg(obj->ap, int), obj);
+		print_padding(obj, 1, ' ');
+	}
+
+	else if (obj->flags & ZERO_F)
+	{
+		print_padding(obj, 1, '0');
+		print_character(va_arg(obj->ap, int), obj);
+	}
+	else
+	{
+		print_padding(obj, 1, ' ');
+		print_character(va_arg(obj->ap, int), obj);
+	}
+}
+
+void	print_str(t_pf_object *obj)
+{
+	char *str;
+
+	str = va_arg(obj->ap, char*);
+	if (obj->flags & MINUS_F)
+	{
+		ft_putstr(str);
+		print_padding(obj, ft_strlen(str), ' ');
+	}
+
+	else if (obj->flags & ZERO_F)
+	{
+		print_padding(obj, ft_strlen(str), '0');
+		ft_putstr(str);
+	}
+	else
+	{
+		print_padding(obj, ft_strlen(str), ' ');
+		ft_putstr(str);
+	}
+}
+
+void	print_ptr(t_pf_object *obj)
+{
+	long long pointer = va_arg(obj->ap, void*);
+	parse_length(obj, 0);
+	int base = 16;
+
+	if (obj->flags & MINUS_F)
+	{
+		print_hash_flag(obj);
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+		print_padding(obj, length_of_number(obj, base), ' ');
+	}
+
+	else if (obj->flags & ZERO_F)
+	{
+		print_hash_flag(obj);
+		print_padding(obj, length_of_number(obj, base), '0');
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+	}
+	else
+	{
+		print_hash_flag(obj);
+		print_padding(obj, length_of_number(obj, base), ' ');
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+	}
+}
+
+
+void	print_o(t_pf_object *obj)
+{
+	obj->u_output.u_lnglng = va_arg(obj->ap, unsigned int);
+	parse_length(obj, 0);
+	int base = 8;
+
+	if (obj->flags & MINUS_F)
+	{
+		if (obj->flags & HASH_F)
+			print_hash_flag(obj);
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+		print_padding(obj, length_of_number(obj, base), ' ');
+	}
+
+	else if (obj->flags & ZERO_F)
+	{
+		print_padding(obj, length_of_number(obj, base), '0');
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+	}
+	else
 	{
 		print_padding(obj, length_of_number(obj, base), ' ');
-		if (obj->flags & SIGNED_F)
-			print_sign(obj);
-
 		ft_putnbr_base(obj->u_output.u_lnglng, base);
 	}
+	
+}
 
+void	print_u(t_pf_object *obj)
+{
+	obj->u_output.u_lnglng = va_arg(obj->ap, unsigned int);
+	parse_length(obj, 0);
+	int base = 10;
 
-	if (obj->flags & MINUS_F && obj->flags & ZERO_F)
+	if (obj->flags & MINUS_F)
 	{
-		if (obj->flags & SIGNED_F)
-			print_sign(obj);
-
 		ft_putnbr_base(obj->u_output.u_lnglng, base);
-		print_padding(obj, length_of_number(obj, base), '0');
+		print_padding(obj, length_of_number(obj, base), ' ');
 	}
 
-	else if (!(obj->flags & MINUS_F) && obj->flags & ZERO_F)
+	else if (obj->flags & ZERO_F)
 	{
-		if (obj->flags & SIGNED_F)
-			print_sign(obj);
-		// printf("line 251, length_of_nuber: %dnumbers\n", length_of_number(obj, base));
 		print_padding(obj, length_of_number(obj, base), '0');
 		ft_putnbr_base(obj->u_output.u_lnglng, base);
 	}
+	else
+	{
+		print_padding(obj, length_of_number(obj, base), ' ');
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+	}
+}
+
+void	print_x(t_pf_object *obj)
+{
+	obj->u_output.u_lnglng = va_arg(obj->ap, unsigned int);
+	parse_length(obj, 0);
+	int base = 16;
+
+	if (obj->flags & MINUS_F)
+	{
+		if (obj->flags & HASH_F)
+			print_hash_flag(obj);
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+		print_padding(obj, length_of_number(obj, base), ' ');
+	}
+
+	else if (obj->flags & ZERO_F)
+	{
+		print_padding(obj, length_of_number(obj, base), '0');
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+	}
+	else
+	{
+		print_padding(obj, length_of_number(obj, base), ' ');
+		ft_putnbr_base(obj->u_output.u_lnglng, base);
+	}
+}
+
+void	print_f(t_pf_object *obj)
+{
+	exit ;
+}
+
+void	print_percent(t_pf_object *obj)
+{
+	print_character('%', obj);
+}
+
+
+void	populate_func_pointer(func_pointer *arrPointer)
+{
+	char	i;
+
+	i = 0;
+	while (i < 31)
+		arrPointer[i++] = invalid_format;
+		// c,s,p,d,i,o,u,x,X,f,%
+	arrPointer['c' - 'a'] = print_char;
+	arrPointer['s' - 'a'] = print_str;
+	arrPointer['p' - 'a'] = print_ptr;
+	arrPointer['d' - 'a'] = print_d;
+	arrPointer['i' - 'a'] = print_d;
+	arrPointer['o' - 'a'] = print_o;
+	arrPointer['u' - 'a'] = print_u;
+	arrPointer['x' - 'a'] = print_x;
+	arrPointer['X' - 'a'] = print_x;
+	arrPointer['f' - 'a'] = print_f;
+	arrPointer['%' - 'a'] = print_percent;
 }
 
 // currently the function reaches parse_specifier and prints directly to the screen
@@ -261,33 +544,17 @@ void	print_number(t_pf_object *obj, char base)
 // print_number needs some reference as to what ot 
 void	parse_specifier(t_pf_object *obj)
 {
-	char 	specifier;
+	char 			specifier;
+	func_pointer	arrPointer[32];
+
+
+	populate_func_pointer(arrPointer);
 
 	specifier = obj->str[obj->i_str];
-	obj->u_output.u_lnglng = specifier == 'd' ? va_arg(obj->ap, int) : obj->u_output.u_lnglng;
-	obj->u_output.u_lnglng = specifier == 'o' ? va_arg(obj->ap, unsigned int) : obj->u_output.u_lnglng;
-	obj->u_output.u_lnglng = specifier == 'i' ? va_arg(obj->ap, int) : obj->u_output.u_lnglng;
-	obj->u_output.u_lnglng = specifier == 'u' ? va_arg(obj->ap, unsigned int) : obj->u_output.u_lnglng;
-	obj->u_output.u_lnglng = specifier == 'x' ? va_arg(obj->ap, unsigned int) : obj->u_output.u_lnglng;
-	obj->u_output.u_lnglng = specifier == 'X' ? va_arg(obj->ap, unsigned int) : obj->u_output.u_lnglng;
-	obj->u_output.u_double = specifier == 'f' ? va_arg(obj->ap, double) : obj->u_output.u_double;
-	obj->u_output.u_lnglng = specifier == 'p' ? va_arg(obj->ap, void*) : obj->u_output.u_lnglng;
 	if (specifier == 'd' || specifier == 'i')
 		obj->flags |= SIGNED_F;
-	if (specifier == 'o' || specifier == 'x' || specifier == 'X')
-	print_number(obj, get_base(specifier));
-	if (ft_strchr_int("sc%", specifier) > -1)
-	{
-		if (obj->str[obj->i_str] == 's')
-			ft_putstr(va_arg(obj->ap, char*));
-
-		else if (obj->str[obj->i_str] == 'c')
-			ft_putchar(va_arg(obj->ap, int));
-			
-		else if (obj->str[obj->i_str] == '%')
-			ft_putnbr(va_arg(obj->ap, unsigned int));
-		++obj->i_str;
-	}
+	printf("arrived populate_func_pointer, specifier %c\n", obj->str[obj->i_str]);
+	arrPointer[specifier - 'a'](obj);
 }
 
 
@@ -318,7 +585,6 @@ void	parse_general(t_pf_object *obj)
 	}
 	parse_length(obj, 1);
 	parse_specifier(obj);
-
 }
 
 
@@ -341,7 +607,7 @@ int		ft_printf(const char * restrict format, ...)
 			++obj.i_str;
 			parse_general(&obj);
 		}
-		// ft_putchar(obj.str[obj.i_str]);
+		// print_character(obj.str[obj.i_str]);
 		++obj.i_str;
 	}
 	va_end(obj.ap);
