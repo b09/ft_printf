@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_memdel.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
+/*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/20 16:31:25 by fmiceli       #+#    #+#                 */
-/*   Updated: 2019/01/20 17:18:52 by fmiceli       ########   odam.nl         */
+/*   Created: 2019/01/17 17:46:32 by bprado        #+#    #+#                 */
+/*   Updated: 2019/01/25 17:26:09 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

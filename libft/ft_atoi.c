@@ -3,38 +3,33 @@
 /*                                                        ::::::::            */
 /*   ft_atoi.c                                          :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
+/*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/11 13:48:34 by fmiceli       #+#    #+#                 */
-/*   Updated: 2019/01/19 17:49:42 by fmiceli       ########   odam.nl         */
+/*   Created: 2019/01/17 17:45:12 by bprado        #+#    #+#                 */
+/*   Updated: 2019/01/30 18:25:37 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *str)
+int		ft_atoi(const char *str)
 {
-	int		result;
-	int		i;
-	int		sign;
+	long long int	i;
+	int				j;
 
 	i = 0;
-	result = 0;
-	sign = 1;
-	while (ft_isspace(str[i]) == TRUE)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
+	j = 1;
+	while ((*str > 0) && (*str < 33) && (*str != 27))
+		++str;
+	if ((*str == 43) || (*str == 45))
 	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
+		if (*str == 45)
+		{
+			j = -j;
+		}
+		++str;
 	}
-	while (str[i] != '\0')
-	{
-		if (ft_isdigit(str[i]) == FALSE)
-			return (sign * result);
-		result = (result * 10) + (str[i] - '0');
-		i++;
-	}
-	return (sign * result);
+	while ((*str > 47) && (*str < 58))
+		i = (i * 10) + (*str++ - 48);
+	return ((int)i * j);
 }

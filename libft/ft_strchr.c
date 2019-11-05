@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strchr.c                                        :+:    :+:            */
+/*   ft_strchar.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
+/*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/19 18:13:03 by fmiceli       #+#    #+#                 */
-/*   Updated: 2019/01/19 18:18:56 by fmiceli       ########   odam.nl         */
+/*   Created: 2019/01/17 17:49:51 by bprado        #+#    #+#                 */
+/*   Updated: 2019/01/18 12:55:16 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	int	i;
-	int	len;
+	int		i;
 
 	i = 0;
-	len = ft_strlen(s);
-	if (c == '\0')
-		return ((char *)&s[len]);
-	return (ft_memchr(s, c, len));
+	while (*s != 0)
+	{
+		if (*s == (unsigned char)c)
+			return ((char*)s);
+		s++;
+	}
+	if (c == 0)
+		return ((char*)s);
+	return (NULL);
 }

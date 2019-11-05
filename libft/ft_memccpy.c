@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_memccpy.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
+/*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/13 17:57:53 by fmiceli       #+#    #+#                 */
-/*   Updated: 2019/02/02 16:45:44 by fmiceli       ########   odam.nl         */
+/*   Created: 2019/01/14 17:39:32 by bprado        #+#    #+#                 */
+/*   Updated: 2019/01/15 15:35:30 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
-	unsigned char	*stop_addres;
-
-	if (n == 0)
-		return (NULL);
-	stop_addres = (unsigned char *)ft_memchr(src, c, n);
-	if (stop_addres != NULL)
+	while (n != 0)
 	{
-		ft_memcpy(dst, src, stop_addres - (unsigned char *)src + 1);
-		return (&dst[stop_addres - (unsigned char *)src + 1]);
+		*(unsigned char *)dst = *(unsigned char *)src;
+		if (*(unsigned char *)src == (unsigned char)c)
+		{
+			++dst;
+			return (dst);
+		}
+		dst++;
+		src++;
+		n--;
 	}
-	ft_memcpy(dst, src, n);
 	return (NULL);
 }

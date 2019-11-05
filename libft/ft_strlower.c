@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strlower.c                                      :+:    :+:            */
+/*   ft_str_tolower.c                                   :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
+/*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/13 19:25:29 by fmiceli       #+#    #+#                 */
-/*   Updated: 2019/01/16 19:01:42 by fmiceli       ########   odam.nl         */
+/*   Created: 2019/02/05 15:52:43 by bprado        #+#    #+#                 */
+/*   Updated: 2019/02/05 15:52:45 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strlower(char *str)
+char	*ft_strlower(const char *str)
 {
-	int	i;
+	int		i;
+	char	*a;
 
 	i = 0;
-	while (str[i] != '\0')
+	a = ft_strdup(str);
+	while (str[i] != 0)
 	{
-		if (str[i] >= 'A' && str[i] <= 'Z')
-			str[i] = str[i] - 'A' + 'a';
-		i++;
+		a[i] = ft_tolower(str[i]);
+		++i;
 	}
-	return (str);
+	a[i] = 0;
+	return (a);
 }

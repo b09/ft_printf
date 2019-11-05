@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_strnew.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: fmiceli <fmiceli@student.codam.nl>           +#+                     */
+/*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/20 16:33:09 by fmiceli       #+#    #+#                 */
-/*   Updated: 2019/01/20 16:34:42 by fmiceli       ########   odam.nl         */
+/*   Created: 2019/01/17 17:53:20 by bprado        #+#    #+#                 */
+/*   Updated: 2019/01/21 17:04:03 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,17 @@
 
 char	*ft_strnew(size_t size)
 {
-	char	*str;
+	char *str;
 
-	str = ft_memalloc(size + 1);
+	str = (char*)malloc(sizeof(char) * size + 1);
+	if (!str)
+		return (NULL);
+	str[size + 1] = 0;
+	while (size)
+	{
+		str[size] = 0;
+		--size;
+	}
+	str[0] = 0;
 	return (str);
 }
