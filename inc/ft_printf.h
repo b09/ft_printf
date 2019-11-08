@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/05 15:48:18 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/08 16:01:37 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 typedef union	u_union_output
 {
 	unsigned long long	lnglng;
-	double				dbl;
+	long double			lngdbl;
 	void*				ptr;
 		
 }				union_output;

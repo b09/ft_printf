@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/05 18:02:20 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/08 19:34:34 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int		main(void)
 {
 	char *str = "hello";
-	double num = 3.14159265358979323;
+	long double num = 3.14159265358979323;
 	int num2 = 5926;
 	int num3 = 1;
 	t_pf_object str2;
@@ -29,11 +29,17 @@ int		main(void)
 
 	char *pstr = "This will be a long enough string to be different";
 
-	long int number = num * 10000;
+	int number = 0;
+	double ddd = 0.12345;
+	while ((ddd - number) > 0 && ddd < 21474862)
+	{
+		ddd *= 10;
+		number = ddd;
+		printf("%f, %d:<-end\n", ddd, number);
+	}
 
 	// d -> print_number -> print_sign -> | <- print_padding -> length_of_number 
 
-	printf("%d:<-end\n", number);
 	// ft_printf("hello %10x", number);
 	return (0);
 }

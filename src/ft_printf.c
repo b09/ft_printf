@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/05 15:47:20 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/08 21:51:59 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,9 @@ void	parse_specifier(t_pf_object *obj)
 	arrPointer['o' - 'a'] = print_o;
 	arrPointer['u' - 'a'] = print_u;
 	arrPointer['x' - 'a'] = print_x;
-	arrPointer['X' - 'a'] = print_x;
+	arrPointer['X' - 'A'] = print_x;
 	arrPointer['f' - 'a'] = print_f;
-	arrPointer['%' - 'a'] = print_percent;
+	arrPointer['%' - 37] = print_percent;
 	i = obj->str[obj->i_str];
 	if (i == 'd' || i == 'i')
 		obj->flags |= SIGNED_F;
@@ -102,3 +102,5 @@ int		ft_printf(const char* restrict format, ...)
 	va_end(obj.ap);
 	return (0);
 }
+
+
