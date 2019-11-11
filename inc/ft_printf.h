@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/08 16:01:37 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/11 18:19:35 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define HH_F 			1 << 7
 # define LL_F 			1 << 8
 # define SIGNED_F		1 << 9
+# define CAP_L_F		1 << 10
 
 
 typedef union	u_union_output

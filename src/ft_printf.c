@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/08 21:51:59 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/11 18:25:10 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void	parse_specifier(t_pf_object *obj)
 void	parse_general(t_pf_object *obj)
 {
 	parse_flags(obj);
-	parse_width(obj);
-	if (obj->str[obj->i_str] == '.')
-	{
-		obj->i_str++;
-		parse_precision(obj);
-	}
+	parse_width_precision(obj);
+	// if (obj->str[obj->i_str] == '.')
+	// {
+	// 	obj->i_str++;
+	// 	parse_precision(obj);
+	// }
 	parse_length(obj, 1);
 	parse_specifier(obj);
 }

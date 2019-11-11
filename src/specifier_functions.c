@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/08 21:51:54 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/11 14:51:06 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,41 +193,26 @@ void	print_x(t_pf_object *obj)
 
 void	print_f(t_pf_object *obj)
 {
-	// int			base;
-	// long long	ret;
-	// long double	copy;
+	int		base;
+	long	ret;
+	double	copy;
 
-	// parse_length(obj, 0);
-	// base = 16;
-	// copy = va_arg(obj->ap, long double);
-	// obj->val.lngdbl = copy;
-	// ret = 0;
-
-	// 0.000015468000
-
-	// ret = copy;
-	// while (copy - ret > 0)
-	// {
-	// 	copy = copy * 10;
-	// 	ret = copy;
-	// }
-
-
-	// while (copy > 0 && copy < 10)
-	// 	ret = copy * 10;
-
-
-
-	// 	ret = 10 * copy
+	parse_length(obj, 0);
+	base = 10;
+	copy = va_arg(obj->ap, double);
+	obj->val.lngdbl = copy;
+	ret = 0;
+	if (obj->precision == 0)
+		obj->precision = 6;
+	ret = (long)copy;
+	ft_putnbr_base(ret, base);
+	copy = copy - ret;
+	while (obj->precision--)
+		copy *= 10;
+	ret = (long)copy;
+	print_character('.', obj);
+	ft_putnbr_base(ret, base);
 	
-
-
-
-	// number = ddd * 100;
-	// ddd *= 100;
-	// ddd -= number;
-	exit ;
-
 }
 
 void	print_percent(t_pf_object *obj)
@@ -238,76 +223,76 @@ void	print_percent(t_pf_object *obj)
 
 
 // code below is an implementation of printing doubles from the blog http://www.corsix.org/
-void print(double n) {
-  TValue t;
-  t.n = n;
-//   if ((t.u32.hi << 1) >= 0xffe00000) {
-//     if (((t.u32.hi & 0x000fffff) | t.u32.lo) != 0) {
-//       printf("NaN\n");
+// void print(double n) {
+//   TValue t;
+//   t.n = n;
+// //   if ((t.u32.hi << 1) >= 0xffe00000) {
+// //     if (((t.u32.hi & 0x000fffff) | t.u32.lo) != 0) {
+// //       printf("NaN\n");
+// //     } else {
+// //       printf("Infinity\n");
+// //     }
+// //   } else {
+// 	char buf[1154];
+//     uint32_t nd[128];
+//     int32_t ndlo = 0;
+//     int32_t ndhi = 0;
+//     int32_t e = (t.u32.hi >> 20) & 0x7ff;
+//     nd[0] = t.u32.hi & 0xfffff;
+//     if (e == 0) {
+//       e++;
 //     } else {
-//       printf("Infinity\n");
+//       nd[0] |= 0x100000;
 //     }
-//   } else {
-	char buf[1154];
-    uint32_t nd[128];
-    int32_t ndlo = 0;
-    int32_t ndhi = 0;
-    int32_t e = (t.u32.hi >> 20) & 0x7ff;
-    nd[0] = t.u32.hi & 0xfffff;
-    if (e == 0) {
-      e++;
-    } else {
-      nd[0] |= 0x100000;
-    }
-    e -= 1043;
-    if (t.u32.lo) {
-      e -= 32;
-      nd[0] = (nd[0] << 3) | (t.u32.lo >> 29);
-      ndhi = nd_mul2k(nd, ndhi, 29, t.u32.lo & 0x1fffffff);
+//     e -= 1043;
+//     if (t.u32.lo) {
+//       e -= 32;
+//       nd[0] = (nd[0] << 3) | (t.u32.lo >> 29);
+//       ndhi = nd_mul2k(nd, ndhi, 29, t.u32.lo & 0x1fffffff);
 
 
-	  		int32_t nd_mul2k(uint32_t* nd, int32_t ndhi, uint32_t k, uint32_t carry_in) {
-			while (k >= 29) {
-				for (uint32_t i = 0; i <= (uint32_t)ndhi; i++) {
-				uint64_t val = ((uint64_t)nd[i] << 29) | carry_in;
-				carry_in = (uint32_t)(val / 1000000000);
-				nd[i] = (uint32_t)val - carry_in * 1000000000;
-				}
-				if (carry_in) {
-				nd[++ndhi] = carry_in; carry_in = 0;
-				}
-				k -= 29;
-			}
-			if (k) {
-				for (uint32_t i = 0; i <= (uint32_t)ndhi; i++) {
-				uint64_t val = ((uint64_t)nd[i] << k) | carry_in;
-				carry_in = (uint32_t)(val / 1000000000);
-				nd[i] = (uint32_t)val - carry_in * 1000000000;
-				}
-				if (carry_in) nd[++ndhi] = carry_in;
-			}
-			return ndhi;
-	}
-    }
-    if (e >= 0) {
-      ndhi = nd_mul2k(nd, ndhi, (uint32_t)e, 0);
-    } else {
-      ndlo = nd_div2k(nd, ndlo, ndhi, (uint32_t)-e);
-    }
-    nd_print(buf, nd, ndlo, ndhi);
+// 	  		int32_t nd_mul2k(uint32_t* nd, int32_t ndhi, uint32_t k, uint32_t carry_in) {
+// 			while (k >= 29) {
+// 				for (uint32_t i = 0; i <= (uint32_t)ndhi; i++) {
+// 				uint64_t val = ((uint64_t)nd[i] << 29) | carry_in;
+// 				carry_in = (uint32_t)(val / 1000000000);
+// 				nd[i] = (uint32_t)val - carry_in * 1000000000;
+// 				}
+// 				if (carry_in) {
+// 				nd[++ndhi] = carry_in; carry_in = 0;
+// 				}
+// 				k -= 29;
+// 			}
+// 			if (k) {
+// 				for (uint32_t i = 0; i <= (uint32_t)ndhi; i++) {
+// 				uint64_t val = ((uint64_t)nd[i] << k) | carry_in;
+// 				carry_in = (uint32_t)(val / 1000000000);
+// 				nd[i] = (uint32_t)val - carry_in * 1000000000;
+// 				}
+// 				if (carry_in) nd[++ndhi] = carry_in;
+// 			}
+// 			return ndhi;
+// 	}
+//     }
+//     if (e >= 0) {
+//       ndhi = nd_mul2k(nd, ndhi, (uint32_t)e, 0);
+//     } else {
+//       ndlo = nd_div2k(nd, ndlo, ndhi, (uint32_t)-e);
+//     }
+//     nd_print(buf, nd, ndlo, ndhi);
 
 
-			void nd_print(char* p, uint32_t* nd, int32_t ndlo, int32_t ndhi) {
-			int32_t i;
-			for (i = ndhi; i >= 0; --i) {
-				nasonov9(p, nd[i & 127]); p += 9;
-			}
-			*p++ = '.';
-			for (; i >= ndlo; --i) {
-				nasonov9(p, nd[i & 127]); p += 9;
-			}
-			*p = 0;
-			}
+// 			void nd_print(char* p, uint32_t* nd, int32_t ndlo, int32_t ndhi) {
+// 			int32_t i;
+// 			for (i = ndhi; i >= 0; --i) {
+// 				nasonov9(p, nd[i & 127]); p += 9;
+// 			}
+// 			*p++ = '.';
+// 			for (; i >= ndlo; --i) {
+// 				nasonov9(p, nd[i & 127]); p += 9;
+// 			}
+// 			*p = 0;
+// 			}
 
-    printf("%s\n", buf);
-  }
+//     printf("%s\n", buf);
+//   }
