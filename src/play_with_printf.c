@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/11 18:18:40 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/14 00:23:16 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,16 @@ int		main(void)
 
 	int number = 0;
 	double ddd = 65434.556468404;
-	// while ((ddd - number) > 0 && ddd < 21474862)
-	// {
-	// 	ddd *= 10;
-		// number = ddd;
-		// printf("%f, %d:<-end\n", ddd, number);
-	// }
-
-	// d -> print_number -> print_sign -> | <- print_padding -> length_of_number 
-
-	ft_printf("hello %#0- +.15f", ddd);
+	// number = 1;
+	// number = number << 31;
+	number = 1023;
+	number = 255;
+	// printf("float:%d\n", number);
+	// ft_printf("ft octal:%hho\n", number);
+	ft_printf("string13: %20.13s\n", "hello world");
+	printf("string13: %20.13s\n\n", "hello world");
+	ft_printf("string10: %20.10s\n", "hello world");
+	printf("string10: %20.10s\n", "hello world");
 	return (0);
 }
 

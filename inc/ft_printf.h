@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/11 18:19:35 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/13 23:47:33 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define LL_F 			1 << 8
 # define SIGNED_F		1 << 9
 # define CAP_L_F		1 << 10
+# define PRECISN		1 << 11
 
 
 typedef union	u_union_output
@@ -65,9 +66,9 @@ typedef void (*func_pointer)(t_pf_object *);
 int				ft_printf(const char * restrict format, ...);
 void			print_character(char c, t_pf_object *obj);
 void			parse_flags(t_pf_object *obj);
-void			parse_width(t_pf_object *obj);
-void			parse_precision(t_pf_object *obj);
-void			parse_width_precision(t_pf_object *obj, int *pointer);
+void			parse_width_precision(t_pf_object *obj);
+// void			parse_precision(t_pf_object *obj);
+// void			parse_width_precision(t_pf_object *obj, int *pointer);
 void			parse_length(t_pf_object *obj, char flip);
 char			get_base(char format_specifier);
 int				length_of_number(t_pf_object *obj, char base);
@@ -79,6 +80,7 @@ void			print_d(t_pf_object *obj);
 void			invalid_format(t_pf_object *obj);
 void			print_char(t_pf_object *obj);
 void			print_str(t_pf_object *obj);
+void			print_string(t_pf_object *obj);
 void			print_ptr(t_pf_object *obj);
 void			print_o(t_pf_object *obj);
 void			print_u(t_pf_object *obj);
@@ -88,6 +90,7 @@ void			print_percent(t_pf_object *obj);
 void			populate_func_pointer(func_pointer *arrPointer);
 void			parse_specifier(t_pf_object *obj);
 void			parse_general(t_pf_object *obj);
+void			ft_putnbr_base2(long long n, int base, t_pf_object *obj);
 int				ft_printf(const char * restrict format, ...);
 
 #endif

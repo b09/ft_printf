@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/05 15:47:20 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/14 00:16:44 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,44 @@ void	print_character(char c, t_pf_object *obj)
 {
 	obj->ret++;
 	ft_putchar(c);
+}
+
+void	print_string(t_pf_object *obj)
+{
+	if (obj->flags & PRECISN)
+	{
+		while (*(char*)obj->val.ptr && obj->precision-- > 0)
+			print_character(*(char*)obj->val.ptr++, obj);
+	}
+	else
+	{
+		while (*(char*)obj->val.ptr)
+			print_character(*(char*)obj->val.ptr++, obj);
+	}
+	
+}
+
+void	ft_putnbr_base2(long long n, int base, t_pf_object *obj)
+{
+	char			a;
+	long long		i;
+
+	if (n < 0)
+		n = -n;
+	i = n;
+	if (i > (base - 1))
+	{
+		ft_putnbr_base2(i / base, base, obj);
+		ft_putnbr_base2(i % base, base, obj);
+	}
+	if (i <= (base - 1) && i < 10)
+	{
+		a = '0' + i;
+		print_character(a, obj);
+	}
+	else if (i > 9 && i < 16 && base > 10)
+	{
+		a = 'a' + i - 10;
+		print_character(a, obj);
+	}
 }

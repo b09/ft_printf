@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/11 18:26:31 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/13 22:33:36 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,13 @@ void	parse_width_precision(t_pf_object *obj)
 	if (obj->str[obj->i_str] == '.')
 	{
 		obj->i_str++;
+		obj->flags |= PRECISN;
 		obj->precision = ft_atoi(&(obj->str[obj->i_str]));
+		obj->precision = obj->precision > 0 ? obj->precision : -1;
 		while (ft_isdigit(obj->str[obj->i_str]))
 			++obj->i_str;
 	}
 }
-
-// void	parse_precision(t_pf_object *obj)
-// {
-// 	obj->precision = ft_atoi(&(obj->str[obj->i_str]));
-// 	while (ft_isdigit(obj->str[obj->i_str]))
-// 		++obj->i_str;
-// }
-
-// void	parse_width_precision(t_pf_object *obj, int *pointer)
-// {
-// 	*pointer = ft_atoi(&(obj->str[obj->i_str]));
-// 	while (ft_isdigit(obj->str[obj->i_str]))
-// 		++obj->i_str;
-// }
 
 void	parse_length(t_pf_object *obj, char flip)
 {
@@ -73,7 +61,7 @@ void	parse_length(t_pf_object *obj, char flip)
 	else
 	{
 		obj->val.lnglng = obj->flags & H_F ? (short)obj->val.lnglng : obj->val.lnglng;
-		obj->val.lnglng = obj->flags & HH_F ? (char)obj->val.lnglng : obj->val.lnglng;
+		obj->val.lnglng = obj->flags & HH_F ? (unsigned char)obj->val.lnglng : obj->val.lnglng;
 		obj->val.lnglng = obj->flags & L_F ? (long)obj->val.lnglng : obj->val.lnglng;
 		obj->val.lnglng = obj->flags & LL_F ? (long long)obj->val.lnglng : obj->val.lnglng;
 		if (obj->flags & CAP_L_F)

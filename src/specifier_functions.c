@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/11 14:51:06 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/13 23:53:24 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	print_d(t_pf_object *obj)
 	{
 		if (obj->flags & PLUS_F)
 			print_sign(obj);
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 		print_padding(obj, length_of_number(obj, base), ' ');
 	}
 	else if (obj->flags & ZERO_F)
@@ -31,13 +31,13 @@ void	print_d(t_pf_object *obj)
 		if (obj->flags & SIGNED_F)
 			print_sign(obj);
 		print_padding(obj, length_of_number(obj, base), '0');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 	else
 	{
 		print_sign(obj);
 		print_padding(obj, length_of_number(obj, base), ' ');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
 
@@ -69,21 +69,24 @@ void	print_str(t_pf_object *obj)
 {
 	char		*str;
 
-	str = va_arg(obj->ap, char*);
+	obj->val.ptr = va_arg(obj->ap, char*);
+	str = obj->val.ptr;
 	if (obj->flags & MINUS_F)
 	{
-		ft_putstr(str);
+		print_string(obj);
 		print_padding(obj, ft_strlen(str), ' ');
 	}
 	else if (obj->flags & ZERO_F)
 	{
 		print_padding(obj, ft_strlen(str), '0');
-		ft_putstr(str);
+		// ft_putstr(str);
+		print_string(obj);
 	}
 	else
 	{
 		print_padding(obj, ft_strlen(str), ' ');
-		ft_putstr(str);
+		// ft_putstr(str);
+		print_string(obj);
 	}
 }
 
@@ -98,20 +101,20 @@ void	print_ptr(t_pf_object *obj)
 	if (obj->flags & MINUS_F)
 	{
 		print_hash_flag(obj);
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 		print_padding(obj, length_of_number(obj, base), ' ');
 	}
 	else if (obj->flags & ZERO_F)
 	{
 		print_hash_flag(obj);
 		print_padding(obj, length_of_number(obj, base), '0');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 	else
 	{
 		print_hash_flag(obj);
 		print_padding(obj, length_of_number(obj, base), ' ');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
 
@@ -126,18 +129,18 @@ void	print_o(t_pf_object *obj)
 	{
 		if (obj->flags & HASH_F)
 			print_hash_flag(obj);
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 		print_padding(obj, length_of_number(obj, base), ' ');
 	}
 	else if (obj->flags & ZERO_F)
 	{
 		print_padding(obj, length_of_number(obj, base), '0');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 	else
 	{
 		print_padding(obj, length_of_number(obj, base), ' ');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
 
@@ -150,18 +153,18 @@ void	print_u(t_pf_object *obj)
 	parse_length(obj, 0);
 	if (obj->flags & MINUS_F)
 	{
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 		print_padding(obj, length_of_number(obj, base), ' ');
 	}
 	else if (obj->flags & ZERO_F)
 	{
 		print_padding(obj, length_of_number(obj, base), '0');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 	else
 	{
 		print_padding(obj, length_of_number(obj, base), ' ');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
 
@@ -176,18 +179,18 @@ void	print_x(t_pf_object *obj)
 	{
 		if (obj->flags & HASH_F)
 			print_hash_flag(obj);
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 		print_padding(obj, length_of_number(obj, base), ' ');
 	}
 	else if (obj->flags & ZERO_F)
 	{
 		print_padding(obj, length_of_number(obj, base), '0');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 	else
 	{
 		print_padding(obj, length_of_number(obj, base), ' ');
-		ft_putnbr_base(obj->val.lnglng, base);
+		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
 
@@ -205,16 +208,20 @@ void	print_f(t_pf_object *obj)
 	if (obj->precision == 0)
 		obj->precision = 6;
 	ret = (long)copy;
-	ft_putnbr_base(ret, base);
+	ft_putnbr_base2(ret, base, obj);
 	copy = copy - ret;
-	while (obj->precision--)
-		copy *= 10;
-	ret = (long)copy;
 	print_character('.', obj);
-	ft_putnbr_base(ret, base);
-	
+	while (obj->precision--)
+	{
+		copy *= 10.0;
+		ret = (long)copy;
+		printf("ret:%d\n", ret);
+		// ft_putnbr_base2(ret, base, obj);
+		copy = copy - ret;
+	}
 }
-
+// 0.234
+// 2.34
 void	print_percent(t_pf_object *obj)
 {
 	print_character('%', obj);
@@ -222,11 +229,21 @@ void	print_percent(t_pf_object *obj)
 
 
 
-// code below is an implementation of printing doubles from the blog http://www.corsix.org/
+// // code below is an implementation of printing doubles from the blog http://www.corsix.org/
+
+// // typedef union {
+// //   double n;
+// //   uint64_t u64;
+// //   struct {
+// //     uint32_t lo;
+// //     uint32_t hi;
+// //   } u32;
+// // } TValue;
+
 // void print(double n) {
 //   TValue t;
 //   t.n = n;
-// //   if ((t.u32.hi << 1) >= 0xffe00000) {
+// //   if ((t.u32.hi << 1) >= 0xffe00000) {	
 // //     if (((t.u32.hi & 0x000fffff) | t.u32.lo) != 0) {
 // //       printf("NaN\n");
 // //     } else {
@@ -238,11 +255,26 @@ void	print_percent(t_pf_object *obj)
 //     int32_t ndlo = 0;
 //     int32_t ndhi = 0;
 //     int32_t e = (t.u32.hi >> 20) & 0x7ff;
+
+// 	// comment: 01111111 11110000 00000000 00000000 00000000 00000000 00000000 00000000
+// 			// 	SE->	  ->|F->		S=Sign, E=Exponent, F=Fraction				->|
+// 	// ex:
+// 	// comment: 00111111 11111111 00000000 00000000 |<-high|low->| 00000000 00000000 00000000 00000000
+// 	// shift down 20
+// 	// comment: 11110000 00000000 00000011 11111111 |<-high|low->| 00000000 00000000 00000000 00000000
+// 	// comment: 00000000 00000000 00000111 11111111 |<-0x7ff
+// 	// comment: 00000000 00000000 00000011 11111111 |<- e
 //     nd[0] = t.u32.hi & 0xfffff;
+// 	// comment: 00000000 00001111 11111111 11111111 |<-0xfffff
+// 	// comment: 00111111 11111111 00000000 00000000 |<-high
+// 	// comment: 00000000 00001111 00000000 00000000 |<- nd[0]   fraction bits
 //     if (e == 0) {
 //       e++;
 //     } else {
 //       nd[0] |= 0x100000;
+// 	// comment: 00000000 00010000 00000000 00000000 |<-0x100000   largest negative exp. -1022
+// 	// comment: 00000000 00001111 00000000 00000000 |<- nd[0] old
+// 	// comment: 00000000 00011111 00000000 00000000 |<- nd[0] new
 //     }
 //     e -= 1043;
 //     if (t.u32.lo) {
@@ -252,6 +284,7 @@ void	print_percent(t_pf_object *obj)
 
 
 // 	  		int32_t nd_mul2k(uint32_t* nd, int32_t ndhi, uint32_t k, uint32_t carry_in) {
+// 				  			(			nd, 		ndhi, 		29, 		t.u32.lo & 0x1fffffff)
 // 			while (k >= 29) {
 // 				for (uint32_t i = 0; i <= (uint32_t)ndhi; i++) {
 // 				uint64_t val = ((uint64_t)nd[i] << 29) | carry_in;
