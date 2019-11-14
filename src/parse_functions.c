@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/13 22:33:36 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/14 18:26:41 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@ void	parse_flags(t_pf_object *obj)
 {
 	while (ft_strchr_int("#0- +", obj->str[obj->i_str]) != -1)
 		obj->flags |= 1 << ft_strchr_int("#0- +", obj->str[obj->i_str++]);
+
+
+		
 	if (obj->flags & ZERO_F && obj->flags & MINUS_F)
 		obj->flags ^= ZERO_F;
 	if (obj->flags & SPACE_F && obj->flags & PLUS_F)

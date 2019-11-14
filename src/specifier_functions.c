@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/13 23:53:24 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/14 20:00:24 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	print_str(t_pf_object *obj)
 
 	obj->val.ptr = va_arg(obj->ap, char*);
 	str = obj->val.ptr;
+	obj->flags |= STRNG;
 	if (obj->flags & MINUS_F)
 	{
 		print_string(obj);

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/13 23:47:33 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/14 17:29:53 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define SIGNED_F		1 << 9
 # define CAP_L_F		1 << 10
 # define PRECISN		1 << 11
+# define STRNG			1 << 12
 
 
 typedef union	u_union_output
