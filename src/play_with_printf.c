@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/14 20:01:44 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/15 23:06:11 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,20 @@ int		main(void)
 	typedef union s_value
 	{
 		long double dvalue;
-		char*		cvalue[8];
+		char		cvalue;
 	}		f_value;
 
 	f_value example;
 
-	// example.cvalue = 1;
-	// printf("char: %.15000Lf\n\n\n", example.dvalue * 2);
+	// what is the return value of printf if there is width with zero precision?
+
 	// example.cvalue = 2;
 	// printf("char: %.15000Lf\n", example.dvalue);
 	// ft_printf("string13:%20.13s\n", "hello world");
 	// printf("string13:%20.13s\n\n", "hello world");
 
-	ft_printf("string10:%25.5s\n", "hello world");
-	printf("string10:%25.5s\n", "hello world");
+	// ft_printf("string10:%25.5s\n", "hello world");
+	// printf("string10:%25.5s\n", "hello world");
 	return (0);
 }
 

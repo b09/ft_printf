@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/14 20:00:24 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/15 23:06:08 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,14 @@ void	print_x(t_pf_object *obj)
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
+
+// .25
+// .125
+
+// .2556846 * 2^-53
+// .1
+// .025
+// .0025
 
 void	print_f(t_pf_object *obj)
 {
