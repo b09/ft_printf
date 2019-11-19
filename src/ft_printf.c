@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/19 19:28:16 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/19 21:46:44 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ char	get_base(char format_specifier)
 	return (base);
 }
 // this fuction will not work for unsigned long long variables
-int		length_of_number(t_pf_object *obj, char base)
+int		length_of_number(t_pf_object *obj)
 {
 	long long		original_int;
 	long long		holder;
 	int				counter;
+	char			base;
 
+	base = get_base(obj->specifier);
 	counter = 1;
 	original_int = obj->val.lnglng;
 	if (original_int < 0)
@@ -43,6 +45,9 @@ int		length_of_number(t_pf_object *obj, char base)
 		original_int /= base;
 		++counter;
 	}
+	counter += (obj->flags & HASH_F) ? 1 : 0;
+	counter += (obj->flags & HASH_F && (obj->specifier == 'x' 
+				|| obj->specifier == 'p' || obj->specifier == 'X')) ? 1 : 0;
 	return (counter);
 }
 
@@ -61,10 +66,11 @@ int		ft_printf(const char* restrict format, ...)
 			parse_general(&obj);
 		}
 		if (ft_strlen(obj.str) > obj.i_str)
-			print_character(obj.str[obj.i_str++], &obj);
+		{
+			obj.i_str++;
+			print_character(obj.str[obj.i_str], &obj);
+		}
 	}
 	va_end(obj.ap);
 	return (obj.ret);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/19 19:01:57 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/19 22:20:43 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ int		main(void)
 	}		f_value;
 
 	f_value example;
-	number = 100;
+	example.cvalue = 1;
+	number = 10;
 	// what is the return value of printf if there is width with zero precision?
 
-	example.cvalue = 1;
-	printf("%d\n", printf("%+-8.dend\n", number));
-	printf("%d\n", ft_printf("%+-8.dend\n", number));
+	printf("%d\n", printf("%0dend\n", number));
+	// printf("%d\n", ft_printf("%cend\n", number));
 	// printf("char: %.15000Lf\n", example.dvalue);
 	// ft_printf("char: %.15000Lf\n", example.dvalue);
 	// ft_printf("string13:%20.13s\n", "hello world");

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/19 20:04:56 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/19 21:26:43 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct	s_pf_object
 	union_output		val;
 	int					i_str;
 	int					width;
-	int					precision;
+	int					prcs;
 	int					length;
 	va_list				ap;
 	int					ret;
@@ -72,7 +72,7 @@ void			parse_width_precision(t_pf_object *obj);
 // void			parse_width_precision(t_pf_object *obj, int *pointer);
 void			parse_length(t_pf_object *obj, char flip);
 char			get_base(char format_specifier);
-int				length_of_number(t_pf_object *obj, char base);
+int				length_of_number(t_pf_object *obj);
 void			print_padding(t_pf_object *obj, int length_of_output, char character, char flip);
 void			print_sign(t_pf_object *obj);
 void			print_space_flag(t_pf_object *obj);

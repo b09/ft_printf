@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/19 19:27:39 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/19 21:44:18 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	parse_width_precision(t_pf_object *obj)
 	{
 		obj->i_str++;
 		obj->flags |= PRECISN;
-		obj->precision = ft_atoi(&(obj->str[obj->i_str]));
+		obj->prcs = ft_atoi(&(obj->str[obj->i_str]));
 		while (ft_isdigit(obj->str[obj->i_str]))
 			++obj->i_str;
 	}
@@ -49,7 +49,7 @@ void	parse_length(t_pf_object *obj, char flip)
 			obj->flags |= (obj->str[obj->i_str + 1] == 'h') ? HH_F : H_F;
 		if (obj->str[obj->i_str] == 'h')
 			obj->i_str += (obj->str[obj->i_str + 1] == 'h') ? 2 : 1;
-		if (obj->str[obj->i_str] && obj->str[obj->i_str++] == 'L')
+		if (obj->str[obj->i_str] && obj->str[obj->i_str] == 'L')
 			obj->flags |= CAP_L_F;
 	}
 	else
@@ -66,26 +66,26 @@ void	parse_length(t_pf_object *obj, char flip)
 void	parse_specifier(t_pf_object *obj)
 {
 	int				i;
-	func_pointer	arrPointer[128];
+	func_pointer	arrpointer[128];
 
 	i = 0;
 	while (i < 128)
-		arrPointer[i++] = invalid_format;
-	arrPointer['c'] = print_char;
-	arrPointer['s'] = print_str;
-	arrPointer['p'] = print_ptr;
-	arrPointer['d'] = print_d;
-	arrPointer['i'] = print_d;
-	arrPointer['o'] = print_o;
-	arrPointer['u'] = print_u;
-	arrPointer['x'] = print_x;
-	arrPointer['X'] = print_x;
-	arrPointer['f'] = print_f;
-	arrPointer['%'] = print_percent;
-	i = obj->str[obj->i_str++];
-	if (i == 'd' || i == 'i')
+		arrpointer[i++] = invalid_format;
+	arrpointer['c'] = print_char;
+	arrpointer['s'] = print_str;
+	arrpointer['p'] = print_ptr;
+	arrpointer['d'] = print_d;
+	arrpointer['i'] = print_d;
+	arrpointer['o'] = print_o;
+	arrpointer['u'] = print_u;
+	arrpointer['x'] = print_x;
+	arrpointer['X'] = print_x;
+	arrpointer['f'] = print_f;
+	arrpointer['%'] = print_percent;
+	obj->specifier = obj->str[obj->i_str];
+	if (obj->specifier == 'd' || obj->specifier == 'i')
 		obj->flags |= SIGNED_F;
-	arrPointer[i](obj);
+	arrpointer[obj->specifier](obj);
 }
 
 void	parse_general(t_pf_object *obj)
