@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/15 23:06:08 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/19 20:09:30 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,36 @@
 
 void	print_d(t_pf_object *obj)
 {
-	int			base;
-
-	base = 10;
 	obj->val.lnglng = va_arg(obj->ap, int);
 	parse_length(obj, 0);
+	obj->i = length_of_number(obj, 10);
 	if (obj->flags & MINUS_F)
 	{
-		if (obj->flags & PLUS_F)
-			print_sign(obj);
-		ft_putnbr_base2(obj->val.lnglng, base, obj);
-		print_padding(obj, length_of_number(obj, base), ' ');
+		(obj->flags & PLUS_F) ? print_sign(obj) : 0;
+		print_padding(obj, obj->i, '0', 1);
+		ft_putnbr_base2(obj->val.lnglng, 10, obj);
+		i = (i > obj->prcs) ? i : obj->prcs;
+		print_padding(obj, obj->i, ' ', 0);
 	}
 	else if (obj->flags & ZERO_F)
 	{
-		if (obj->flags & SIGNED_F)
-			print_sign(obj);
-		print_padding(obj, length_of_number(obj, base), '0');
-		ft_putnbr_base2(obj->val.lnglng, base, obj);
+		(obj->flags & SIGNED_F) ? print_sign(obj) : 0;
+		print_padding(obj, (obj->i > obj->prcs) ? obj->i : obj->prcs, '0', 0);
+		print_padding(obj, obj->i, '0', 1);
+		ft_putnbr_base2(obj->val.lnglng, 10, obj);
 	}
 	else
 	{
 		print_sign(obj);
-		print_padding(obj, length_of_number(obj, base), ' ');
-		ft_putnbr_base2(obj->val.lnglng, base, obj);
+		print_padding(obj, (i > obj->prcs) ? i : obj->prcs, ' ', 0);
+		print_padding(obj, i, '0', 1);
+		ft_putnbr_base2(obj->val.lnglng, 10, obj);
 	}
 }
+/*
+	prcs overides width. if both are given and are equal, prcs prevails. 
+	that said, width with '-' will need to consider prcs. "%-+7.5" >> "+00100 "
+ */
 
 void	invalid_format(t_pf_object *obj)
 {
@@ -48,45 +52,51 @@ void	invalid_format(t_pf_object *obj)
 
 void	print_char(t_pf_object *obj)
 {
+	parse_length(obj, 0);
 	if (obj->flags & MINUS_F)
 	{
 		print_character(va_arg(obj->ap, int), obj);
-		print_padding(obj, 1, ' ');
+		print_padding(obj, 1, ' ', 0);
 	}
 	else if (obj->flags & ZERO_F)
 	{
-		print_padding(obj, 1, '0');
+		print_padding(obj, 1, '0', 0);
 		print_character(va_arg(obj->ap, int), obj);
 	}
 	else
 	{
-		print_padding(obj, 1, ' ');
+		print_padding(obj, 1, ' ', 0);
 		print_character(va_arg(obj->ap, int), obj);
 	}
 }
 
 void	print_str(t_pf_object *obj)
 {
-	char		*str;
+	int			str_length;
 
 	obj->val.ptr = va_arg(obj->ap, char*);
-	str = obj->val.ptr;
+	
+	/* 
+	if prcs exists, str_length must be the smallest value between
+	prcs and strlen, if it does not exist, str_length must 
+	*/ 
+	
+	str_length = obj->prcs < ft_strlen(obj->val.ptr) && obj->flags & PRECISN ? 
+									obj->prcs : ft_strlen(obj->val.ptr);
 	obj->flags |= STRNG;
 	if (obj->flags & MINUS_F)
 	{
 		print_string(obj);
-		print_padding(obj, ft_strlen(str), ' ');
+		print_padding(obj, str_length, ' ', 0);
 	}
 	else if (obj->flags & ZERO_F)
 	{
-		print_padding(obj, ft_strlen(str), '0');
-		// ft_putstr(str);
+		print_padding(obj, str_length, '0', 0);
 		print_string(obj);
 	}
 	else
 	{
-		print_padding(obj, ft_strlen(str), ' ');
-		// ft_putstr(str);
+		print_padding(obj, str_length, ' ', 0);
 		print_string(obj);
 	}
 }
@@ -97,24 +107,24 @@ void	print_ptr(t_pf_object *obj)
 	int			base;
 
 	base = 16;
-	pointer = va_arg(obj->ap, void*);
+	obj->val.ptr = va_arg(obj->ap, void*);
 	parse_length(obj, 0);
 	if (obj->flags & MINUS_F)
 	{
 		print_hash_flag(obj);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
-		print_padding(obj, length_of_number(obj, base), ' ');
+		print_padding(obj, length_of_number(obj, base), ' ', 0);
 	}
 	else if (obj->flags & ZERO_F)
 	{
 		print_hash_flag(obj);
-		print_padding(obj, length_of_number(obj, base), '0');
+		print_padding(obj, length_of_number(obj, base), '0', 0);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 	else
 	{
 		print_hash_flag(obj);
-		print_padding(obj, length_of_number(obj, base), ' ');
+		print_padding(obj, length_of_number(obj, base), ' ', 0);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
@@ -131,16 +141,16 @@ void	print_o(t_pf_object *obj)
 		if (obj->flags & HASH_F)
 			print_hash_flag(obj);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
-		print_padding(obj, length_of_number(obj, base), ' ');
+		print_padding(obj, length_of_number(obj, base), ' ', 0);
 	}
 	else if (obj->flags & ZERO_F)
 	{
-		print_padding(obj, length_of_number(obj, base), '0');
+		print_padding(obj, length_of_number(obj, base), '0', 0);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 	else
 	{
-		print_padding(obj, length_of_number(obj, base), ' ');
+		print_padding(obj, length_of_number(obj, base), ' ', 0);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
@@ -155,16 +165,16 @@ void	print_u(t_pf_object *obj)
 	if (obj->flags & MINUS_F)
 	{
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
-		print_padding(obj, length_of_number(obj, base), ' ');
+		print_padding(obj, length_of_number(obj, base), ' ', 0);
 	}
 	else if (obj->flags & ZERO_F)
 	{
-		print_padding(obj, length_of_number(obj, base), '0');
+		print_padding(obj, length_of_number(obj, base), '0', 0);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 	else
 	{
-		print_padding(obj, length_of_number(obj, base), ' ');
+		print_padding(obj, length_of_number(obj, base), ' ', 0);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
@@ -181,56 +191,46 @@ void	print_x(t_pf_object *obj)
 		if (obj->flags & HASH_F)
 			print_hash_flag(obj);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
-		print_padding(obj, length_of_number(obj, base), ' ');
+		print_padding(obj, length_of_number(obj, base), ' ', 0);
 	}
 	else if (obj->flags & ZERO_F)
 	{
-		print_padding(obj, length_of_number(obj, base), '0');
+		print_padding(obj, length_of_number(obj, base), '0', 0);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 	else
 	{
-		print_padding(obj, length_of_number(obj, base), ' ');
+		print_padding(obj, length_of_number(obj, base), ' ', 0);
 		ft_putnbr_base2(obj->val.lnglng, base, obj);
 	}
 }
 
-// .25
-// .125
-
-// .2556846 * 2^-53
-// .1
-// .025
-// .0025
-
 void	print_f(t_pf_object *obj)
 {
 	int		base;
-	long	ret;
-	double	copy;
+	long long	ret;
+	long double	copy;
 
 	parse_length(obj, 0);
 	base = 10;
-	copy = va_arg(obj->ap, double);
+	copy = (obj->flags & CAP_L_F) ? va_arg(obj->ap, long double) : va_arg(obj->ap, double);
 	obj->val.lngdbl = copy;
-	ret = 0;
-	if (obj->precision == 0)
-		obj->precision = 6;
-	ret = (long)copy;
+	if (obj->prcs == 0)
+		obj->prcs = 6;
+	ret = (long long)copy;
 	ft_putnbr_base2(ret, base, obj);
 	copy = copy - ret;
 	print_character('.', obj);
-	while (obj->precision--)
+	while (obj->prcs--)
 	{
 		copy *= 10.0;
-		ret = (long)copy;
-		printf("ret:%d\n", ret);
-		// ft_putnbr_base2(ret, base, obj);
+		ret = (long long)copy;
+		// printf("ret:%d\n", ret);
+		ft_putnbr_base2(ret, base, obj);
 		copy = copy - ret;
 	}
 }
-// 0.234
-// 2.34
+
 void	print_percent(t_pf_object *obj)
 {
 	print_character('%', obj);
@@ -338,3 +338,5 @@ void	print_percent(t_pf_object *obj)
 
 //     printf("%s\n", buf);
 //   }
+
+	// comment: 01111111 11110000 00000000 00000000 00000000 00000000 00000000 00000000

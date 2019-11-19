@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/14 17:29:53 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/19 20:04:56 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct	s_pf_object
 	short				flags;
 	char				buffer[32];
 	char				specifier;
-	int					ibuff;
+	int					i;
 	union_output		val;
 	int					i_str;
 	int					width;
@@ -73,7 +73,7 @@ void			parse_width_precision(t_pf_object *obj);
 void			parse_length(t_pf_object *obj, char flip);
 char			get_base(char format_specifier);
 int				length_of_number(t_pf_object *obj, char base);
-void			print_padding(t_pf_object *obj, int length_of_output, char character);
+void			print_padding(t_pf_object *obj, int length_of_output, char character, char flip);
 void			print_sign(t_pf_object *obj);
 void			print_space_flag(t_pf_object *obj);
 void			print_hash_flag(t_pf_object *obj);

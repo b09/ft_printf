@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/13 22:28:46 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/19 19:28:16 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,39 +44,6 @@ int		length_of_number(t_pf_object *obj, char base)
 		++counter;
 	}
 	return (counter);
-}
-
-void	parse_specifier(t_pf_object *obj)
-{
-	int				i;
-	func_pointer	arrPointer[128];
-
-	i = 0;
-	while (i < 128)
-		arrPointer[i++] = invalid_format;
-	arrPointer['c'] = print_char;
-	arrPointer['s'] = print_str;
-	arrPointer['p'] = print_ptr;
-	arrPointer['d'] = print_d;
-	arrPointer['i'] = print_d;
-	arrPointer['o'] = print_o;
-	arrPointer['u'] = print_u;
-	arrPointer['x'] = print_x;
-	arrPointer['X'] = print_x;
-	arrPointer['f'] = print_f;
-	arrPointer['%'] = print_percent;
-	i = obj->str[obj->i_str++];
-	if (i == 'd' || i == 'i')
-		obj->flags |= SIGNED_F;
-	arrPointer[i](obj);
-}
-
-void	parse_general(t_pf_object *obj)
-{
-	parse_flags(obj);
-	parse_width_precision(obj);
-	parse_length(obj, 1);
-	parse_specifier(obj);
 }
 
 int		ft_printf(const char* restrict format, ...)

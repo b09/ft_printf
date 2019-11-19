@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/14 19:59:33 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/19 19:18:21 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,21 +44,23 @@ void	print_hash_flag(t_pf_object *obj)
 		print_character('.', obj);
 }
 
-// int		larger_number(int a, int b)
-// {
-// 	return (a > b ?)
-// }
-
-void	print_padding(t_pf_object *obj, int length_of_output, char character)
+void	print_padding(t_pf_object *obj, int length, char character, char flip)
 {
-	int		length_to_print;
-	// print_str needs to print precision amount of characters from string, and the total amount be exactly width
-	// amount of characters printed
-		length_to_print = (obj->flags & STRNG) ? obj->width - (length_of_output - obj->precision) : obj->width - length_of_output;
-		if (obj->flags & PLUS_F && length_to_print > 0)
-			--length_to_print;
-		while (0 < length_to_print--)
-			print_character(character, obj);
+	int		padding_to_print;
+
+	if (flip)
+		padding_to_print = obj->precision - length;
+	else
+	{
+		padding_to_print = obj->width - length;
+		if (obj->flags & PLUS_F && padding_to_print > 0)
+			--padding_to_print;
+	}
+	while (padding_to_print > 0)
+	{
+		print_character(character, obj);
+		padding_to_print--;
+	}
 }
 
 void	print_character(char c, t_pf_object *obj)
