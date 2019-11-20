@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/19 21:26:43 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/20 21:39:50 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@
 
 typedef union	u_union_output
 {
-	unsigned long long	lnglng;
+	unsigned long long	ll;
 	long double			lngdbl;
 	void*				ptr;
 		
@@ -51,7 +51,7 @@ typedef struct	s_pf_object
 	const char*			str;
 	short				flags;
 	char				buffer[32];
-	char				specifier;
+	char				spc;
 	int					i;
 	union_output		val;
 	int					i_str;

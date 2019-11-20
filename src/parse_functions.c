@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/19 21:44:18 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/20 23:48:12 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,13 @@ void	parse_length(t_pf_object *obj, char flip)
 	}
 	else
 	{
-		obj->val.lnglng = obj->flags & H_F ? (short)obj->val.lnglng : obj->val.lnglng;
-		obj->val.lnglng = obj->flags & HH_F ? (unsigned char)obj->val.lnglng : obj->val.lnglng;
-		obj->val.lnglng = obj->flags & L_F ? (long)obj->val.lnglng : obj->val.lnglng;
-		obj->val.lnglng = obj->flags & LL_F ? (long long)obj->val.lnglng : obj->val.lnglng;
+		obj->val.ll = obj->flags & H_F ? (short)obj->val.ll : obj->val.ll;
+		obj->val.ll = obj->flags & HH_F ?
+									(unsigned char)obj->val.ll : obj->val.ll;
+		obj->val.ll = obj->flags & L_F ? (long)obj->val.ll : obj->val.ll;
+		obj->val.ll = obj->flags & LL_F ? (long long)obj->val.ll : obj->val.ll;
 		if (obj->flags & CAP_L_F)
-			obj->val.lngdbl = (long double)obj->val.lnglng;
+			obj->val.lngdbl = (long double)obj->val.ll;
 	}
 }
 
@@ -70,22 +71,21 @@ void	parse_specifier(t_pf_object *obj)
 
 	i = 0;
 	while (i < 128)
-		arrpointer[i++] = invalid_format;
-	arrpointer['c'] = print_char;
+		arrpointer[i++] = print_str;
+	arrpointer['c'] = print_d;
 	arrpointer['s'] = print_str;
-	arrpointer['p'] = print_ptr;
+	arrpointer['p'] = print_o;
 	arrpointer['d'] = print_d;
 	arrpointer['i'] = print_d;
 	arrpointer['o'] = print_o;
-	arrpointer['u'] = print_u;
-	arrpointer['x'] = print_x;
-	arrpointer['X'] = print_x;
+	arrpointer['u'] = print_o;
+	arrpointer['x'] = print_o;
+	arrpointer['X'] = print_o;
 	arrpointer['f'] = print_f;
-	arrpointer['%'] = print_percent;
-	obj->specifier = obj->str[obj->i_str];
-	if (obj->specifier == 'd' || obj->specifier == 'i')
+	obj->spc = obj->str[obj->i_str];
+	if (obj->spc == 'd' || obj->spc == 'i')
 		obj->flags |= SIGNED_F;
-	arrpointer[obj->specifier](obj);
+	arrpointer[obj->spc](obj);
 }
 
 void	parse_general(t_pf_object *obj)

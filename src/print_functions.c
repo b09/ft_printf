@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/19 22:26:22 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/20 21:39:45 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	print_sign(t_pf_object *obj)
 {
-	if (obj->flags & PLUS_F)
+	if (obj->flags & PLUS_F || obj->flags & SIGNED_F)
 	{
-		if ((long long)obj->val.lnglng >= 0 && obj->flags & PLUS_F)
+		if ((long long)obj->val.ll >= 0 && obj->flags & PLUS_F)
 			print_character('+', obj);
-		else if ((long long)obj->val.lnglng < 0)
+		else if ((long long)obj->val.ll < 0)
 			print_character('-', obj);
 	}
 	else if (obj->flags & SPACE_F)
@@ -27,19 +27,19 @@ void	print_sign(t_pf_object *obj)
 
 void	print_hash_flag(t_pf_object *obj)
 {
-	if (obj->specifier == 'o')
+	if (obj->spc == 'o')
 		print_character('0', obj);
-	else if (obj->specifier == 'x' || obj->specifier == 'p')
+	else if (obj->spc == 'x' || obj->spc == 'p')
 	{
 		print_character('0', obj);
 		print_character('x', obj);
 	}
-	else if (obj->specifier == 'X')
+	else if (obj->spc == 'X')
 	{
 		print_character('0', obj);
 		print_character('X', obj);
 	}
-	else if (obj->specifier == 'f')
+	else if (obj->spc == 'f')
 		print_character('.', obj);
 }
 
@@ -48,10 +48,10 @@ void	print_padding(t_pf_object *obj, int length, char character, char flip)
 	int		padding_to_print;
 
 	if (flip)
-		padding_to_print = obj->prcs - length_of_number(obj);
+		padding_to_print = obj->prcs - length;
 	else
 	{
-		padding_to_print = obj->width - length_of_number(obj);
+		padding_to_print = obj->width - length;
 		if (obj->flags & PLUS_F && padding_to_print > 0)
 			--padding_to_print;
 	}

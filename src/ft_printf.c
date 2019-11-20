@@ -6,25 +6,25 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/19 21:46:44 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/20 21:39:48 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/ft_printf.h"
-// %[flags]     [width]             [precision]             [length]    [specifier]
+// %[flags]     [width]             [precision]             [length]    [spc]
 // %[#,0,-, ,+] [1,2,3,4,5,6,7,8,9] [.,0,1,2,3,4,5,6,7,8,9] [h,hh,l,ll] [c,s,p,d,i,o,u,x,X,f,%]
-char	get_base(char format_specifier)
+char	get_base(char format_spc)
 {
 	char			base;
 
 	base = 0;
-	base = format_specifier == 'd' ? 10 : base;
-	base = format_specifier == 'i' ? 10 : base;
-	base = format_specifier == 'x' ? 16 : base;
-	base = format_specifier == 'X' ? 16 : base;
-	base = format_specifier == 'o' ? 8 : base;
-	base = format_specifier == 'u' ? 10 : base;
-	base = format_specifier == 'p' ? 16 : base;
+	base = format_spc == 'd' ? 10 : base;
+	base = format_spc == 'i' ? 10 : base;
+	base = format_spc == 'x' ? 16 : base;
+	base = format_spc == 'X' ? 16 : base;
+	base = format_spc == 'o' ? 8 : base;
+	base = format_spc == 'u' ? 10 : base;
+	base = format_spc == 'p' ? 16 : base;
 	return (base);
 }
 // this fuction will not work for unsigned long long variables
@@ -35,9 +35,9 @@ int		length_of_number(t_pf_object *obj)
 	int				counter;
 	char			base;
 
-	base = get_base(obj->specifier);
+	base = get_base(obj->spc);
 	counter = 1;
-	original_int = obj->val.lnglng;
+	original_int = obj->val.ll;
 	if (original_int < 0)
 		original_int = -original_int;
 	while (original_int > (base - 1))
@@ -46,8 +46,10 @@ int		length_of_number(t_pf_object *obj)
 		++counter;
 	}
 	counter += (obj->flags & HASH_F) ? 1 : 0;
-	counter += (obj->flags & HASH_F && (obj->specifier == 'x' 
-				|| obj->specifier == 'p' || obj->specifier == 'X')) ? 1 : 0;
+	counter += (obj->flags & HASH_F && (obj->spc == 'x' 
+									|| obj->spc == 'X')) ? 1 : 0;
+	if (obj->spc == 'p')
+		counter += 2;
 	return (counter);
 }
 
