@@ -6,11 +6,11 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/20 21:39:45 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/21 20:54:03 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/ft_printf.h"
+#include "ft_printf.h"
 
 void	print_sign(t_pf_object *obj)
 {
@@ -82,27 +82,4 @@ void	print_string(t_pf_object *obj)
 	}
 }
 
-void	ft_putnbr_base2(long long n, int base, t_pf_object *obj)
-{
-	char			a;
-	long long		i;
 
-	if (n < 0)
-		n = -n;
-	i = n;
-	if (i > (base - 1))
-	{
-		ft_putnbr_base2(i / base, base, obj);
-		ft_putnbr_base2(i % base, base, obj);
-	}
-	if (i <= (base - 1) && i < 10)
-	{
-		a = '0' + i;
-		print_character(a, obj);
-	}
-	else if (i > 9 && i < 16 && base > 10)
-	{
-		a = 'a' + i - 10;
-		print_character(a, obj);
-	}
-}

@@ -6,16 +6,12 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/20 23:43:54 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/21 20:53:44 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/ft_printf.h"
+#include "ft_printf.h"
 
-/*
-	prcs overides width. if both are given and are equal, prcs prevails.
-	that said, width with '-' will need to consider prcs. "%-+7.5" >> "+00100 "
- */
 void	print_d(t_pf_object *obj)
 {
 	obj->val.ll = va_arg(obj->ap, int);
@@ -82,7 +78,7 @@ void	print_str(t_pf_object *obj)
 	if (obj->spc == 's')
 	{
 		obj->val.ptr = va_arg(obj->ap, char*);
-		str_length = obj->prcs < ft_strlen(obj->val.ptr) && obj->flags & PRECISN ?
+		str_length = obj->prcs < (int)ft_strlen(obj->val.ptr) && obj->flags & PRECISN ?
 										obj->prcs : ft_strlen(obj->val.ptr);
 		obj->flags |= STRNG;
 	}

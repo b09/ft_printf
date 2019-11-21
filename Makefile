@@ -6,35 +6,53 @@
 #    By: bprado <bprado@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/06/03 16:52:44 by bprado         #+#    #+#                 #
-#    Updated: 2019/11/05 15:44:19 by bprado        ########   odam.nl          #
+#    Updated: 2019/11/21 20:57:14 by bprado        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME 	= ft_printf
+# https://stackoverflow.com/questions/14639794/getting-make-to-create-object-files-in-a-specific-directory
+# https://stackoverflow.com/questions/3220277/what-do-the-makefile-symbols-and-mean
+# http://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html#Automatic-Variables
 
-FLAGS	= -Wall -Wextra -Werror -g
 
-SRC 	= ./src/*.c
+NAME 	= libftprintf.a
+
+CFLAGS	= -Wall -Wextra -Werror -g
+
+SRC 	= $(wildcard src/*.c)
 
 LIB 	= ./libft
 
-INC 	= ./inc/*.h
+INC 	= -I inc -I libft/includes
 
-OBJ 	= $(SRC:.c=.o)
+OBJ		= $(patsubst src/%.c,obj/%.o,$(SRC))
+
 
 all: $(NAME)
 
-$(NAME):
-		make -C $(LIB) re
-		gcc -o $(NAME) $(SRC) -I $(INC) $(LIB)/libft.a
-		# gcc -o $(NAME) $(SRC) -I $(HDR) $(LIB)/libft.a $(FLAGS) #
+$(NAME): $(OBJ) libft/libft.a
+	@echo "compiling ..."
+	@cp libft/libft.a $(NAME)
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
+
+obj/%.o: src/%.c inc/ft_printf.h
+	@mkdir -p obj
+	$(CC) -c $(CFLAGS) $(INC) -o $@ $<
+
+libft/libft.a: $(wildcard libft/*.c)
+	@$(MAKE) -C $(LIB)
 
 clean:
-		rm -f $(OBJ)
-		make -C $(LIB) clean
+	@echo "cleaning ..."
+	@make clean -C $(LIB)
+	@rm -rf obj
 
 fclean:	clean
-		rm -rf $(NAME)
-		make -C $(LIB) fclean
+	@make fclean -C $(LIB)
+	@rm -rf $(NAME) test
+
+test: $(NAME)
+	@$(CC) -o $@ -Wall -Wextra -g $(INC) test.c $^
 
 re:	fclean all

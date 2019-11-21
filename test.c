@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   play_with_printf.c                                 :+:    :+:            */
+/*   test.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/20 23:46:57 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/21 20:48:18 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/ft_printf.h"
+#include "ft_printf.h"
 
 int		main(void)
 {
@@ -49,7 +49,9 @@ int		main(void)
 	number = 10;
 	// what is the return value of printf if there is width with zero precision?
 
-	printf("%d\n", ft_printf("%-010dend\n", number));
+	// printf("%d\n", ft_printf("hello there"));
+	printf("%d\n", ft_printf("something %20.selse", "hello there"));
+	printf("%d\n", printf("something %20.selse", "hello there"));
 	// printf("%d\n", ft_printf("%cend\n", number));
 	// printf("char: %.15000Lf\n", example.dvalue);
 	// ft_printf("char: %.15000Lf\n", example.dvalue);

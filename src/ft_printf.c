@@ -6,13 +6,12 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/20 21:39:48 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/21 20:54:09 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/ft_printf.h"
-// %[flags]     [width]             [precision]             [length]    [spc]
-// %[#,0,-, ,+] [1,2,3,4,5,6,7,8,9] [.,0,1,2,3,4,5,6,7,8,9] [h,hh,l,ll] [c,s,p,d,i,o,u,x,X,f,%]
+#include "ft_printf.h"
+
 char	get_base(char format_spc)
 {
 	char			base;
@@ -31,7 +30,6 @@ char	get_base(char format_spc)
 int		length_of_number(t_pf_object *obj)
 {
 	long long		original_int;
-	long long		holder;
 	int				counter;
 	char			base;
 
@@ -53,6 +51,31 @@ int		length_of_number(t_pf_object *obj)
 	return (counter);
 }
 
+void	ft_putnbr_base2(long long n, int base, t_pf_object *obj)
+{
+	char			a;
+	long long		i;
+
+	if (n < 0)
+		n = -n;
+	i = n;
+	if (i > (base - 1))
+	{
+		ft_putnbr_base2(i / base, base, obj);
+		ft_putnbr_base2(i % base, base, obj);
+	}
+	if (i <= (base - 1) && i < 10)
+	{
+		a = '0' + i;
+		print_character(a, obj);
+	}
+	else if (i > 9 && i < 16 && base > 10)
+	{
+		a = 'a' + i - 10;
+		print_character(a, obj);
+	}
+}
+
 int		ft_printf(const char* restrict format, ...)
 {
 	t_pf_object		obj;
@@ -62,16 +85,18 @@ int		ft_printf(const char* restrict format, ...)
 	va_start(obj.ap, format);
 	while (obj.str[obj.i_str] != 0)
 	{
+		// infinite while loop if if's all false, counter not incremented
+		if (obj.str[obj.i_str] == '%' && obj.str[obj.i_str + 1] == 0)
+			break ;
 		if (obj.str[obj.i_str] == '%')
 		{
 			++obj.i_str;
 			parse_general(&obj);
 		}
-		if (ft_strlen(obj.str) > obj.i_str)
-		{
-			obj.i_str++;
+	
+		if (obj.str[obj.i_str] != 0)
 			print_character(obj.str[obj.i_str], &obj);
-		}
+		obj.i_str++;
 	}
 	va_end(obj.ap);
 	return (obj.ret);

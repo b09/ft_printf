@@ -6,11 +6,11 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/20 23:48:12 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/21 20:53:55 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/ft_printf.h"
+#include "ft_printf.h"
 
 void	parse_flags(t_pf_object *obj)
 {
@@ -85,7 +85,8 @@ void	parse_specifier(t_pf_object *obj)
 	obj->spc = obj->str[obj->i_str];
 	if (obj->spc == 'd' || obj->spc == 'i')
 		obj->flags |= SIGNED_F;
-	arrpointer[obj->spc](obj);
+	arrpointer[(int)obj->spc](obj);
+	obj->i_str++;
 }
 
 void	parse_general(t_pf_object *obj)
