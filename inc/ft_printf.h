@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/21 20:48:27 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/24 21:05:27 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef void (*func_pointer)(t_pf_object *);
 int				ft_printf(const char * restrict format, ...);
 void			parse_flags(t_pf_object *obj);
 void			parse_width_precision(t_pf_object *obj);
-void			parse_length(t_pf_object *obj, char flip);
+void			parse_length(t_pf_object *obj);
 void			parse_specifier(t_pf_object *obj);
 void			parse_general(t_pf_object *obj);
 char			get_base(char format_specifier);

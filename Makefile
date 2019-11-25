@@ -6,7 +6,7 @@
 #    By: bprado <bprado@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/06/03 16:52:44 by bprado         #+#    #+#                 #
-#    Updated: 2019/11/21 20:57:14 by bprado        ########   odam.nl          #
+#    Updated: 2019/11/25 19:17:57 by bprado        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ fclean:	clean
 	@make fclean -C $(LIB)
 	@rm -rf $(NAME) test
 
-test: $(NAME)
-	@$(CC) -o $@ -Wall -Wextra -g $(INC) test.c $^
+test: test.c $(NAME)
+	@$(CC) -o $@ -Wall -Wextra -g $(INC) $^
 
 re:	fclean all

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/21 20:53:44 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/25 20:40:46 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 void	print_d(t_pf_object *obj)
 {
-	obj->val.ll = va_arg(obj->ap, int);
-	parse_length(obj, 0);
+	parse_length(obj);
 	obj->i = length_of_number(obj);
 	if (obj->flags & MINUS_F)
 	{
-		(obj->flags & PLUS_F || obj->flags & SPACE_F) && obj->spc != 'c' ?
-			print_sign(obj) : 0;
+		(obj->flags & 0x18) && obj->spc != 'c' ? print_sign(obj) : 0;
 		print_padding(obj, obj->i, '0', 1);
 		obj->spc != 'c' ?
 			ft_putnbr_base2(obj->val.ll, get_base(obj->spc), obj) :
@@ -29,12 +27,12 @@ void	print_d(t_pf_object *obj)
 	}
 	else
 	{
-		(obj->flags & SIGNED_F || obj->flags & SPACE_F) ? print_sign(obj) : 0;
+		(obj->flags & 0x208) ? print_sign(obj) : 0;
 		print_padding(obj,
 			obj->i > obj->prcs ? obj->i : obj->prcs,
 			obj->flags & ZERO_F ? '0' : ' ',
 			0);
-		print_padding(obj, obj->i, '0', 1);
+		print_padding(obj, obj->i, obj->spc != 'c' ? '0' : ' ', 1);
 		obj->spc != 'c' ?
 			ft_putnbr_base2(obj->val.ll, get_base(obj->spc), obj) :
 			print_character(obj->val.ll, obj);
@@ -43,11 +41,10 @@ void	print_d(t_pf_object *obj)
 
 void	print_o(t_pf_object *obj)
 {
-	if (obj->spc != 'p')
-		obj->val.ll = va_arg(obj->ap, unsigned int);
-	else
+	if (obj->spc == 'p')
 		obj->val.ptr = va_arg(obj->ap, void*);
-	obj->spc != 'p' ? parse_length(obj, 0) : 0;
+	else
+		parse_length(obj);
 	obj->i = length_of_number(obj);
 	if (obj->flags & MINUS_F)
 	{
@@ -59,12 +56,12 @@ void	print_o(t_pf_object *obj)
 	}
 	else
 	{
-		if ((obj->flags & HASH_F && obj->spc != 'u') || obj->spc == 'p')
-			print_hash_flag(obj);
 		print_padding(obj,
 			obj->i > obj->prcs ? obj->i : obj->prcs,
 			obj->flags & ZERO_F ? '0' : ' ',
 			0);
+		if ((obj->flags & HASH_F && obj->spc != 'u') || obj->spc == 'p')
+			print_hash_flag(obj);
 		print_padding(obj, obj->i, '0', 1);
 		ft_putnbr_base2(obj->val.ll, get_base(obj->spc), obj);
 	}
@@ -85,11 +82,14 @@ void	print_str(t_pf_object *obj)
 	if (obj->flags & MINUS_F)
 	{
 		obj->spc == 's' ? print_string(obj) : print_character(obj->spc, obj);
-		print_padding(obj, str_length, ' ', 0);
+		print_padding(obj, obj->spc == 's' ? str_length : 1, ' ', 0);
 	}
 	else
 	{
-		print_padding(obj, str_length, (obj->flags & ZERO_F) ? '0' : ' ', 0);
+		print_padding(obj, 
+			obj->spc == 's' ? str_length : 1,
+			(obj->flags & ZERO_F) ? '0' : ' ',
+			0);
 		obj->spc == 's' ? print_string(obj) : print_character(obj->spc, obj);
 	}
 }
@@ -100,7 +100,7 @@ void	print_f(t_pf_object *obj)
 	long long	ret;
 	long double	copy;
 
-	parse_length(obj, 0);
+	parse_length(obj);
 	base = 10;
 	copy = (obj->flags & CAP_L_F) ? va_arg(obj->ap, long double) :
 											va_arg(obj->ap, double);

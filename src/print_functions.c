@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/21 20:54:03 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/25 20:37:14 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,23 @@ void	print_sign(t_pf_object *obj)
 
 void	print_hash_flag(t_pf_object *obj)
 {
-	if (obj->spc == 'o')
-		print_character('0', obj);
-	else if (obj->spc == 'x' || obj->spc == 'p')
+	if (obj->val.ll != 0)
 	{
-		print_character('0', obj);
-		print_character('x', obj);
+		if (obj->spc == 'o')
+			print_character('0', obj);
+		else if (obj->spc == 'x' || obj->spc == 'p')
+		{
+			print_character('0', obj);
+			print_character('x', obj);
+		}
+		else if (obj->spc == 'X')
+		{
+			print_character('0', obj);
+			print_character('X', obj);
+		}
+		else if (obj->spc == 'f')
+			print_character('.', obj);
 	}
-	else if (obj->spc == 'X')
-	{
-		print_character('0', obj);
-		print_character('X', obj);
-	}
-	else if (obj->spc == 'f')
-		print_character('.', obj);
 }
 
 void	print_padding(t_pf_object *obj, int length, char character, char flip)

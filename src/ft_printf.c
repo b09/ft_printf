@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/21 20:54:09 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/25 20:28:39 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int		length_of_number(t_pf_object *obj)
 	original_int = obj->val.ll;
 	if (original_int < 0)
 		original_int = -original_int;
-	while (original_int > (base - 1))
+	while ((base > 0) && original_int > (base - 1))
 	{
 		original_int /= base;
 		++counter;
@@ -71,7 +71,7 @@ void	ft_putnbr_base2(long long n, int base, t_pf_object *obj)
 	}
 	else if (i > 9 && i < 16 && base > 10)
 	{
-		a = 'a' + i - 10;
+		a = obj->spc != 'X' ? 'a' + i - 10 : 'A' + i - 10;
 		print_character(a, obj);
 	}
 }
@@ -85,18 +85,19 @@ int		ft_printf(const char* restrict format, ...)
 	va_start(obj.ap, format);
 	while (obj.str[obj.i_str] != 0)
 	{
-		// infinite while loop if if's all false, counter not incremented
 		if (obj.str[obj.i_str] == '%' && obj.str[obj.i_str + 1] == 0)
 			break ;
 		if (obj.str[obj.i_str] == '%')
 		{
 			++obj.i_str;
 			parse_general(&obj);
+			parse_specifier(&obj);
+			// parse_specifier will increase i_str;
 		}
-	
+	// "%%" will print_character thru print_str
 		if (obj.str[obj.i_str] != 0)
 			print_character(obj.str[obj.i_str], &obj);
-		obj.i_str++;
+		obj.i_str += obj.str[obj.i_str] ? 1 : 0;
 	}
 	va_end(obj.ap);
 	return (obj.ret);
