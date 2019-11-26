@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/25 20:40:46 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/26 22:46:15 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	print_o(t_pf_object *obj)
 		obj->val.ptr = va_arg(obj->ap, void*);
 	else
 		parse_length(obj);
-	obj->i = length_of_number(obj);
+	// obj->i = get_base(obj->spc);
+	// obj->i = obj->i % 8 && obj->i != 0 ? 2 - length_of_number(obj) : length_of_number(obj);
 	if (obj->flags & MINUS_F)
 	{
 		(obj->flags & HASH_F && obj->spc != 'u') || obj->spc == 'p' ?
@@ -56,13 +57,16 @@ void	print_o(t_pf_object *obj)
 	}
 	else
 	{
+		// (obj->flags & HASH_F) && obj->spc == 'x' || obj->spc == 'X' ? 
+
+		// the order of the below func calls needs to be reexamined
 		print_padding(obj,
 			obj->i > obj->prcs ? obj->i : obj->prcs,
 			obj->flags & ZERO_F ? '0' : ' ',
-			0);
+			1);
 		if ((obj->flags & HASH_F && obj->spc != 'u') || obj->spc == 'p')
 			print_hash_flag(obj);
-		print_padding(obj, obj->i, '0', 1);
+		print_padding(obj, obj->i, '0', 0);
 		ft_putnbr_base2(obj->val.ll, get_base(obj->spc), obj);
 	}
 }

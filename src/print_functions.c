@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/25 20:37:14 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/26 22:12:58 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void	print_padding(t_pf_object *obj, int length, char character, char flip)
 	int		padding_to_print;
 
 	if (flip)
+	{
 		padding_to_print = obj->prcs - length;
+		printf("padding_to_print: %d\n", length);
+	}
 	else
 	{
 		padding_to_print = obj->width - length;

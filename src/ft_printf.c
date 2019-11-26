@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/25 20:28:39 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/26 22:17:31 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int		length_of_number(t_pf_object *obj)
 		++counter;
 	}
 	counter += (obj->flags & HASH_F) ? 1 : 0;
-	counter += (obj->flags & HASH_F && (obj->spc == 'x' 
-									|| obj->spc == 'X')) ? 1 : 0;
+	counter += (obj->flags & HASH_F && (obj->spc == 'x' || obj->spc == 'X')) ? 1 : 0;
 	if (obj->spc == 'p')
 		counter += 2;
 	return (counter);
