@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/25 19:36:30 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/27 18:34:23 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	parse_general(t_pf_object *obj)
 	obj->flags ^= ((obj->flags & 0x6) == 0x6) ? ZERO_F : 0;
 	obj->flags ^= ((obj->flags & 0x18) == 0x18) ? SPACE_F : 0;
 	obj->width = ft_atoi(&(obj->str[obj->i_str]));
+	obj->flags |= obj->width ? WIDTH : 0;
 	while (ft_isdigit(obj->str[obj->i_str]))
 		++obj->i_str;
 	if (obj->str[obj->i_str] == '.')

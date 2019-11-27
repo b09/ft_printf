@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/24 21:05:27 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/27 19:53:36 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@
 # define SIGNED_F		1 << 9
 # define CAP_L_F		1 << 10
 # define PRECISN		1 << 11
-# define STRNG			1 << 12
+# define WIDTH			1 << 12
+# define STRNG			1 << 13
 typedef union	u_union_output
 {
 	unsigned long long	ll;
+	long long			llong;
 	long double			lngdbl;
 	void*				ptr;
 		

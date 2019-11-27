@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/26 22:17:31 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/28 00:22:23 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,16 @@ int		length_of_number(t_pf_object *obj)
 		original_int /= base;
 		++counter;
 	}
-	counter += (obj->flags & HASH_F) ? 1 : 0;
-	counter += (obj->flags & HASH_F && (obj->spc == 'x' || obj->spc == 'X')) ? 1 : 0;
+	counter += (obj->flags & HASH_F && obj->spc == 'o') ? 1 : 0;
+	// WIDTH MUST INCLUDE TOTAL SIZE
+	counter += (obj->flags & (WIDTH | HASH_F)) == 0x1001 && obj->spc != 'o'? 2 : 0;
+	// counter += (obj->flags & HASH_F && (obj->spc == 'x' || obj->spc == 'X')) ? 1 : 0;
 	if (obj->spc == 'p')
 		counter += 2;
+	if (!obj->val.ll && obj->flags & PRECISN && !obj->prcs)
+		counter = 0;
+	if ((obj->flags & SIGNED_F) && obj->val.llong < 0 && !obj->width)
+		counter++;
 	return (counter);
 }
 
@@ -55,6 +61,10 @@ void	ft_putnbr_base2(long long n, int base, t_pf_object *obj)
 	char			a;
 	long long		i;
 
+	if (obj->val.ll == 0 && ((obj->flags & PRECISN && obj->prcs == 0) || obj->spc == 'c'))
+	{
+		return ;
+	}
 	if (n < 0)
 		n = -n;
 	i = n;
@@ -94,9 +104,9 @@ int		ft_printf(const char* restrict format, ...)
 			// parse_specifier will increase i_str;
 		}
 	// "%%" will print_character thru print_str
-		if (obj.str[obj.i_str] != 0)
+		if (obj.str[obj.i_str] != 0 && obj.str[obj.i_str] != '%')
 			print_character(obj.str[obj.i_str], &obj);
-		obj.i_str += obj.str[obj.i_str] ? 1 : 0;
+		obj.i_str += obj.str[obj.i_str] && obj.str[obj.i_str] != '%' ? 1 : 0;
 	}
 	va_end(obj.ap);
 	return (obj.ret);
