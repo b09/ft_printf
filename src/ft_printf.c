@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/28 21:13:05 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/29 19:54:30 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,32 @@ void	ft_putnbr_base2(long long n, int base, t_pf_object *obj)
 		print_character(a, obj);
 	}
 }
+
+
+void	putfloat(t_pf_object *obj)
+{
+	int			base;
+	long long	ret;
+	long double	copy;
+
+	obj->val.lngdbl = copy;
+	if (obj->prcs == 0)
+		obj->prcs = 6;
+	ret = (long long)copy;
+	ft_putnbr_base2(ret, base, obj);
+	copy = copy - ret;
+	print_character('.', obj);
+	while (obj->prcs--)
+	{
+		copy *= 10.0;
+		ret = (long long)copy;
+		ft_putnbr_base2(ret, base, obj);
+		copy = copy - ret;
+	}
+}
+
+
+
 
 int		ft_printf(const char* restrict format, ...)
 {

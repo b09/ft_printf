@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/28 20:42:32 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/29 18:54:41 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,16 @@ void	print_d(t_pf_object *obj)
 	{
 		// 0x208 SPACE & SIGNED
 		// if ((obj->width <= obj->prcs && obj->width <= obj->i) || obj->flags & SPACE_F)
-			((obj->flags & 0x208) && obj->val.llong >= 0) || (obj->val.llong < 0 && obj->flags & ZERO_F) ? print_sign(obj) : 0;
+			// ((obj->flags & 0x208) && obj->val.llong >= 0) || (obj->val.llong < 0 && obj->flags & ZERO_F) ? print_sign(obj) : 0; // 0x208 SPACE & SIGNED
+	
+	
+	
+		// don't print sign FIRST if:
+		// if precision
+		// if precision
+	
+	
+		(!(obj->flags & PRECISN) && obj->i >= obj->width) || obj->prcs >= obj->width || obj->flags & ZERO_F ? print_sign(obj) : 0;
 
 		if (obj->width > obj->prcs && obj->flags & PRECISN)// && !(obj->flags & ZERO_F))
 			print_padding(	obj, 
@@ -40,10 +49,11 @@ void	print_d(t_pf_object *obj)
 							obj->i > obj->prcs ? obj->i : obj->prcs, 
 							obj->flags & ZERO_F ? '0' : ' ', 
 							0);
-
 		
 		
-		(obj->flags & SIGNED_F) && obj->val.llong < 0 && !(obj->flags & ZERO_F) ? print_sign(obj) : 0;
+		// (obj->flags & SIGNED_F) && obj->val.llong < 0 && !(obj->flags & ZERO_F) ? print_sign(obj) : 0;
+		!(obj->flags & ZERO_F) && obj->i < obj->width && obj->prcs < obj->width ? print_sign(obj) : 0;
+		// print_sign(obj);
 		print_padding(obj, obj->i, obj->spc != 'c' ? '0' : ' ', 1);
 		obj->spc != 'c' ? ft_putnbr_base2(obj->val.ll, get_base(obj->spc), obj) : print_character(obj->val.ll, obj);
 	}
@@ -135,6 +145,11 @@ void	print_str(t_pf_object *obj)
 	if (obj->spc == 's')
 	{
 		obj->val.ptr = va_arg(obj->ap, char*);
+		if (!obj->val.ptr)
+		{
+			print_string(obj);
+			return ;
+		}
 		str_length = obj->prcs < (int)ft_strlen(obj->val.ptr) && obj->flags & PRECISN ?
 										obj->prcs : ft_strlen(obj->val.ptr);
 		obj->flags |= STRNG;

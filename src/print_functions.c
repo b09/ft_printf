@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/28 22:11:41 by bprado        ########   odam.nl         */
+/*   Updated: 2019/11/29 19:31:13 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,13 @@ void	print_padding(t_pf_object *obj, int length, char character, char flip)
 	{
 		padding_to_print = obj->width - length;
 
-		if (obj->flags & SIGNED_F && character == ' ' && !(obj->flags & MINUS_F) && (obj->flags & PLUS_F || obj->flags & SPACE_F || obj->val.llong < 0))
+		// if (obj->flags & SIGNED_F && character == ' ' && !(obj->flags & MINUS_F) && (obj->flags & PLUS_F || obj->flags & SPACE_F || obj->val.llong < 0))
+		// if ((obj->flags & SIGNED_F && character == ' ') && (obj->val.llong < 0 || (obj->val.llong >= 0 && obj->flags & 0x810))) //0x810 PRECISN & PLUS
+	
+		if ((obj->flags & SIGNED_F && character == ' ' && obj->prcs) && (obj->val.llong < 0 || (obj->val.llong >= 0 && obj->flags & 0x18))) //0x18 SPACE & PLUS
 			--padding_to_print;
-
+		else if (obj->flags & SIGNED_F && character == '0' && obj->flags & PLUS_F && obj->val.llong >= 0)
+			--padding_to_print;
 	}
 	while (padding_to_print > 0)
 	{
@@ -113,6 +117,15 @@ void	print_character(char c, t_pf_object *obj)
 
 void	print_string(t_pf_object *obj)
 {
+	char 		*str;
+
+	str = "(null)";
+	if (obj->val.ptr == 0)
+	{
+		while (*str)
+			print_character(*str++, obj);
+		return ;
+	}
 	if (obj->flags & PRECISN)
 	{
 		while (*(char*)obj->val.ptr && obj->prcs-- > 0)
