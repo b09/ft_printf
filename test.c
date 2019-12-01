@@ -6,25 +6,26 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/29 19:50:26 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/01 21:58:51 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <math.h>
 
 int		main(void)
 {
-	int i = -10;
-	float f = 10.0368168;
-	long double d;
-	unsigned u;
+	float f = 156489753252.0368168;
+	f = 0;
 
-	u = i;
-	printf("%d\n", u);
 
-	// char *str = "hello";
-	// printf(" <--%d\n", ft_printf("%#05x", 42));
 
+
+	f = -0.0;
+
+	printf(" <--%d padding 20f \n", printf("%20f", 1.06));
+	printf(" <--%d padding -20f \n", printf("%-20f", 1.06));
+	printf(" <--%d padding -20d \n", ft_printf("%-20d", 10000));
 
 	// printf(" <--%d d\n", ft_printf("%5d", -42));
 	// printf(" <--%d d\n", printf("%5d", -42));
@@ -44,9 +45,9 @@ int		main(void)
 	// printf(" <--%d d\n", printf("%+10.5d", 42));
 	// printf("\n");
 
-	printf(" <--%d d\n", ft_printf("%lld", -9223372036854775808));
-	printf(" <--%d d\n", printf("%lld", -9223372036854775808));
-	printf("\n");
+	// printf(" <--%d d\n", ft_printf("%lld", -9223372036854775808));
+	// printf(" <--%d d\n", printf("%lld", -9223372036854775808));
+	// printf("\n");
 
 	// printf(" <--%d d\n", ft_printf("%+10.5d", 4242));
 	// printf(" <--%d d\n", printf("%+10.5d", 4242));

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/29 18:54:41 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/01 22:03:44 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,6 @@ void	print_d(t_pf_object *obj)
 	}
 	else
 	{
-		// 0x208 SPACE & SIGNED
-		// if ((obj->width <= obj->prcs && obj->width <= obj->i) || obj->flags & SPACE_F)
-			// ((obj->flags & 0x208) && obj->val.llong >= 0) || (obj->val.llong < 0 && obj->flags & ZERO_F) ? print_sign(obj) : 0; // 0x208 SPACE & SIGNED
-	
-	
-	
-		// don't print sign FIRST if:
-		// if precision
-		// if precision
-	
-	
 		(!(obj->flags & PRECISN) && obj->i >= obj->width) || obj->prcs >= obj->width || obj->flags & ZERO_F ? print_sign(obj) : 0;
 
 		if (obj->width > obj->prcs && obj->flags & PRECISN)// && !(obj->flags & ZERO_F))
@@ -171,26 +160,33 @@ void	print_str(t_pf_object *obj)
 
 void	print_f(t_pf_object *obj)
 {
-	int			base;
-	long long	ret;
 	long double	copy;
 
 	parse_length(obj);
-	base = 10;
-	copy = (obj->flags & CAP_L_F) ? va_arg(obj->ap, long double) :
-											va_arg(obj->ap, double);
+	copy = (obj->flags & CAP_L_F) ? va_arg(obj->ap, long double) : va_arg(obj->ap, double);
 	obj->val.lngdbl = copy;
-	if (obj->prcs == 0)
-		obj->prcs = 6;
-	ret = (long long)copy;
-	ft_putnbr_base2(ret, base, obj);
-	copy = copy - ret;
-	print_character('.', obj);
-	while (obj->prcs--)
+	obj->prcs = !(obj->flags & PRECISN) ? 6 : obj->prcs;
+	obj->i = length_of_float(obj);		// must implement correctly, ie. what is the length of a float
+	if (obj->flags & MINUS_F)
 	{
-		copy *= 10.0;
-		ret = (long long)copy;
-		ft_putnbr_base2(ret, base, obj);
-		copy = copy - ret;
+		print_sign_float(obj);
+		putfloat(obj);
+		print_padding(obj, (obj->i > obj->prcs) ? obj->i : obj->prcs, ' ', 0);
 	}
+	else
+	{
+		/* code */
+	}
+	
+
+	printf("return of length_of_float: %d\n", length_of_float(obj));
+	
+	// if (obj->flags & MINUS_F)
+	// {
+	// 	print_sign(obj);
+	// 	print_padding(obj, obj->i, '0', 1);
+	// 	putfloat(obj);
+	// 	print_padding(obj, (obj->i > obj->prcs) ? obj->i : obj->prcs, ' ', 0);
+	// }
 }
+

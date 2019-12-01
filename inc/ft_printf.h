@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/27 19:53:36 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/01 21:47:26 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,15 @@
 # define PRECISN		1 << 11
 # define WIDTH			1 << 12
 # define STRNG			1 << 13
+# define NZERO			0x8000
+# define INF			0x7FFF
+# define NINF			0xFFFF
 typedef union	u_union_output
 {
 	unsigned long long	ll;
 	long long			llong;
 	long double			lngdbl;
+	short				shdbl[5];
 	void*				ptr;
 		
 }				union_output;
@@ -77,5 +81,10 @@ void			print_d(t_pf_object *obj);
 void			print_o(t_pf_object *obj);
 void			print_str(t_pf_object *obj);
 void			print_f(t_pf_object *obj);
+
+int				length_of_float(t_pf_object *obj);
+void			putfloat(t_pf_object *obj);
+int				float_exception(t_pf_object *obj);
+void			print_sign_float(t_pf_object *obj);
 
 #endif

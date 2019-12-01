@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/27 18:34:23 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/01 16:53:43 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ void	parse_length(t_pf_object *obj)
 		i.ll = obj->flags & HH_F ? (unsigned char)i.ll : i.ll;
 	}
 	obj->val.ll = i.ll;
+	if (obj->spc == 'f')
+		obj->val.lngdbl = va_arg(obj->ap, long double);
 	if (obj->flags & CAP_L_F && obj->spc == 'f')
-		obj->val.lngdbl = (long double)obj->val.ll;
+		obj->val.lngdbl = (float)obj->val.lngdbl;
 }
 
 void	parse_specifier(t_pf_object *obj)

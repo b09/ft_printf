@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/29 19:31:13 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/01 21:47:37 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ void	print_sign(t_pf_object *obj)
 			print_character('-', obj);
 	}
 	else if (obj->flags & SPACE_F && obj->spc != 'c')
+		print_character(' ', obj);
+}
+
+void	print_sign_float(t_pf_object *obj)
+{
+	if (((obj->flags & PLUS_F) && !(obj->flags & SPACE_F)) || obj->val.llong < 0)
+	{
+		if (obj->val.lngdbl >= 0 && obj->flags & PLUS_F)
+			print_character('+', obj);
+		else if ((long long)obj->val.lngdbl < 0)
+			print_character('-', obj);
+	}
+	else if (obj->flags & SPACE_F)
 		print_character(' ', obj);
 }
 
@@ -45,18 +58,6 @@ void	print_hash_flag(t_pf_object *obj)
 			print_character('.', obj);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 void	print_padding(t_pf_object *obj, int length, char character, char flip)
 {
@@ -120,22 +121,31 @@ void	print_string(t_pf_object *obj)
 	char 		*str;
 
 	str = "(null)";
-	if (obj->val.ptr == 0)
+	if (obj->spc == 's')
 	{
-		while (*str)
-			print_character(*str++, obj);
-		return ;
-	}
-	if (obj->flags & PRECISN)
-	{
-		while (*(char*)obj->val.ptr && obj->prcs-- > 0)
-			print_character(*(char*)obj->val.ptr++, obj);
+		if (obj->val.ptr == 0)
+		{
+			while (*str)
+				print_character(*str++, obj);
+			return ;
+		}
+		if (obj->flags & PRECISN)
+		{
+			while (*(char*)obj->val.ptr && obj->prcs-- > 0)
+				print_character(*(char*)obj->val.ptr++, obj);
+		}
+		else
+		{
+			while (*(char*)obj->val.ptr)
+				print_character(*(char*)obj->val.ptr++, obj);
+		}
 	}
 	else
 	{
 		while (*(char*)obj->val.ptr)
 			print_character(*(char*)obj->val.ptr++, obj);
 	}
+	
 }
 
 

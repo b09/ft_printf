@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/11/29 19:54:30 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/01 21:41:06 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	get_base(char format_spc)
 	base = 0;
 	base = format_spc == 'd' ? 10 : base;
 	base = format_spc == 'i' ? 10 : base;
+	base = format_spc == 'f' ? 10 : base;
 	base = format_spc == 'x' ? 16 : base;
 	base = format_spc == 'X' ? 16 : base;
 	base = format_spc == 'o' ? 8 : base;
@@ -26,20 +27,6 @@ char	get_base(char format_spc)
 	base = format_spc == 'p' ? 16 : base;
 	return (base);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // this fuction will not work for unsigned long long variables
 int		length_of_number(t_pf_object *obj)
@@ -58,12 +45,8 @@ int		length_of_number(t_pf_object *obj)
 		original_int /= base;
 		++counter;
 	}
-
-
 	counter += (obj->flags & HASH_F && obj->spc == 'o') ? 1 : 0;
-
 	counter += (obj->flags & (WIDTH | HASH_F)) == 0x1001 && obj->spc != 'o'? 2 : 0; // check this statement
-
 	counter += (obj->spc == 'p') ? 2 : 0;
 
 	// if (obj->flags & SIGNED_F && obj->flags & WIDTH && obj->val.llong < 0)// && character == '0')
@@ -77,27 +60,6 @@ int		length_of_number(t_pf_object *obj)
 
 	return (counter);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void	ft_putnbr_base2(long long n, int base, t_pf_object *obj)
 {
@@ -128,27 +90,97 @@ void	ft_putnbr_base2(long long n, int base, t_pf_object *obj)
 }
 
 
+
+
+
+
+
+
+
+
+
+int		length_of_float(t_pf_object *obj)
+{
+	int				counter;
+	long double		original_float;
+
+	// include decimal in length and a single character
+	counter = 0;
+	if (((obj->val.shdbl[4] & NZERO) == NZERO) && obj->val.llong == 0)
+		counter = 2 + obj->prcs;
+	counter = ((obj->val.shdbl[4] & NINF) == NINF) && obj->val.llong == 0 ? 4 : counter;
+	counter = ((obj->val.shdbl[4] & INF) == INF) && obj->val.llong == 0 ? 3 : counter;
+	counter = ((obj->val.shdbl[4] & INF) == INF) && obj->val.llong > 0 ? 3 : counter;
+	if (counter)
+		return (counter);
+	counter = 2;
+	original_float = obj->val.lngdbl;
+	counter += obj->flags & PRECISN ? obj->prcs : 6;
+	
+	if (original_float < 0)
+		original_float = -original_float;
+	while (original_float > 9)
+	{
+		original_float /= 10;
+		++counter;
+	}
+	counter += obj->val.lngdbl < 0 ? 1 : 0;
+	return (counter);
+}
+
+// create function to print character strings -inf, inf, nan, -0
+// function works
+int		float_exception(t_pf_object *obj)
+{
+	char 		*str1;
+	char 		*str2;
+	char 		*str3;
+	char 		*str4;
+
+	str1 = "-0";
+	str2 = "-inf";
+	str3 = "inf";
+	str4 = "nan";
+
+	if ((obj->val.shdbl[4] & NZERO) == NZERO && obj->val.llong == 0)
+		obj->val.ptr = str1; 	// 	-0 negative zero
+	else if ((obj->val.shdbl[4] & NINF) == NINF && obj->val.llong == 0)
+		obj->val.ptr = str2;
+	else if ((obj->val.shdbl[4] & INF) == INF && obj->val.llong == 0)
+		obj->val.ptr = str3;
+	else if ((obj->val.shdbl[4] & INF) == INF && obj->val.llong > 0)
+		obj->val.ptr = str4;
+	else
+		return (0);
+	print_string(obj);
+	return (1);
+}
+
 void	putfloat(t_pf_object *obj)
 {
-	int			base;
 	long long	ret;
 	long double	copy;
 
-	obj->val.lngdbl = copy;
-	if (obj->prcs == 0)
-		obj->prcs = 6;
+	// check if float is at limits (inf, -inf), if so, return
+	if (float_exception(obj))
+		return ;
+	copy = 0;
+	copy = 	obj->val.lngdbl;
 	ret = (long long)copy;
-	ft_putnbr_base2(ret, base, obj);
+	ft_putnbr_base2(ret, get_base(obj->spc), obj);
 	copy = copy - ret;
 	print_character('.', obj);
 	while (obj->prcs--)
 	{
 		copy *= 10.0;
 		ret = (long long)copy;
-		ft_putnbr_base2(ret, base, obj);
+		ft_putnbr_base2(ret, get_base(obj->spc), obj);
 		copy = copy - ret;
 	}
 }
+
+
+
 
 
 
