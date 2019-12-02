@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/01 21:41:06 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/02 21:44:43 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		length_of_number(t_pf_object *obj)
 
 	base = get_base(obj->spc);
 	counter = 1;
-	original_int = obj->val.ll;
+	original_int = obj->val.llong;
 	if (original_int < 0)
 		original_int = -original_int;
 	while ((base > 0) && original_int > (base - 1))
@@ -45,18 +45,37 @@ int		length_of_number(t_pf_object *obj)
 		original_int /= base;
 		++counter;
 	}
-	counter += (obj->flags & HASH_F && obj->spc == 'o') ? 1 : 0;
-	counter += (obj->flags & (WIDTH | HASH_F)) == 0x1001 && obj->spc != 'o'? 2 : 0; // check this statement
-	counter += (obj->spc == 'p') ? 2 : 0;
-
-	// if (obj->flags & SIGNED_F && obj->flags & WIDTH && obj->val.llong < 0)// && character == '0')
-	// 	length++;		this if statement comes from print_padding, which should not manipulate int length;
-
 
 	if ((obj->flags & SIGNED_F) && obj->val.llong < 0)// && (!obj->width || (obj->width && obj->flags & ZERO_F)))
 		counter++;
 
-	counter = (!obj->val.ll && obj->flags & PRECISN && !obj->prcs) ? 0 : counter;
+	counter = (!obj->val.llong && obj->flags & PRECISN && !obj->prcs) ? 0 : counter;	// check this statment
+
+	return (counter);
+}
+
+int		length_of_unsigned(t_pf_object *obj)
+{
+	unsigned long long		original_int;
+	int						counter;
+	unsigned char			base;
+
+	base = get_base(obj->spc);
+	counter = 1;
+	original_int = obj->val.ll;
+	while ((base > 0) && original_int > (base - 1))
+	{
+		original_int /= base;
+		++counter;
+	}
+	if (obj->flags & HASH_F && obj->spc == 'o')
+		counter += 1;
+	else if ((obj->flags & HASH_F) && obj->spc != 'o')
+		counter += 2; // check this statement
+	else if (obj->spc == 'p')
+		counter += 2;
+
+	counter = (!obj->val.ll && obj->flags & PRECISN && !obj->prcs) ? 0 : counter;	// check this statement
 
 	return (counter);
 }

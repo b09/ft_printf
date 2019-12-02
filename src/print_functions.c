@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/01 21:47:37 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/02 21:25:03 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	print_sign(t_pf_object *obj)
 	}
 	else if (obj->flags & SPACE_F && obj->spc != 'c')
 		print_character(' ', obj);
+	obj->flags |= PRTSIGN;
 }
 
 void	print_sign_float(t_pf_object *obj)
@@ -42,7 +43,7 @@ void	print_hash_flag(t_pf_object *obj)
 {
 	if (obj->spc == 'o')
 		print_character('0', obj);
-	if (obj->val.ll != 0)
+	if (obj->val.ll != 0 && (obj->flags & HASH_F || obj->spc == 'p'))
 	{
 		if (obj->spc == 'x' || obj->spc == 'p')
 		{
@@ -54,8 +55,6 @@ void	print_hash_flag(t_pf_object *obj)
 			print_character('0', obj);
 			print_character('X', obj);
 		}
-		else if (obj->spc == 'f')
-			print_character('.', obj);
 	}
 }
 
@@ -79,7 +78,10 @@ void	print_padding(t_pf_object *obj, int length, char character, char flip)
 		// if (obj->flags & SIGNED_F && character == ' ' && !(obj->flags & MINUS_F) && (obj->flags & PLUS_F || obj->flags & SPACE_F || obj->val.llong < 0))
 		// if ((obj->flags & SIGNED_F && character == ' ') && (obj->val.llong < 0 || (obj->val.llong >= 0 && obj->flags & 0x810))) //0x810 PRECISN & PLUS
 	
-		if ((obj->flags & SIGNED_F && character == ' ' && obj->prcs) && (obj->val.llong < 0 || (obj->val.llong >= 0 && obj->flags & 0x18))) //0x18 SPACE & PLUS
+		// if ((obj->flags & SIGNED_F && character == ' ' && obj->prcs) && (obj->val.llong < 0 || (obj->val.llong >= 0 && obj->flags & 0x18))) //0x18 SPACE & PLUS
+		// if ((obj->flags & SIGNED_F && character == ' ') && (obj->val.llong < 0 || (obj->val.llong >= 0 && obj->flags & 0x18)))
+		// if ((obj->flags & SIGNED_F && character == ' ') && ((obj->val.llong >= 0 && obj->flags & 0x18) || (obj->val.llong < 0 && obj->flags & ZERO_F)))
+		if ((obj->flags & SIGNED_F && character == ' ') && ((obj->val.llong >= 0 && obj->flags & 0x18) || (obj->val.llong < 0 && obj->prcs >= obj->i)))// && obj->flags & ZERO_F)))
 			--padding_to_print;
 		else if (obj->flags & SIGNED_F && character == '0' && obj->flags & PLUS_F && obj->val.llong >= 0)
 			--padding_to_print;
@@ -90,22 +92,6 @@ void	print_padding(t_pf_object *obj, int length, char character, char flip)
 		padding_to_print--;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void	print_character(char c, t_pf_object *obj)
 {

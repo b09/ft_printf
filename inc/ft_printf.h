@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/01 21:47:26 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/02 21:29:37 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define PRECISN		1 << 11
 # define WIDTH			1 << 12
 # define STRNG			1 << 13
+# define PRTSIGN		1 << 14
 # define NZERO			0x8000
 # define INF			0x7FFF
 # define NINF			0xFFFF
@@ -86,5 +87,6 @@ int				length_of_float(t_pf_object *obj);
 void			putfloat(t_pf_object *obj);
 int				float_exception(t_pf_object *obj);
 void			print_sign_float(t_pf_object *obj);
+int				length_of_unsigned(t_pf_object *obj);
 
 #endif

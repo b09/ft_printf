@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/01 21:58:51 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/02 21:43:53 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,77 @@ int		main(void)
 
 	f = -0.0;
 
-	printf(" <--%d padding 20f \n", printf("%20f", 1.06));
-	printf(" <--%d padding -20f \n", printf("%-20f", 1.06));
-	printf(" <--%d padding -20d \n", ft_printf("%-20d", 10000));
+	// passing 1203 A test
+	// printf(" <--%d padding 20f \n", printf("%20f", 1.06));
+	// printf(" <--%d padding -20f \n", printf("%-20f", 1.06));
+
+	printf(" <--%d end \n", ft_printf("%0 8.5u", 34));
+	printf(" <--%d end \n", printf("%0 8.5u", 34));
+	printf("\n");
+
+	char *yo = "yo";
+	printf(" <--%d end \n", ft_printf("%08.5p", yo));
+	printf(" <--%d end \n", printf("%018.15p", yo));
+	printf("\n");
+
+	printf(" <--%d end \n", ft_printf("%#x", 34));
+	printf(" <--%d end \n", printf("%#x", 34));
+	printf("\n");
+
+	// printf(" <--%d end \n", ft_printf("%0+5d", 42));
+	// printf(" <--%d end \n", printf("%0+5d", 42));
+	// printf("\n");
+
+
+	// printf(" <--%d end \n", ft_printf("%05d", -42));
+	// printf(" <--%d end \n", printf("%05d", -42));
+	// printf("\n");
+
+
+	// printf(" <--%d end \n", ft_printf("%0+5d", -42));
+	// printf(" <--%d end \n", printf("%0+5d", -42));
+	// printf("\n");
+
+
+	// printf(" <--%d end \n", ft_printf("%6.5i", -84735555));
+	// printf(" <--%d end \n", printf("%6.15i", -84735555));
+	// printf("\n");
+
+	// printf(" <--%d end \n", ft_printf("%08.6i", -8473));
+	// printf(" <--%d end \n", printf("%08.6i", -8473));
+	// printf("\n");
+
+	// printf(" <--%d end \n", ft_printf("%10.5i", -216));
+	// printf(" <--%d end \n", printf("%10.5i", -216));
+	// printf("\n");
+
+	// printf(" <--%d end \n", ft_printf("%03.2d", -1));
+	// printf(" <--%d end \n", printf("%03.2d", -1));
+	// printf("\n");
+
+  	// printf(" <--%d end \n", ft_printf("%5d", -42));
+  	// printf(" <--%d end \n", printf("%5d", -42));
+	// printf("\n");
+
+  	// printf(" <--%d end \n", ft_printf("%-5d", -42));
+  	// printf(" <--%d end \n", printf("%-5d", -42));
+	// printf("\n");
+
+  	// printf(" <--%d end \n", ft_printf("%-05d", -42));
+  	// printf(" <--%d end \n", printf("%-05d", -42));
+	// printf("\n");
+
+  	// printf(" <--%d end \n", ft_printf("%03.2d", 0));
+  	// printf(" <--%d end \n", printf("%03.2d", 0));
+	// printf("\n");
+
+  	// printf(" <--%d end \n", ft_printf("%+03.2d", 1));
+  	// printf(" <--%d end \n", printf("%+03.2d", 1));
+	// printf("\n");
+
+	// printf(" <--%d end \n", ft_printf("%+5i", 35));
+	// printf(" <--%d end \n", printf("%+5i", 35));
+	// printf("\n");
 
 	// printf(" <--%d d\n", ft_printf("%5d", -42));
 	// printf(" <--%d d\n", printf("%5d", -42));
