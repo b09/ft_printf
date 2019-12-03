@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/02 21:43:53 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/03 21:28:49 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,27 @@ int		main(void)
 	// printf(" <--%d padding 20f \n", printf("%20f", 1.06));
 	// printf(" <--%d padding -20f \n", printf("%-20f", 1.06));
 
-	printf(" <--%d end \n", ft_printf("%0 8.5u", 34));
-	printf(" <--%d end \n", printf("%0 8.5u", 34));
-	printf("\n");
+	printf(" <--%d end \n", ft_printf("%f", 573.924));
+	printf(" <--%d end \n", printf("%f", 573.924));
 
-	char *yo = "yo";
-	printf(" <--%d end \n", ft_printf("%08.5p", yo));
-	printf(" <--%d end \n", printf("%018.15p", yo));
-	printf("\n");
+	// printf(" <--%d end \n", ft_printf("%#.x %#.0x", 0, 0));
+	// printf(" <--%d end \n", printf("%#.x %#.0x", 0, 0));
+	// printf(" <--%d end \n", ft_printf("%#.p %.p", 0, 0));
+	// printf(" <--%d end \n", printf("%#.p %.p", 0, 0));
+	// printf("\n");
 
-	printf(" <--%d end \n", ft_printf("%#x", 34));
-	printf(" <--%d end \n", printf("%#x", 34));
-	printf("\n");
+	// printf(" <--%d end \n", ft_printf("%15X", 0));
+	// printf(" <--%d end \n", printf("%15X", 0));
+	// printf("\n");
+
+	// char *yo = "yo";
+	// printf(" <--%d end \n", ft_printf("%08.5p", yo));
+	// printf(" <--%d end \n", printf("%018.15p", yo));
+	// printf("\n");
+
+	// printf(" <--%d end \n", ft_printf("%#u", 34));
+	// printf(" <--%d end \n", printf("%#u", 34));
+	// printf("\n");
 
 	// printf(" <--%d end \n", ft_printf("%0+5d", 42));
 	// printf(" <--%d end \n", printf("%0+5d", 42));

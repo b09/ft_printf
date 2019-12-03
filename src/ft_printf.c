@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/02 21:44:43 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/03 22:33:33 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	get_base(char format_spc)
 	return (base);
 }
 
-// this fuction will not work for unsigned long long variables
 int		length_of_number(t_pf_object *obj)
 {
 	long long		original_int;
@@ -68,9 +67,9 @@ int		length_of_unsigned(t_pf_object *obj)
 		original_int /= base;
 		++counter;
 	}
-	if (obj->flags & HASH_F && obj->spc == 'o')
+	if (obj->flags & HASH_F && obj->spc == 'o' && obj->val.ll != 0)
 		counter += 1;
-	else if ((obj->flags & HASH_F) && obj->spc != 'o')
+	else if ((obj->flags & HASH_F) && obj->spc != 'o' && obj->val.ll != 0)
 		counter += 2; // check this statement
 	else if (obj->spc == 'p')
 		counter += 2;
@@ -80,23 +79,49 @@ int		length_of_unsigned(t_pf_object *obj)
 	return (counter);
 }
 
-void	ft_putnbr_base2(long long n, int base, t_pf_object *obj)
+void	ft_putnbr_signed(long long n, int base, t_pf_object *obj)
 {
 	char				a;
 	long long			i;
 
 	a = 0;
-	if (obj->val.ll == 0 && ((obj->flags & PRECISN && obj->prcs == 0) || obj->spc == 'c'))
+	if (obj->val.ll == 0 && ((obj->flags & PRECISN && obj->prcs == 0) || obj->spc == 'c')) // check this
 		return ;
 	if (n < 0)
 		n = -n;
 	i = n;
 	if (i > (base - 1))
 	{
-		ft_putnbr_base2(i / base, base, obj);
-		ft_putnbr_base2(i % base, base, obj);
+		ft_putnbr_signed(i / base, base, obj);
+		ft_putnbr_signed(i % base, base, obj);
 	}
 	if (i <= (base - 1) && i < 10)
+	{
+		a = '0' + i;
+		print_character(a, obj);
+	}
+	else if (i > 9 && i < 16 && base > 10)
+	{
+		a = obj->spc != 'X' ? 'a' + i - 10 : 'A' + i - 10;
+		print_character(a, obj);
+	}
+}
+
+void	ft_putnbr_unsigned(unsigned long long i, int base, t_pf_object *obj)
+{
+	unsigned char			a;
+	// unsigned long long		i;
+
+	a = 0;
+	if (obj->val.ll == 0 && obj->flags & PRECISN && obj->prcs == 0) // check this
+		return ;
+	// i = n;
+	if (i > ((unsigned)base - 1))
+	{
+		ft_putnbr_unsigned(i / base, base, obj);
+		ft_putnbr_unsigned(i % base, base, obj);
+	}
+	if (i <= ((unsigned)base - 1) && i < 10)
 	{
 		a = '0' + i;
 		print_character(a, obj);
@@ -181,19 +206,24 @@ void	putfloat(t_pf_object *obj)
 	long double	copy;
 
 	// check if float is at limits (inf, -inf), if so, return
+	// do negative floats work?
+	// should I send to putnbr_unsigned() instead of putnbr_signed()?
 	if (float_exception(obj))
 		return ;
 	copy = 0;
 	copy = 	obj->val.lngdbl;
 	ret = (long long)copy;
-	ft_putnbr_base2(ret, get_base(obj->spc), obj);
+	ft_putnbr_signed(ret, get_base(obj->spc), obj);
 	copy = copy - ret;
 	print_character('.', obj);
-	while (obj->prcs--)
+	// check if previous to last digit would increase last digit by one
+	// 10.96 -> 109.6 ->
+	if (copy * (prcs + 1) * 10 )
+	while (obj->prcs-- + 1)
 	{
 		copy *= 10.0;
 		ret = (long long)copy;
-		ft_putnbr_base2(ret, get_base(obj->spc), obj);
+		ft_putnbr_signed(ret, get_base(obj->spc), obj);
 		copy = copy - ret;
 	}
 }
@@ -218,6 +248,7 @@ int		ft_printf(const char* restrict format, ...)
 		if (obj.str[obj.i_str] == '%')
 		{
 			++obj.i_str;
+			clean_struct(&obj);
 			parse_general(&obj);
 			parse_specifier(&obj);
 			// parse_specifier will increase i_str;
@@ -229,4 +260,14 @@ int		ft_printf(const char* restrict format, ...)
 	}
 	va_end(obj.ap);
 	return (obj.ret);
+}
+
+void	clean_struct(t_pf_object *obj)
+{
+	obj->flags = 0;
+	obj->spc = 0;
+	obj->i = 0;
+	obj->val.ll = 0;
+	obj->width = 0;
+	obj->prcs = 0;
 }

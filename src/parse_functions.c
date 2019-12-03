@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/01 16:53:43 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/03 22:33:44 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ void	parse_length(t_pf_object *obj)
 	if (ft_strchr("cdi", obj->spc))
 	{
 		// specifier 'c' must be properly tested
-		i.ll = obj->flags & LL_F ? va_arg(obj->ap, long long) : i.ll;
-		i.ll = obj->flags & L_F ? va_arg(obj->ap, long) : i.ll;
-		i.ll = (obj->flags & 0x140) == 0 ? va_arg(obj->ap, int) : i.ll;
-		i.ll = obj->flags & H_F ? (short)i.ll : i.ll;
-		i.ll = obj->flags & HH_F ? (char)i.ll : i.ll;
+		i.llong = obj->flags & LL_F ? va_arg(obj->ap, long long) : i.llong;
+		i.llong = obj->flags & L_F ? va_arg(obj->ap, long) : i.llong;
+		i.llong = (obj->flags & 0x140) == 0 ? va_arg(obj->ap, int) : i.llong;
+		i.llong = obj->flags & H_F ? (short)i.llong : i.llong;
+		i.llong = obj->flags & HH_F ? (char)i.llong : i.llong;
+		obj->val.llong = i.llong;
 	}
 	if (ft_strchr("ouxX", obj->spc))
 	{
@@ -33,12 +34,13 @@ void	parse_length(t_pf_object *obj)
 		i.ll = (obj->flags & 0x140) == 0 ? va_arg(obj->ap, unsigned int) : i.ll;
 		i.ll = obj->flags & H_F ? (unsigned short)i.ll : i.ll;
 		i.ll = obj->flags & HH_F ? (unsigned char)i.ll : i.ll;
+		obj->val.ll = i.ll;
 	}
-	obj->val.ll = i.ll;
-	if (obj->spc == 'f')
-		obj->val.lngdbl = va_arg(obj->ap, long double);
-	if (obj->flags & CAP_L_F && obj->spc == 'f')
-		obj->val.lngdbl = (float)obj->val.lngdbl;
+	// BELOW CODE ALREADY IMPLEMENTED IN print_f()
+	// if (obj->spc == 'f')
+	// 	obj->val.lngdbl = va_arg(obj->ap, long double);
+	// if (obj->flags & CAP_L_F && obj->spc == 'f')
+	// 	obj->val.lngdbl = (float)obj->val.lngdbl;
 }
 
 void	parse_specifier(t_pf_object *obj)

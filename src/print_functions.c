@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/02 21:25:03 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/03 21:16:14 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,19 @@
 
 void	print_sign(t_pf_object *obj)
 {
-	if (((obj->flags & PLUS_F || obj->flags & SIGNED_F) && !(obj->flags & SPACE_F)) || obj->val.llong < 0)
+	if (obj->spc != 'c')
 	{
-		if ((long long)obj->val.ll >= 0 && obj->flags & PLUS_F)
-			print_character('+', obj);
-		else if ((long long)obj->val.ll < 0)
-			print_character('-', obj);
+		if (((obj->flags & PLUS_F || obj->flags & SIGNED_F) && !(obj->flags & SPACE_F)) || obj->val.llong < 0)
+		{
+			if ((long long)obj->val.ll >= 0 && obj->flags & PLUS_F)
+				print_character('+', obj);
+			else if ((long long)obj->val.ll < 0)
+				print_character('-', obj);
+		}
+		else if (obj->flags & SPACE_F)
+			print_character(' ', obj);
+		obj->flags |= PRTSIGN;
 	}
-	else if (obj->flags & SPACE_F && obj->spc != 'c')
-		print_character(' ', obj);
-	obj->flags |= PRTSIGN;
 }
 
 void	print_sign_float(t_pf_object *obj)
@@ -41,10 +44,13 @@ void	print_sign_float(t_pf_object *obj)
 
 void	print_hash_flag(t_pf_object *obj)
 {
-	if (obj->spc == 'o')
-		print_character('0', obj);
-	if (obj->val.ll != 0 && (obj->flags & HASH_F || obj->spc == 'p'))
+	// pointers do print 0x0 for 0 conversions
+	// if PRTSIGN used here, make sure pointers don't cause that to be turned on
+	// if (obj->val.ll != 0 && (obj->flags & HASH_F || obj->spc == 'p'))
+	if ((obj->val.ll != 0 && obj->flags & HASH_F) || obj->spc == 'p')
 	{
+		if (obj->spc == 'o')
+			print_character('0', obj);
 		if (obj->spc == 'x' || obj->spc == 'p')
 		{
 			print_character('0', obj);
@@ -56,6 +62,7 @@ void	print_hash_flag(t_pf_object *obj)
 			print_character('X', obj);
 		}
 	}
+	obj->flags |= PRTSIGN;
 }
 
 void	print_padding(t_pf_object *obj, int length, char character, char flip)

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/02 21:29:37 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/03 20:21:56 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void			parse_specifier(t_pf_object *obj);
 void			parse_general(t_pf_object *obj);
 char			get_base(char format_specifier);
 int				length_of_number(t_pf_object *obj);
-void			ft_putnbr_base2(long long n, int base, t_pf_object *obj);
+void			ft_putnbr_signed(long long n, int base, t_pf_object *obj);
 void			print_sign(t_pf_object *obj);
 void			print_hash_flag(t_pf_object *obj);
 void			print_padding(t_pf_object *obj, int length_of_output, char character, char flip);
@@ -88,5 +88,7 @@ void			putfloat(t_pf_object *obj);
 int				float_exception(t_pf_object *obj);
 void			print_sign_float(t_pf_object *obj);
 int				length_of_unsigned(t_pf_object *obj);
+void			ft_putnbr_unsigned(unsigned long long n, int base, t_pf_object *obj);
+void			clean_struct(t_pf_object *obj);
 
 #endif
