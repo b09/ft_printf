@@ -162,7 +162,7 @@ RETURN VALUE
               ment.
 
        ll     (ell-ell).  A following integer conversion corresponds to a
-              long long int or unsigned long long int argument, or a follow‐
+              long long int or u_int64_t int argument, or a follow‐
               ing n conversion corresponds to a pointer to a long long int
               argument.
 

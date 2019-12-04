@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/03 21:16:14 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/04 21:11:25 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	print_sign(t_pf_object *obj)
 {
 	if (obj->spc != 'c')
 	{
-		if (((obj->flags & PLUS_F || obj->flags & SIGNED_F) && !(obj->flags & SPACE_F)) || obj->val.llong < 0)
+		if (((obj->flags & PLUS_F || obj->flags & SIGNED_F) &&
+					!(obj->flags & SPACE_F)) || obj->val.llong < 0)
 		{
 			if ((long long)obj->val.ll >= 0 && obj->flags & PLUS_F)
 				print_character('+', obj);
@@ -98,15 +99,6 @@ void	print_padding(t_pf_object *obj, int length, char character, char flip)
 		print_character(character, obj);
 		padding_to_print--;
 	}
-}
-
-void	print_character(char c, t_pf_object *obj)
-{
-	// if (c != 0)
-	// {
-		obj->ret++;
-		ft_putchar(c);
-	// }
 }
 
 void	print_string(t_pf_object *obj)

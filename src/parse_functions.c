@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/03 22:33:44 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/04 21:21:36 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,51 +29,47 @@ void	parse_length(t_pf_object *obj)
 	}
 	if (ft_strchr("ouxX", obj->spc))
 	{
-		i.ll = obj->flags & LL_F ? va_arg(obj->ap, unsigned long long) : i.ll;
+		i.ll = obj->flags & LL_F ? va_arg(obj->ap, u_int64_t) : i.ll;
 		i.ll = obj->flags & L_F ? va_arg(obj->ap, unsigned long) : i.ll;
 		i.ll = (obj->flags & 0x140) == 0 ? va_arg(obj->ap, unsigned int) : i.ll;
 		i.ll = obj->flags & H_F ? (unsigned short)i.ll : i.ll;
 		i.ll = obj->flags & HH_F ? (unsigned char)i.ll : i.ll;
 		obj->val.ll = i.ll;
 	}
-	// BELOW CODE ALREADY IMPLEMENTED IN print_f()
-	// if (obj->spc == 'f')
-	// 	obj->val.lngdbl = va_arg(obj->ap, long double);
-	// if (obj->flags & CAP_L_F && obj->spc == 'f')
-	// 	obj->val.lngdbl = (float)obj->val.lngdbl;
 }
 
-void	parse_specifier(t_pf_object *obj)
+void	parse_specifier(func_pointer arrpointer[128])
 {
 	int				i;
-	func_pointer	arrpointer[128];
 
 	i = 0;
 	while (i < 128)
 		arrpointer[i++] = print_str;
-	arrpointer['c'] = print_d;
 	arrpointer['s'] = print_str;
-	arrpointer['p'] = print_o;
-	arrpointer['d'] = print_d;
-	arrpointer['i'] = print_d;
-	arrpointer['o'] = print_o;
-	arrpointer['u'] = print_o;
-	arrpointer['x'] = print_o;
-	arrpointer['X'] = print_o;
+	arrpointer['c'] = print_dioupxxc;
+	arrpointer['p'] = print_dioupxxc;
+	arrpointer['d'] = print_dioupxxc;
+	arrpointer['i'] = print_dioupxxc;
+	arrpointer['o'] = print_dioupxxc;
+	arrpointer['u'] = print_dioupxxc;
+	arrpointer['x'] = print_dioupxxc;
+	arrpointer['X'] = print_dioupxxc;
 	arrpointer['f'] = print_f;
-	obj->spc = obj->str[obj->i_str];
-	if (obj->spc == 'd' || obj->spc == 'i')
-		obj->flags |= SIGNED_F;
-	arrpointer[(int)obj->spc](obj);
-	obj->i_str++;
 }
 
-void	parse_general(t_pf_object *obj)
+void	parse_flags(t_pf_object *obj)
 {
 	while (ft_strchr_int("#0- +", obj->str[obj->i_str]) != -1)
-		obj->flags |= 1 << ft_strchr_int("#0- +", obj->str[obj->i_str++]);
+	{
+		obj->flags |= 1 << ft_strchr_int("#0- +", obj->str[obj->i_str]);
+		++obj->i_str;
+	}
 	obj->flags ^= ((obj->flags & 0x6) == 0x6) ? ZERO_F : 0;
 	obj->flags ^= ((obj->flags & 0x18) == 0x18) ? SPACE_F : 0;
+}
+
+void	parse_width_precision(t_pf_object *obj)
+{
 	obj->width = ft_atoi(&(obj->str[obj->i_str]));
 	obj->flags |= obj->width ? WIDTH : 0;
 	while (ft_isdigit(obj->str[obj->i_str]))
@@ -86,6 +82,12 @@ void	parse_general(t_pf_object *obj)
 		while (ft_isdigit(obj->str[obj->i_str]))
 			++obj->i_str;
 	}
+}
+
+void	parse_general(t_pf_object *obj)
+{
+	parse_flags(obj);
+	parse_width_precision(obj);
 	if (obj->str[obj->i_str] == 'l')
 		obj->flags |= (obj->str[obj->i_str + 1] == 'l') ? LL_F : L_F;
 	if (obj->str[obj->i_str] == 'h')
@@ -94,4 +96,7 @@ void	parse_general(t_pf_object *obj)
 		obj->flags |= CAP_L_F;
 	obj->i_str += obj->flags & 0x180 ? 2 : 0;
 	obj->i_str += obj->flags & 0x460 ? 1 : 0;
+	obj->spc = obj->str[obj->i_str];
+	if (obj->spc == 'i' || obj->spc == 'd')
+		obj->flags |= SIGNED_F;
 }

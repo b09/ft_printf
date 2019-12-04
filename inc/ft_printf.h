@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/03 20:21:56 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/04 20:57:13 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define NINF			0xFFFF
 typedef union	u_union_output
 {
-	unsigned long long	ll;
+	u_int64_t	ll;
 	long long			llong;
 	long double			lngdbl;
 	short				shdbl[5];
@@ -68,7 +68,7 @@ int				ft_printf(const char * restrict format, ...);
 void			parse_flags(t_pf_object *obj);
 void			parse_width_precision(t_pf_object *obj);
 void			parse_length(t_pf_object *obj);
-void			parse_specifier(t_pf_object *obj);
+void			parse_specifier(func_pointer arrpointer[128]);
 void			parse_general(t_pf_object *obj);
 char			get_base(char format_specifier);
 int				length_of_number(t_pf_object *obj);
@@ -88,7 +88,10 @@ void			putfloat(t_pf_object *obj);
 int				float_exception(t_pf_object *obj);
 void			print_sign_float(t_pf_object *obj);
 int				length_of_unsigned(t_pf_object *obj);
-void			ft_putnbr_unsigned(unsigned long long n, int base, t_pf_object *obj);
+void			ft_putnbr_unsigned(u_int64_t n, int base, t_pf_object *obj);
 void			clean_struct(t_pf_object *obj);
+long double		ft_pow(float a, float b);
+void			no_minus_flag(t_pf_object *obj);
+void			print_dioupxxc(t_pf_object *obj);
 
 #endif
