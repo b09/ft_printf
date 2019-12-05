@@ -6,24 +6,24 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/04 21:15:45 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/06 00:01:32 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 // add this to library
-long double		ft_pow(float a, float b)
+long double		ft_pow(float nbr, float exp)
 {
-	float 	c;
+	float 	holder;
 
-	c = a;
-	while (b > 0)
+	holder = nbr;
+	while (exp > 0)
 	{
-		a *= c;
-		--b;
+		nbr *= holder;
+		--exp;
 	}
-	return (a);
+	return (nbr);
 }
 
 	// "%%" will print_character thru print_str
@@ -64,7 +64,7 @@ void	clean_struct(t_pf_object *obj)
 	obj->val.ll = 0;
 	obj->width = 0;
 	obj->prcs = 0;
-	++obj.i_str;
+	++obj->i_str;
 }
 
 void	print_character(char c, t_pf_object *obj)

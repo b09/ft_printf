@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/04 20:57:13 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/06 00:01:34 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define NINF			0xFFFF
 typedef union	u_union_output
 {
-	u_int64_t	ll;
+	u_int64_t			ll;
 	long long			llong;
 	long double			lngdbl;
 	short				shdbl[5];

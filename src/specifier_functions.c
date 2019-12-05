@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/04 20:57:58 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/05 22:40:39 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	print_dioupxxc(t_pf_object *obj)
 {
 	int		i;
 
-	i = ft_strchr_int("pouxX", obj->spc);
+	i = ft_strchr_int("idc", obj->spc);
 	if (obj->spc == 'p')
 		obj->val.ptr = va_arg(obj->ap, void*);
 	else
@@ -86,8 +86,8 @@ void	print_f(t_pf_object *obj)
 	else
 	{
 		obj->i >= obj->width || obj->prcs >= obj->width || obj->flags & ZERO_F ? print_sign_float(obj) : 0;
-		if (obj->width > obj->prcs)
-			print_padding(obj, obj->i, ' ', 0);
+		if (obj->width > obj->prcs && obj->flags & PRECISN)
+			print_padding(obj, obj->i > obj->prcs ? obj->i : obj->prcs, ' ', 0);
 		else
 			print_padding(obj, obj->i, obj->flags & ZERO_F ? '0' : ' ', 0);
 		!(obj->flags & ZERO_F) && obj->i < obj->width ? print_sign_float(obj) : 0;
@@ -101,7 +101,7 @@ void	no_minus_flag(t_pf_object *obj)
 {
 	int		i;
 
-	i = ft_strchr_int("pouxX", obj->spc);
+	i = ft_strchr_int("idc", obj->spc);
 
 	if (obj->i >= obj->width || obj->prcs >= obj->width ||
 						(!(obj->flags & PRECISN) && obj->flags & ZERO_F)) 

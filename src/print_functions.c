@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/04 21:11:25 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/05 23:24:52 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void	print_sign(t_pf_object *obj)
 
 void	print_sign_float(t_pf_object *obj)
 {
-	if (((obj->flags & PLUS_F) && !(obj->flags & SPACE_F)) || obj->val.llong < 0)
+	if (((obj->flags & PLUS_F) && !(obj->flags & SPACE_F)) || obj->val.lngdbl < 0)
 	{
 		if (obj->val.lngdbl >= 0 && obj->flags & PLUS_F)
 			print_character('+', obj);
-		else if ((long long)obj->val.lngdbl < 0)
+		else if (obj->val.lngdbl < 0)
 			print_character('-', obj);
 	}
 	else if (obj->flags & SPACE_F)

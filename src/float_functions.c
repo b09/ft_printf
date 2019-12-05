@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:04:47 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/04 21:05:30 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/06 00:06:05 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,32 +72,43 @@ int		float_exception(t_pf_object *obj)
 void	putfloat(t_pf_object *obj)
 {
 	u_int64_t		ret;
+	u_int64_t		ret2;
 	long double		copy;
-	char			*strfloat;
 	int				i;
+	int				zeroes;
 
-	i = 0;
-	strfloat = ft_memalloc(length_of_float(obj) + 1);
+	i = obj->prcs <= 20 ? obj->prcs : 20;
 	if (float_exception(obj))
-	{
-		free(strfloat);
 		return ;
-	}
-	copy = 	obj->val.lngdbl;
-	ret = (obj->val.shdbl[4] & NZERO) ? -(u_int64_t)copy : (u_int64_t)copy;
-	ft_putnbr_signed((ret / 10), get_base(obj->spc), obj); // have print
-	copy = copy - (ret / 10);
-	print_character('.', obj);
-	while (obj->prcs-- + 1 > 19)
+	copy = obj->val.lngdbl < 0 ? -obj->val.lngdbl : obj->val.lngdbl;
+	ret = (u_int64_t)copy;
+	copy = copy - ret;
+	ret2 = 0;
+	zeroes = 0;
+	while (i + 1)
 	{
 		copy *= 10.0;
-		ret = (u_int64_t)copy;
-		ft_putnbr_signed(ret, get_base(obj->spc), obj);
-		copy = copy - ret;
+		ret2 = (ret2 * 10) + copy;
+		if (!ret2)
+			++zeroes;
+		copy = copy - (((u_int64_t)copy % 10));
+		--i;
 	}
-	// if (obj->prcs <= 19)
-	// 	ret = (u_int64_t)(copy * ft_pow(10.0, (float)obj->prcs + 1));
-	ft_putnbr_unsigned(ret, get_base(obj->spc), obj);		// WORKING ON THIS RIGHT NOW
+	ret2 += (ret2 % 10) > 4 ? 10 : 0;
+	ret2 /= 10;
+	i = obj->prcs <= 20 ? obj->prcs : 20;
+	(ret2 >= (u_int64_t)ft_pow(10, i)) ? ft_putnbr_unsigned(ret + 1, get_base(obj->spc), obj) : ft_putnbr_unsigned(ret, get_base(obj->spc), obj);
+	if (obj->prcs)
+	{
+		print_character('.', obj);
+		while (zeroes && obj->prcs)
+		{
+			print_character('0', obj);
+			--zeroes;
+			--obj->prcs;
+		}
+		ret2 ? ft_putnbr_unsigned(ret2, get_base(obj->spc), obj) : 0;
+	}
 
 	// unsinged long long can handle 18 * 10^19 digits. if the final digit needs to be rounded
 	// and it has an upward cascade effect on the previous digits (.12399999 becomes .124000)
