@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/01/29 17:27:40 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/21 23:47:46 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/06 18:20:22 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void				ft_striteri(char *s, void (*f)(unsigned int, char *));
 void				ft_strclr(char *s);
 void				*ft_memrcpy(void *dst, const void *src, size_t len);
 void				ft_putnbr_base(long long n, int base);
-char				*ft_itoa(int n);
+char				*ft_itoa(long long n);
+char				*ft_itoa_unsigned(unsigned long long n, char sign);
 char				*ft_strupper(const char *str);
 char				*ft_strlower(const char *str);
 char				*ft_strchr(const char *s, int c);

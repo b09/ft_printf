@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_itoa.c                                          :+:    :+:            */
+/*   ft_itoa_unsigned.c                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/01/17 17:46:11 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/06 18:09:41 by bprado        ########   odam.nl         */
+/*   Created: 2019/12/06 18:11:44 by bprado         #+#    #+#                */
+/*   Updated: 2019/12/06 18:23:44 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char		*ft_itoa2(char *str, long long holder, int i)
+static char		*ft_itoa2_unsigned(char *str, unsigned long long holder, int i)
 {
 	if (holder == 0)
 	{
@@ -28,27 +28,24 @@ static char		*ft_itoa2(char *str, long long holder, int i)
 	return (str);
 }
 
-char			*ft_itoa(long long nbr)
+char			*ft_itoa_unsigned(unsigned long long nbr, char negative)
 {
-	int			i;
-	char		*str;
-	long long	holder;
+	int			        i;
+	char	        	*str;
+    unsigned long long  holder;
 
 	holder = nbr;
 	i = 1;
-	while (holder > 9 || holder < -9)
+	while (holder > 9)
 	{
 		holder /= 10;
 		++i;
 	}
-	if (nbr < 0)
-		++i;
 	holder = nbr;
-	(nbr < 0) ? (holder = -holder) : (nbr);
 	if (!(str = (char*)malloc(sizeof(char) * (i + 1))))
 		return (NULL);
 	str[i] = 0;
-	if (nbr < 0)
+	if (negative)
 		str[0] = '-';
-	return (ft_itoa2(str, holder, i));
+	return (ft_itoa2_unsigned(str, holder, i));
 }

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/06 00:01:34 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/07 01:11:37 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void			print_str(t_pf_object *obj);
 void			print_f(t_pf_object *obj);
 
 int				length_of_float(t_pf_object *obj);
-void			putfloat(t_pf_object *obj);
+void			putfloat(t_pf_object *obj, int i, int str_i);
 int				float_exception(t_pf_object *obj);
 void			print_sign_float(t_pf_object *obj);
 int				length_of_unsigned(t_pf_object *obj);

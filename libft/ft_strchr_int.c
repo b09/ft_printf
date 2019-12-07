@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/09/30 18:33:57 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/03 19:48:24 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/06 20:28:48 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ ssize_t		ft_strchr_int(const char *s, int c)
 		if (s[i] == (unsigned char)c)
 			return (i);
 		i++;
+		if (c == 0 && s[i] == 0)
+			return (i);
 	}
 	return (-1);
 }
