@@ -34,6 +34,36 @@ int		ft_printf(const char* restrict format, ...)
 	func_pointer	arrpointer[128];
 
 	ft_bzero(&obj, sizeof(obj));
+	obj.fd = 1;
+	obj.str = format;
+	va_start(obj.ap, format);
+	parse_specifier(arrpointer);
+	while (obj.str[obj.i_str] != 0)
+	{
+		if (obj.str[obj.i_str] == '%' && obj.str[obj.i_str + 1] == 0)
+			break ;
+		if (obj.str[obj.i_str] == '%')
+		{
+			++obj.i_str;
+			parse_general(&obj);
+			arrpointer[(int)obj.spc](&obj);
+			clean_struct(&obj);
+		}
+		if (obj.str[obj.i_str] != 0 && obj.str[obj.i_str] != '%')
+			print_character(obj.str[obj.i_str], &obj);
+		obj.i_str += obj.str[obj.i_str] && obj.str[obj.i_str] != '%' ? 1 : 0;
+	}
+	va_end(obj.ap);
+	return (obj.ret);
+}
+
+int		ft_dprintf(int fd, const char* restrict format, ...)
+{
+	t_pf_object		obj;
+	func_pointer	arrpointer[128];
+
+	ft_bzero(&obj, sizeof(obj));
+	obj.fd = fd;
 	obj.str = format;
 	va_start(obj.ap, format);
 	parse_specifier(arrpointer);
@@ -69,9 +99,6 @@ void	clean_struct(t_pf_object *obj)
 
 void	print_character(char c, t_pf_object *obj)
 {
-	// if (c != 0)
-	// {
 		obj->ret++;
-		ft_putchar(c);
-	// }
+		ft_putchar_fd(c, obj->fd);
 }

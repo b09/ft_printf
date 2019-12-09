@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/08 20:18:54 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/09 11:41:11 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct	s_pf_object
 	int					ret;
 	char				*temp;
 	char				*temp2;
+	int					fd;
 }				t_pf_object;
 
 typedef void (*func_pointer)(t_pf_object *);
@@ -95,5 +96,6 @@ void			clean_struct(t_pf_object *obj);
 long double		ft_pow(float a, float b);
 void			no_minus_flag(t_pf_object *obj);
 void			print_dioupxxc(t_pf_object *obj);
+int				ft_dprintf(int fd, const char* restrict format, ...);
 
 #endif
