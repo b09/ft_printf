@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/06 23:58:27 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/08 21:39:35 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,27 @@ int		main(void)
 
 	f = ft_pow(2.0, 8.0);
 	// passing 1203 A test
-	printf(" <--%d \n", ft_printf("%.0f", 1.6));
-	printf(" <--%d \n", printf("%.0f", 1.6));
+	printf(" <--%d \n", ft_printf("%.f", 1.6));
+	printf(" <--%d \n", printf("%.f", 1.6));
 
 	// printf(" <--%d ft_printf\n", ft_printf("%f", -3.85));
 	// printf(" <--%d printf\n", printf("%f", -3.85));
 	// printf("\n");
 
-	printf(" <--%d ft_printf\n", ft_printf("%f", 5665.9999999));
-	printf(" <--%d printf\n", printf("%f", 5665.9999999));
+	printf(" <--%d ft_printf\n", ft_printf("%.7f", 0.999999));
+	printf(" <--%d printf\n", printf("%.7f", 0.999999));
+	printf("\n");
+
+	printf(" <--%d ft_printf\n", ft_printf("%f", 0.000039));
+	printf(" <--%d printf\n", printf("%f", 0.000039));
+	printf("\n");
+
+	printf(" <--%d ft_printf\n", ft_printf("%-5.1f", 7.3));
+	printf(" <--%d printf\n", printf("%-5.1f", 7.3));
+	printf("\n");
+
+	printf(" <--%d ft_printf\n", ft_printf("%+5.1f", 7.3));
+	printf(" <--%d printf\n", printf("%+5.1f", 7.3));
 	printf("\n");
 	// int64_t ulng = -1;
 	// printf(" <--%d end \n", printf("%llu", ulng));

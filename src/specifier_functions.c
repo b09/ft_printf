@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/07 01:14:32 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/08 13:58:29 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	print_f(t_pf_object *obj)
 	if (obj->flags & MINUS_F)
 	{
 		print_sign_float(obj);
-		putfloat(obj);
+		putfloat(obj, obj->prcs + 1, 0);
 		print_padding(obj, (obj->i > obj->prcs) ? obj->i : obj->prcs, ' ', 0);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:04:47 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/07 01:12:59 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/08 21:39:21 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		length_of_float(t_pf_object *obj)
 	counter = 2;
 	original_float = obj->val.lngdbl;
 	counter += obj->flags & PRECISN ? obj->prcs : 6;
-	
+	counter = obj->flags & PRECISN && !obj->prcs ? 1 : counter;
 	if (original_float < 0)
 		original_float = -original_float;
 	while (original_float > 9)
@@ -38,6 +38,7 @@ int		length_of_float(t_pf_object *obj)
 		++counter;
 	}
 	counter += obj->val.lngdbl < 0 ? 1 : 0;
+	counter += obj->flags & (HASH_F | PLUS_F | SPACE_F) ? 1 : 0;
 	return (counter);
 }
 
@@ -76,76 +77,34 @@ int		float_exception(t_pf_object *obj)
 	interate though number
  */
 
-// void	putfloat(t_pf_object *obj)
-// {
-// 	u_int64_t		ret;
-// 	u_int64_t		ret2;
-// 	long double		copy;
-// 	int				i;
-// 	int				zeroes;
-
-// 	i = obj->prcs <= 20 ? obj->prcs : 20;
-// 	if (float_exception(obj))
-// 		return ;
-// 	copy = obj->val.lngdbl < 0 ? -obj->val.lngdbl : obj->val.lngdbl;
-// 	ret = (u_int64_t)copy;
-// 	copy = copy - ret;
-// 	ret2 = 0;
-// 	zeroes = 0;
-// 	while (i + 1)
-// 	{
-// 		copy *= 10.0;
-// 		ret2 = (ret2 * 10) + copy;
-// 		if (!ret2)
-// 			++zeroes;
-// 		copy = copy - (((u_int64_t)copy % 10));
-// 		--i;
-// 	}
-// 	ret2 += (ret2 % 10) > 4 ? 10 : 0;
-// 	ret2 /= 10;
-// 	i = obj->prcs <= 20 ? obj->prcs : 20;
-// 	(ret2 > length_of_unsigned ? ft_putnbr_unsigned(ret + 1, get_base(obj->spc), obj) : ft_putnbr_unsigned(ret, get_base(obj->spc), obj);
-// 	if (obj->prcs)
-// 	{
-// 		print_character('.', obj);
-// 		while (zeroes && obj->prcs)
-// 		{
-// 			print_character('0', obj);
-// 			--zeroes;
-// 			--obj->prcs;
-// 		}
-// 		ret2 ? ft_putnbr_unsigned(ret2, get_base(obj->spc), obj) : 0;
-// 	}
-
 // 	// unsinged long long can handle 18 * 10^19 digits. if the final digit needs to be rounded
 // 	// and it has an upward cascade effect on the previous digits (.12399999 becomes .124000)
 // 	// i cannot directly print the digits. an uns long long can hold 
 // }
 
-static void		round_float(char *entire_float)
+static void		round_float(char *str, int i)
 {
-	int		str_i;
-
-	str_i = ft_strchr_int(entire_float, 0) - 1;
-	printf("str_i in round: %d\n", str_i);
-	entire_float[str_i] = 0;
-	str_i--;
-	if (entire_float[str_i] != '9')
-		++entire_float[str_i];
-	else
+	str[i] = 0;
+	i--;
+	if (str[i] != '9' && str[i] != '.')
+		++str[i];
+	else 																			// else the character is 9 or '.'
 	{
-		while (entire_float[str_i] == '9' && str_i)
+		while (i > -1 && (str[i] == '9' || str[i] == '.')) 							// while must convert 9's to 0's , jump over '.',  stop when not 9 AND increase THAT character by one
 		{
-			entire_float[str_i] = (entire_float[str_i] != '.') ? '0' : '.';
-			str_i--;
-			if (entire_float[str_i] != '9' && entire_float[str_i] != '.')
-				++entire_float[str_i];
-			else if (entire_float[str_i] == '.')
+			str[i] = (str[i] != '.') ? '0' : '.';
+			i--;
+			if (str[i] != '9' && str[i] != '.')
 			{
-				--str_i;
-				if (entire_float[str_i] != '9')
+				++str[i];
+				break ;
+			}
+			else if (str[i] == '.')
+			{
+				--i;
+				if (str[i] != '9')
 				{
-					++entire_float[str_i];
+					++str[i];
 					break ;
 				}
 			}
@@ -155,52 +114,65 @@ static void		round_float(char *entire_float)
 	}
 }
 
-static char		*string_for_float(t_pf_object *obj)
+static char		*string_for_float(t_pf_object *obj, char flip, char *decimalstr)
 {
 	char			*entire_float;
 	char			*num_no_dec;
-	char			*decimalstr;
 	long double		copy;
 	int				i;
 
-	i = obj->prcs + 3 ; // including null character and decimal character, and first character of decimal
-	decimalstr = ft_memalloc(i);
-	ft_memset(decimalstr, 'a', i - 1); // to use string function must populate malloced content with non NULL chars
-	decimalstr[0] = '.';
-	copy = obj->val.lngdbl < 0 ? -obj->val.lngdbl : obj->val.lngdbl;
-	num_no_dec = ft_itoa_unsigned(copy, 0);
-	entire_float = ft_strjoin(num_no_dec, decimalstr); // strjoin will not work on null characters
-	ft_memdel((void*)&num_no_dec);
+	if (flip)
+	{
+		i = obj->prcs + 3 ; 													// including null character and decimal character, and first character of decimal
+		decimalstr = ft_memalloc(i);
+		ft_memset(decimalstr, 'a', i - 1); 										// to use string function must populate malloced content with non NULL chars
+		decimalstr[0] = '.';
+		copy = obj->val.lngdbl < 0 ? -obj->val.lngdbl : obj->val.lngdbl;
+		num_no_dec = ft_itoa_unsigned(copy, 0);
+		entire_float = ft_strjoin(num_no_dec, decimalstr); 						// strjoin will not work on null characters
+		ft_memdel((void*)&num_no_dec);
+	}
+	else
+		entire_float = ft_strjoin("1", decimalstr);
 	ft_memdel((void*)&decimalstr);
 	return (entire_float);
 }
 
-void	putfloat(t_pf_object *obj, int i, int str_i)
+void	putfloat(t_pf_object *obj, int i, int str_i)							// i is precision plus one
 {
 	long double		copy;
-	char			*entire_float;
+	int				k;
+	int				j;
 
 	if (float_exception(obj))
 		return ;
 	copy = obj->val.lngdbl < 0 ? -obj->val.lngdbl : obj->val.lngdbl;
-	entire_float = string_for_float(obj);
-	str_i = ft_strchr_int(entire_float, 'a'); // what is the function that know how many characters to print?
-	++str_i;
-	while (i) // i is still precision plus two (dec and null char), reuse for precision plus one
+	obj->temp = string_for_float(obj, 1, obj->temp2);
+	j = obj->temp[0]; 														// capture first character of string to compare later if it was zero
+	str_i = ft_strchr_int(obj->temp, 'a'); 										// index of string past decimal
+	k = str_i;																	// index of string past decimal for later use
+	while (i) 																	// assign character of long double to string
 	{
 		copy *= 10.0;
-		entire_float[str_i] = ((int64_t)copy % 10) + '0';;
+		obj->temp[str_i] = ((int64_t)copy % 10) + '0';
 		--i;
 		++str_i;
 	}
 	--str_i;
-	if ((entire_float[str_i] - '0') % 10 > 4)
-		round_float(entire_float);
+
+	if ((obj->temp[str_i] - '0') % 10 > 4)										// check if character, which is one character beyond precision, will cause next character to go up
+		round_float(obj->temp, str_i);
 	else
-		entire_float[str_i] = 0;
-	entire_float[obj->prcs] = 0;
-	obj->val.ptr = entire_float;
+		obj->temp[str_i] = 0;
+	if (obj->temp[0] == '0' && j != '0') 									// if rounding causes all zeroes, new string must be made with '1' at beginning
+		obj->val.ptr = string_for_float(obj, 0, obj->temp);
+	else
+		obj->val.ptr = obj->temp;
+	((char*)obj->val.ptr)[k + (obj->prcs ? obj->prcs + 1 : -1)] = 0;
 	print_string(obj);
-	ft_memdel((void*)&entire_float);
+	if (obj->flags & HASH_F && obj->prcs == 0)
+		print_character('.', obj);
+	ft_memdel((void*)&obj->temp2);
 }
+
 		

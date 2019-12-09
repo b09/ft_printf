@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/07 01:11:37 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/08 20:18:54 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct	s_pf_object
 {
 	const char*			str;
 	short				flags;
-	char				buffer[32];
+	// char				buffer[32];
 	char				spc;
 	int					i;
 	union_output		val;
@@ -60,6 +60,8 @@ typedef struct	s_pf_object
 	int					length;
 	va_list				ap;
 	int					ret;
+	char				*temp;
+	char				*temp2;
 }				t_pf_object;
 
 typedef void (*func_pointer)(t_pf_object *);
