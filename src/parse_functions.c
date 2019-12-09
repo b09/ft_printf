@@ -71,16 +71,20 @@ void	parse_flags(t_pf_object *obj)
 void	parse_width_precision(t_pf_object *obj)
 {
 	obj->width = ft_atoi(&(obj->str[obj->i_str]));
+	obj->width = obj->str[obj->i_str] == '*' ? va_arg(obj->ap, int) : obj->width;
 	obj->flags |= obj->width ? WIDTH : 0;
 	while (ft_isdigit(obj->str[obj->i_str]))
 		++obj->i_str;
+	obj->i_str += obj->str[obj->i_str] == '*' ? 1 : 0;
 	if (obj->str[obj->i_str] == '.')
 	{
 		obj->i_str++;
 		obj->flags |= PRECISN;
 		obj->prcs = ft_atoi(&(obj->str[obj->i_str]));
+		obj->prcs = obj->str[obj->i_str] == '*' ? va_arg(obj->ap, int) : obj->prcs;
 		while (ft_isdigit(obj->str[obj->i_str]))
 			++obj->i_str;
+		obj->i_str += obj->str[obj->i_str] == '*' ? 1 : 0;
 	}
 }
 

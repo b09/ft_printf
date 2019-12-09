@@ -60,6 +60,7 @@ typedef struct	s_pf_object
 	int					length;
 	va_list				ap;
 	int					ret;
+	int					fd;
 }				t_pf_object;
 
 typedef void (*func_pointer)(t_pf_object *);
@@ -93,5 +94,6 @@ void			clean_struct(t_pf_object *obj);
 long double		ft_pow(float a, float b);
 void			no_minus_flag(t_pf_object *obj);
 void			print_dioupxxc(t_pf_object *obj);
+int				ft_dprintf(int fd, const char* restrict format, ...);
 
 #endif

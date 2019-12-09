@@ -80,7 +80,7 @@ void	print_f(t_pf_object *obj)
 	if (obj->flags & MINUS_F)
 	{
 		print_sign_float(obj);
-		putfloat(obj);
+		putfloat(obj, obj->prcs + 1, 0);
 		print_padding(obj, (obj->i > obj->prcs) ? obj->i : obj->prcs, ' ', 0);
 	}
 	else
