@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/09 11:41:54 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/09 14:51:42 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int		main(void)
 
 	f = ft_pow(2.0, 8.0);
 	// passing 1203 A test
-	printf(" <--%d \n", ft_printf("%.f", 1.6));
-	printf(" <--%d \n", printf("%.f", 1.6));
+	// printf(" <--%d \n", ft_printf("%.f", 1.6));
+	// printf(" <--%d \n", printf("%.f", 1.6));
 	// printf(" <--%d \n", ft_printf("%.0f", 1.6));
 	// printf(" <--%d \n", printf("%.0f", 1.6));
 
@@ -29,8 +29,53 @@ int		main(void)
 	// printf(" <--%d printf\n", printf("%f", -3.85));
 	// printf("\n");
 
+
+	// printf(" <--%d ft_printf\n", ft_printf("%.*x", 20, 142424242));
+	// printf(" <--%d printf\n", printf("%.*x", 20, 142424242));
+	// printf("\n");
+
+	// printf(" <--%d ft_printf\n", ft_printf("%#.*x", 15, 142424242));
+	// printf(" <--%d printf\n", printf("%#.*x", 15, 142424242));
+	// printf("\n");
+
+	// printf(" <--%d ft_printf\n", ft_printf("%#*p", 20, "142424242"));
+	// printf(" <--%d printf\n", printf("%#*p", 20, "142424242"));
+	// printf("\n");
+
+	// printf(" <--%d ft_printf\n", ft_printf("%#.*X", 20, 142424242));
+	// printf(" <--%d printf\n", printf("%#.*X", 20, 142424242));
+	// printf("\n");
+	printf(" <--%d ft_printf\n", ft_printf("%.o %.o", 0, 0));
+	printf(" <--%d ft_printf\n", printf("%.o %.o", 0, 0));
+	printf("\n");
+
+	printf(" <--%d ft_printf\n", ft_printf("%-#*.*o", 5, 0, 0));
+	printf(" <--%d printf\n", printf("%-#*.*o", 5, 0, 0));
+	printf("\n");
+
+	printf(" <--%d ft_printf\n", ft_printf("%-#*.*x", 0, 0, 0));
+	printf(" <--%d printf\n", printf("%-#*.*x", 0, 0, 0));
+	printf("\n");
+
+	printf(" <--%d ft_printf\n", ft_printf("%-#*.*o", 0, 0, 0));
+	printf(" <--%d printf\n", printf("%-#*.*o", 0, 0, 0));
+	printf("\n");
+
+	printf(" <--%d ft_printf\n", ft_printf("%-*.*o", 0, 0, 0));
+	printf(" <--%d printf\n", printf("%-*.*o", 0, 0, 0));
+	printf("\n");
+
+	printf(" <--%d ft_printf\n", ft_printf("%#*.9X", 20, 142424242));
+	printf(" <--%d printf\n", printf("%#*.9X", 20, 142424242));
+	printf("\n");
+
+	printf(" <--%d ft_printf\n", ft_printf("%*.9X", 20, 142424242));
+	printf(" <--%d printf\n", printf("%*.9X", 20, 142424242));
+	printf("\n");
+
 	printf(" <--%d ft_printf\n", ft_printf("%.7f", 0.999999));
 	printf(" <--%d printf\n", printf("%.7f", 0.999999));
+	printf("\n");
 
 	printf(" <--%d ft_printf\n", ft_printf("%f", 0.000039));
 	printf(" <--%d printf\n", printf("%f", 0.000039));

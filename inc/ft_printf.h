@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/09 11:41:11 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/09 12:30:17 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef union	u_union_output
 		
 }				union_output;
 
-typedef struct	s_pf_object
+typedef struct	s_pf_sect
 {
 	const char*			str;
 	short				flags;
@@ -63,39 +63,39 @@ typedef struct	s_pf_object
 	char				*temp;
 	char				*temp2;
 	int					fd;
-}				t_pf_object;
+}				t_pf_sect;
 
-typedef void (*func_pointer)(t_pf_object *);
+typedef void (*func_pointer)(t_pf_sect *);
 
 int				ft_printf(const char * restrict format, ...);
-void			parse_flags(t_pf_object *obj);
-void			parse_width_precision(t_pf_object *obj);
-void			parse_length(t_pf_object *obj);
+void			parse_flags(t_pf_sect *s);
+void			parse_width_precision(t_pf_sect *s);
+void			parse_length(t_pf_sect *s);
 void			parse_specifier(func_pointer arrpointer[128]);
-void			parse_general(t_pf_object *obj);
+void			parse_general(t_pf_sect *s);
 char			get_base(char format_specifier);
-int				length_of_number(t_pf_object *obj);
-void			ft_putnbr_signed(long long n, int base, t_pf_object *obj);
-void			print_sign(t_pf_object *obj);
-void			print_hash_flag(t_pf_object *obj);
-void			print_padding(t_pf_object *obj, int length_of_output, char character, char flip);
-void			print_character(char c, t_pf_object *obj);
-void			print_string(t_pf_object *obj);
-void			print_d(t_pf_object *obj);
-void			print_o(t_pf_object *obj);
-void			print_str(t_pf_object *obj);
-void			print_f(t_pf_object *obj);
+int				length_of_number(t_pf_sect *s);
+void			ft_putnbr_signed(long long n, int base, t_pf_sect *s);
+void			print_sign(t_pf_sect *s);
+void			print_hash_flag(t_pf_sect *s);
+void			print_padding(t_pf_sect *s, int length_of_output, char character, char flip);
+void			print_character(char c, t_pf_sect *s);
+void			print_string(t_pf_sect *s);
+void			print_d(t_pf_sect *s);
+void			print_o(t_pf_sect *s);
+void			print_str(t_pf_sect *s);
+void			print_f(t_pf_sect *s);
 
-int				length_of_float(t_pf_object *obj);
-void			putfloat(t_pf_object *obj, int i, int str_i);
-int				float_exception(t_pf_object *obj);
-void			print_sign_float(t_pf_object *obj);
-int				length_of_unsigned(t_pf_object *obj);
-void			ft_putnbr_unsigned(u_int64_t n, int base, t_pf_object *obj);
-void			clean_struct(t_pf_object *obj);
+int				length_of_float(t_pf_sect *s);
+void			putfloat(t_pf_sect *s, int i, int str_i);
+int				float_exception(t_pf_sect *s);
+void			print_sign_float(t_pf_sect *s);
+int				length_of_unsigned(t_pf_sect *s);
+void			ft_putnbr_unsigned(u_int64_t n, int base, t_pf_sect *s);
+void			clean_struct(t_pf_sect *s);
 long double		ft_pow(float a, float b);
-void			no_minus_flag(t_pf_object *obj);
-void			print_dioupxxc(t_pf_object *obj);
+void			no_minus_flag(t_pf_sect *s);
+void			print_dioupxxc(t_pf_sect *s);
 int				ft_dprintf(int fd, const char* restrict format, ...);
 
 #endif

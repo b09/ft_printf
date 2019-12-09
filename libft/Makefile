@@ -6,7 +6,7 @@
 #    By: bprado <bprado@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/01/29 17:19:55 by bprado         #+#    #+#                 #
-#    Updated: 2019/09/30 18:51:03 by bprado        ########   odam.nl          #
+#    Updated: 2019/12/09 12:30:17 by bprado        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,7 +80,7 @@ FLAGS = -Wall -Wextra -Werror
 # 		get_next_line.c \
 
 
-# OBJ = 	ft_atoi.o \
+# s = 	ft_atoi.o \
 # 		ft_atoi_base.o \
 # 		ft_bzero.o \
 # 		ft_isalnum.o \
@@ -146,17 +146,17 @@ FLAGS = -Wall -Wextra -Werror
 # 		get_next_line.o \
 
 SRC 	= *.c
-OBJ 	= $(SRC:.c=.o)
+s 	= $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): 
 		gcc $(FLAGS) -c $(SRC) -I ./includes
-		ar rcs $(NAME) $(OBJ)
+		ar rcs $(NAME) $(s)
 
 
 clean:
-		rm -f $(OBJ)
+		rm -f $(s)
 
 fclean: clean
 		rm -rf $(NAME)
