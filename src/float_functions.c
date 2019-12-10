@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:04:47 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/09 12:30:17 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/10 22:11:31 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ int		length_of_float(t_pf_sect *s)
 	// include decimal in length and a single character
 	counter = 0;
 	if (((s->val.shdbl[4] & NZERO) == NZERO) && s->val.llong == 0)
-		counter = 2 + s->prcs;
-	counter = ((s->val.shdbl[4] & NINF) == NINF) && s->val.llong == 0 ? 4 : counter;
-	counter = ((s->val.shdbl[4] & INF) == INF) && s->val.llong == 0 ? 3 : counter;
-	counter = ((s->val.shdbl[4] & INF) == INF) && s->val.llong > 0 ? 3 : counter;
+		counter = 2 + (s->prcs ? s->prcs + 1 : 0);
+	counter = ((s->val.shdbl[4] & NINF) == NINF && s->val.llong == (1L << 63)) ? 4 : counter;
+	counter = ((s->val.shdbl[4] & INF) == INF && s->val.llong == (1L << 63)) ? 3 : counter;
+	counter = ((s->val.shdbl[4] & INF) == INF && s->val.llong != 0) ? 3 : counter;
 	if (counter)
 		return (counter);
 	counter = 2;
@@ -38,7 +38,8 @@ int		length_of_float(t_pf_sect *s)
 		++counter;
 	}
 	counter += s->val.lngdbl < 0 ? 1 : 0;
-	counter += s->flags & (HASH_F | PLUS_F | SPACE_F) ? 1 : 0;
+	// counter += s->flags & (HASH_F | PLUS_F | SPACE_F) ? 1 : 0;
+	counter += s->flags & (HASH_F | PLUS_F) || (s->flags & SPACE_F && s->val.lngdbl > 0 ) ? 1 : 0;
 	return (counter);
 }
 
@@ -46,27 +47,29 @@ int		length_of_float(t_pf_sect *s)
 // function works
 int		float_exception(t_pf_sect *s)
 {
-	char 		*str1;
-	char 		*str2;
-	char 		*str3;
-	char 		*str4;
+	char 			*str1;
+	char 			*str2;
+	char 			*str3;
+	char 			*str4;
+	long double		temp;
 
 	str1 = "-0";
 	str2 = "-inf";
 	str3 = "inf";
 	str4 = "nan";
-
+	temp = s->val.lngdbl;
 	if ((s->val.shdbl[4] & NZERO) == NZERO && s->val.llong == 0)
 		s->val.ptr = str1; 	// 	-0 negative zero
-	else if ((s->val.shdbl[4] & NINF) == NINF && s->val.llong == 0)
+	else if ((s->val.shdbl[4] & NINF) == NINF && s->val.llong == (1L << 63))
 		s->val.ptr = str2;
-	else if ((s->val.shdbl[4] & INF) == INF && s->val.llong == 0)
+	else if ((s->val.shdbl[4] & INF) == INF && s->val.llong == (1L << 63))
 		s->val.ptr = str3;
-	else if ((s->val.shdbl[4] & INF) == INF && s->val.llong > 0)
+	else if ((s->val.shdbl[4] & INF) == INF && s->val.llong != 0)
 		s->val.ptr = str4;
 	else
 		return (0);
 	print_string(s);
+	s->val.lngdbl = temp;
 	return (1);
 }
 
@@ -141,7 +144,6 @@ static char		*string_for_float(t_pf_sect *s, char flip, char *decimalstr)
 void	putfloat(t_pf_sect *s, int i, int str_i)							// i is precision plus one
 {
 	long double		copy;
-	int				k;
 	int				j;
 
 	if (float_exception(s))
@@ -150,11 +152,12 @@ void	putfloat(t_pf_sect *s, int i, int str_i)							// i is precision plus one
 	s->temp = string_for_float(s, 1, s->temp2);
 	j = s->temp[0]; 														// capture first character of string to compare later if it was zero
 	str_i = ft_strchr_int(s->temp, 'a'); 										// index of string past decimal
-	k = str_i;																	// index of string past decimal for later use
+	// k = str_i;																	// index of string past decimal for later use
 	while (i) 																	// assign character of long double to string
 	{
 		copy *= 10.0;
 		s->temp[str_i] = ((int64_t)copy % 10) + '0';
+		copy -= (int64_t)copy;
 		--i;
 		++str_i;
 	}
@@ -168,7 +171,9 @@ void	putfloat(t_pf_sect *s, int i, int str_i)							// i is precision plus one
 		s->val.ptr = string_for_float(s, 0, s->temp);
 	else
 		s->val.ptr = s->temp;
-	((char*)s->val.ptr)[k + (s->prcs ? s->prcs + 1 : -1)] = 0;
+	j = ft_strchr_int((char*)s->val.ptr, '.');
+	// ((char*)s->val.ptr)[j + (s->prcs ? s->prcs + 1 : -1)] = 0;
+	((char*)s->val.ptr)[j + (s->prcs ? s->prcs + 1 : 0)] = 0;
 	print_string(s);
 	if (s->flags & HASH_F && s->prcs == 0)
 		print_character('.', s);

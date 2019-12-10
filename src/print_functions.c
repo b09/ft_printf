@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/09 14:43:29 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/10 23:12:39 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	print_hash_flag(t_pf_sect *s)
 			print_character('0', s);
 			print_character('X', s);
 		}
+		else if (s->spc == 'o')
+			print_character('0', s);
 	}
-	if (s->spc == 'o')
-		print_character('0', s);
 	s->flags |= PRTSIGN;
 }
 
@@ -104,8 +104,8 @@ void	print_padding(t_pf_sect *s, int length, char character, char flip)
 		if ((s->flags & SIGNED_F && character == ' ') && ((s->val.llong >= 0 &&
 					s->flags & 0x18) || (s->val.llong < 0 && s->prcs >= s->i)))
 			--padd;
-		else if (s->flags & SIGNED_F && character == '0' && s->flags & PLUS_F &&
-															s->val.llong >= 0)
+		else if (s->flags & SIGNED_F && character == '0' &&
+		(s->flags & (PLUS_F | SPACE_F)) && s->val.llong >= 0)
 			--padd;
 	}
 	print_padding2(s, padd, character);

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/09 13:33:53 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/10 21:42:51 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,26 +68,39 @@ void	print_str(t_pf_sect *s)
 	}
 }
 
+static void		minus_flag_float(t_pf_sect *s)
+{
+		print_sign_float(s);
+		putfloat(s, s->prcs + 1, 0);
+		if ((((s->val.shdbl[4] & NZERO) == NZERO) && s->val.llong == 0))
+		{
+			print_character('.', s);
+			while (s->prcs)
+			{
+				ft_printf("%d", 0);
+				--s->prcs;
+			}
+		}
+		else
+			print_padding(s, (s->i > s->prcs) ? s->i : s->prcs, ' ', 0);
+}
+
 void	print_f(t_pf_sect *s)
 {
 	long double	copy;
 
-	// parse_length(s);
 	copy = (s->flags & CAP_L_F) ? va_arg(s->ap, long double) : va_arg(s->ap, double);
 	s->val.lngdbl = copy;
 	s->prcs = !(s->flags & PRECISN) ? 6 : s->prcs;
 	s->i = length_of_float(s);		// must implement correctly, ie. what is the length of a float
 	if (s->flags & MINUS_F)
-	{
-		print_sign_float(s);
-		putfloat(s, s->prcs + 1, 0);
-		print_padding(s, (s->i > s->prcs) ? s->i : s->prcs, ' ', 0);
-	}
+		minus_flag_float(s);
 	else
 	{
 		s->i >= s->width || s->prcs >= s->width || s->flags & ZERO_F ? print_sign_float(s) : 0;
-		if (s->width > s->prcs && s->flags & PRECISN)
-			print_padding(s, s->i > s->prcs ? s->i : s->prcs, ' ', 0);
+		if (s->i < s->width && s->flags & PRECISN && !(s->flags & ZERO_F))
+			// print_padding(s, s->i > s->prcs ? s->i : s->prcs, ' ', 0); // s->i is length, which includes precision, and is always greatter than prcs
+			print_padding(s, s->i, ' ', 0);
 		else
 			print_padding(s, s->i, s->flags & ZERO_F ? '0' : ' ', 0);
 		!(s->flags & ZERO_F) && s->i < s->width ? print_sign_float(s) : 0;

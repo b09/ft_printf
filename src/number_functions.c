@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:07:04 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/09 14:49:40 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/10 23:41:07 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,9 @@ void	ft_putnbr_unsigned(u_int64_t i, int base, t_pf_sect *s)
 	// u_int64_t		i;
 
 	a = 0;
-	if (s->val.ll == 0 && (s->flags & PRECISN) && s->prcs == 0)// && !(s->flags & HASH_F && s->spc != 'o')) // check this
+	if (s->val.ll == 0 && (s->flags & PRECISN) && s->prcs == 0 && s->spc != 'o') // check this
+		return ;
+	else if (s->val.ll == 0 && (s->flags & PRECISN) && s->prcs == 0 && s->spc == 'o' && !(s->flags & HASH_F))
 		return ;
 	// i = n;
 	if (i > ((unsigned)base - 1))

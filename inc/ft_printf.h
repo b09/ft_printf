@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/09 12:30:17 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/10 20:46:28 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef union	u_union_output
 	u_int64_t			ll;
 	long long			llong;
 	long double			lngdbl;
-	short				shdbl[5];
+	u_int16_t			shdbl[5];
 	void*				ptr;
 		
 }				union_output;

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/09 12:30:17 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/10 12:47:45 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	parse_width_precision(t_pf_sect *s)
 {
 	s->width = ft_atoi(&(s->str[s->i_str]));
 	s->width = s->str[s->i_str] == '*' ? va_arg(s->ap, int) : s->width;
+	s->flags |= s->width < 0 ? MINUS_F : 0;
+	s->width = s->width < 0 ? -(s->width) : s->width;
 	s->flags |= s->width ? WIDTH : 0;
 	while (ft_isdigit(s->str[s->i_str]))
 		++s->i_str;
