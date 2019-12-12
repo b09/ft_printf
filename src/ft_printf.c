@@ -6,29 +6,13 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/09 12:30:17 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/11 22:06:25 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-// add this to library
-long double		ft_pow(float nbr, float exp)
-{
-	float 	holder;
-
-	holder = nbr;
-	while (exp > 0)
-	{
-		nbr *= holder;
-		--exp;
-	}
-	return (nbr);
-}
-
-	// "%%" will print_character thru print_str
-	// parse_specifier will increase i_str;
-int		ft_printf(const char* restrict format, ...)
+int		ft_printf(const char *restrict format, ...)
 {
 	t_pf_sect		s;
 	func_pointer	arrpointer[128];
@@ -57,7 +41,7 @@ int		ft_printf(const char* restrict format, ...)
 	return (s.ret);
 }
 
-int		ft_dprintf(int fd, const char* restrict format, ...)
+int		ft_dprintf(int fd, const char *restrict format, ...)
 {
 	t_pf_sect		s;
 	func_pointer	arrpointer[128];
@@ -88,10 +72,10 @@ int		ft_dprintf(int fd, const char* restrict format, ...)
 
 void	clean_struct(t_pf_sect *s)
 {
-	s->flags = 0;
+	s->fl = 0;
 	s->spc = 0;
 	s->i = 0;
-	s->val.ll = 0;
+	s->v.ll = 0;
 	s->width = 0;
 	s->prcs = 0;
 	++s->i_str;
@@ -99,6 +83,6 @@ void	clean_struct(t_pf_sect *s)
 
 void	print_character(char c, t_pf_sect *s)
 {
-		s->ret++;
-		ft_putchar_fd(c, s->fd);
+	s->ret++;
+	ft_putchar_fd(c, s->fd);
 }

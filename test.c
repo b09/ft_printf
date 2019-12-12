@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/10 23:47:00 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/11 20:43:54 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@ int		main(void)
 	f = ft_pow(2.0, 8.0);
 
 
-	// printf(" <--%d ft_printf\n", ft_printf("%#o", 0));
-	// printf(" <--%d printf\n", printf("%#o", 0));
-	// printf("\n");
+	printf(" <--%d ft_printf\n", ft_printf("%#o", 0));
+	printf(" <--%d printf\n", printf("%#o", 0));
+	printf("\n");
 
-	// printf(" <--%d ft_printf\n", ft_printf("%#3o", 0));
-	// printf(" <--%d printf\n", printf("%#3o", 0));
-	// printf("\n");
+	printf(" <--%d ft_printf\n", ft_printf("%#4o", 0));
+	printf(" <--%d printf\n", printf("%#4o", 0));
+	printf("\n");
 
-	// printf(" <--%d ft_printf\n", ft_printf("%#-3o", 0));
-	// printf(" <--%d printf\n", printf("%#-3o", 0));
-	// printf("\n");
+	printf(" <--%d ft_printf\n", ft_printf("%#-4o", 0));
+	printf(" <--%d printf\n", printf("%#-4o", 0));
+	printf("\n");
 	printf(" <--%d ft_printf\n", ft_printf("%#o", 0));
 	printf(" <--%d printf\n", printf("%#o", 0));
 	printf("\n");
@@ -58,8 +58,8 @@ int		main(void)
 	// printf(" <--%d printf\n", ft_printf("%.5p", 0));
 	// printf("\n");
 
-	printf(" <--%d ft_printf\n", ft_printf("[%-#5.0o]", 0));
-	printf(" <--%d printf\n", printf("[%-#*.*o]", 5, 0, 0));
+	printf(" <--%d ft_printf\n", ft_printf("%-#5.0o", 0));
+	printf(" <--%d printf\n", printf("%-#5.*o", 0, 0));
 	printf("\n");
 
 	printf(" <--%d ft_printf\n", ft_printf("%#.o, %#.0o", 0, 0));
@@ -479,6 +479,8 @@ int		main(void)
 	// printf(" <--%d X\n", printf("%-5.20X", 42));
 	// printf("\n");
 	// printf(" <--%d\n", printf("%#05x", 42));
+	printf(" <--%d\n", ft_printf("%ld", LONG_MIN));
+	printf(" <--%d\n", printf("%ld", LONG_MIN));
 
 
 	return (0);

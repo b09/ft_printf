@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/10 20:46:28 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/11 21:27:29 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 # include <stdarg.h>
 # include "libft.h"
 
-# define HASH_F 		1 << 0
+# define HASH 			1 << 0
 # define ZERO_F 		1 << 1
 # define MINUS_F 		1 << 2
-# define SPACE_F 		1 << 3
-# define PLUS_F 		1 << 4
+# define SPACE 			1 << 3
+# define PLUS 			1 << 4
 # define H_F 			1 << 5
 # define L_F 			1 << 6
 # define HH_F 			1 << 7
@@ -40,8 +40,8 @@ typedef union	u_union_output
 {
 	u_int64_t			ll;
 	long long			llong;
-	long double			lngdbl;
-	u_int16_t			shdbl[5];
+	long double			lngd;
+	u_int16_t			sh[5];
 	void*				ptr;
 		
 }				union_output;
@@ -49,11 +49,11 @@ typedef union	u_union_output
 typedef struct	s_pf_sect
 {
 	const char*			str;
-	short				flags;
+	short				fl;
 	// char				buffer[32];
 	char				spc;
 	int					i;
-	union_output		val;
+	union_output		v;
 	int					i_str;
 	int					width;
 	int					prcs;
@@ -89,7 +89,7 @@ void			print_f(t_pf_sect *s);
 int				length_of_float(t_pf_sect *s);
 void			putfloat(t_pf_sect *s, int i, int str_i);
 int				float_exception(t_pf_sect *s);
-void			print_sign_float(t_pf_sect *s);
+void			sign_float(t_pf_sect *s);
 int				length_of_unsigned(t_pf_sect *s);
 void			ft_putnbr_unsigned(u_int64_t n, int base, t_pf_sect *s);
 void			clean_struct(t_pf_sect *s);

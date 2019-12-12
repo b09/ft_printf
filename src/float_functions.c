@@ -6,94 +6,76 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:04:47 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/10 22:11:31 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/11 22:23:15 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		length_of_float(t_pf_sect *s)
+int				length_of_float(t_pf_sect *s)
 {
-	int				counter;
+	int				i;
 	long double		original_float;
 
-	// include decimal in length and a single character
-	counter = 0;
-	if (((s->val.shdbl[4] & NZERO) == NZERO) && s->val.llong == 0)
-		counter = 2 + (s->prcs ? s->prcs + 1 : 0);
-	counter = ((s->val.shdbl[4] & NINF) == NINF && s->val.llong == (1L << 63)) ? 4 : counter;
-	counter = ((s->val.shdbl[4] & INF) == INF && s->val.llong == (1L << 63)) ? 3 : counter;
-	counter = ((s->val.shdbl[4] & INF) == INF && s->val.llong != 0) ? 3 : counter;
-	if (counter)
-		return (counter);
-	counter = 2;
-	original_float = s->val.lngdbl;
-	counter += s->flags & PRECISN ? s->prcs : 6;
-	counter = s->flags & PRECISN && !s->prcs ? 1 : counter;
+	i = 0;
+	if (((s->v.sh[4] & NZERO) == NZERO) && s->v.llong == 0)
+		i = 2 + (s->prcs ? s->prcs + 1 : 0);
+	i = ((s->v.sh[4] & NINF) == NINF && s->v.llong == (1L << 63)) ? 4 : i;
+	i = ((s->v.sh[4] & INF) == INF && s->v.llong == (1L << 63)) ? 3 : i;
+	i = ((s->v.sh[4] & INF) == INF && s->v.llong != 0) ? 3 : i;
+	if (i)
+		return (i);
+	i = 2;
+	original_float = s->v.lngd;
+	i += s->fl & PRECISN ? s->prcs : 6;
+	i = s->fl & PRECISN && !s->prcs ? 1 : i;
 	if (original_float < 0)
 		original_float = -original_float;
 	while (original_float > 9)
 	{
 		original_float /= 10;
-		++counter;
+		++i;
 	}
-	counter += s->val.lngdbl < 0 ? 1 : 0;
-	// counter += s->flags & (HASH_F | PLUS_F | SPACE_F) ? 1 : 0;
-	counter += s->flags & (HASH_F | PLUS_F) || (s->flags & SPACE_F && s->val.lngdbl > 0 ) ? 1 : 0;
-	return (counter);
+	i += s->v.lngd < 0 ? 1 : 0;
+	i += s->fl & (HASH | PLUS) || (s->fl & SPACE && s->v.lngd > 0) ? 1 : 0;
+	return (i);
 }
 
-// create function to print character strings -inf, inf, nan, -0
-// function works
-int		float_exception(t_pf_sect *s)
+int				float_exception(t_pf_sect *s)
 {
-	char 			*str1;
-	char 			*str2;
-	char 			*str3;
-	char 			*str4;
+	char			*str1;
+	char			*str2;
+	char			*str3;
+	char			*str4;
 	long double		temp;
 
 	str1 = "-0";
 	str2 = "-inf";
 	str3 = "inf";
 	str4 = "nan";
-	temp = s->val.lngdbl;
-	if ((s->val.shdbl[4] & NZERO) == NZERO && s->val.llong == 0)
-		s->val.ptr = str1; 	// 	-0 negative zero
-	else if ((s->val.shdbl[4] & NINF) == NINF && s->val.llong == (1L << 63))
-		s->val.ptr = str2;
-	else if ((s->val.shdbl[4] & INF) == INF && s->val.llong == (1L << 63))
-		s->val.ptr = str3;
-	else if ((s->val.shdbl[4] & INF) == INF && s->val.llong != 0)
-		s->val.ptr = str4;
+	temp = s->v.lngd;
+	if ((s->v.sh[4] & NZERO) == NZERO && s->v.llong == 0)
+		s->v.ptr = str1;
+	else if ((s->v.sh[4] & NINF) == NINF && s->v.llong == (1L << 63))
+		s->v.ptr = str2;
+	else if ((s->v.sh[4] & INF) == INF && s->v.llong == (1L << 63))
+		s->v.ptr = str3;
+	else if ((s->v.sh[4] & INF) == INF && s->v.llong != 0)
+		s->v.ptr = str4;
 	else
 		return (0);
 	print_string(s);
-	s->val.lngdbl = temp;
+	s->v.lngd = temp;
 	return (1);
 }
 
-/*
-	character array
-	assign front part of float to array
-	add decimal point
-	interate though number
- */
-
-// 	// unsinged long long can handle 18 * 10^19 digits. if the final digit needs to be rounded
-// 	// and it has an upward cascade effect on the previous digits (.12399999 becomes .124000)
-// 	// i cannot directly print the digits. an uns long long can hold 
-// }
-
 static void		round_float(char *str, int i)
 {
-	str[i] = 0;
-	i--;
 	if (str[i] != '9' && str[i] != '.')
 		++str[i];
-	else 																			// else the character is 9 or '.'
+	else
 	{
-		while (i > -1 && (str[i] == '9' || str[i] == '.')) 							// while must convert 9's to 0's , jump over '.',  stop when not 9 AND increase THAT character by one
+		while (i > -1 && (str[i] == '9' || str[i] == '.'))
 		{
 			str[i] = (str[i] != '.') ? '0' : '.';
 			i--;
@@ -111,9 +93,7 @@ static void		round_float(char *str, int i)
 					break ;
 				}
 			}
-
 		}
-
 	}
 }
 
@@ -126,13 +106,13 @@ static char		*string_for_float(t_pf_sect *s, char flip, char *decimalstr)
 
 	if (flip)
 	{
-		i = s->prcs + 3 ; 													// including null character and decimal character, and first character of decimal
+		i = s->prcs + 3;
 		decimalstr = ft_memalloc(i);
-		ft_memset(decimalstr, 'a', i - 1); 										// to use string function must populate malloced content with non NULL chars
+		ft_memset(decimalstr, 'a', i - 1);
 		decimalstr[0] = '.';
-		copy = s->val.lngdbl < 0 ? -s->val.lngdbl : s->val.lngdbl;
+		copy = s->v.lngd < 0 ? -s->v.lngd : s->v.lngd;
 		num_no_dec = ft_itoa_unsigned(copy, 0);
-		entire_float = ft_strjoin(num_no_dec, decimalstr); 						// strjoin will not work on null characters
+		entire_float = ft_strjoin(num_no_dec, decimalstr);
 		ft_memdel((void*)&num_no_dec);
 	}
 	else
@@ -141,19 +121,18 @@ static char		*string_for_float(t_pf_sect *s, char flip, char *decimalstr)
 	return (entire_float);
 }
 
-void	putfloat(t_pf_sect *s, int i, int str_i)							// i is precision plus one
+void			putfloat(t_pf_sect *s, int i, int str_i)
 {
 	long double		copy;
 	int				j;
 
 	if (float_exception(s))
 		return ;
-	copy = s->val.lngdbl < 0 ? -s->val.lngdbl : s->val.lngdbl;
+	copy = s->v.lngd < 0 ? -s->v.lngd : s->v.lngd;
 	s->temp = string_for_float(s, 1, s->temp2);
-	j = s->temp[0]; 														// capture first character of string to compare later if it was zero
-	str_i = ft_strchr_int(s->temp, 'a'); 										// index of string past decimal
-	// k = str_i;																	// index of string past decimal for later use
-	while (i) 																	// assign character of long double to string
+	j = s->temp[0];
+	str_i = ft_strchr_int(s->temp, 'a');
+	while (i)
 	{
 		copy *= 10.0;
 		s->temp[str_i] = ((int64_t)copy % 10) + '0';
@@ -162,22 +141,22 @@ void	putfloat(t_pf_sect *s, int i, int str_i)							// i is precision plus one
 		++str_i;
 	}
 	--str_i;
-
-	if ((s->temp[str_i] - '0') % 10 > 4)										// check if character, which is one character beyond precision, will cause next character to go up
+	if ((s->temp[str_i] - '0') % 10 > 4)
+	{
+		s->temp[str_i] = 0;
+		str_i--;
 		round_float(s->temp, str_i);
+	}
 	else
 		s->temp[str_i] = 0;
-	if (s->temp[0] == '0' && j != '0') 									// if rounding causes all zeroes, new string must be made with '1' at beginning
-		s->val.ptr = string_for_float(s, 0, s->temp);
+	if (s->temp[0] == '0' && j != '0')
+		s->v.ptr = string_for_float(s, 0, s->temp);
 	else
-		s->val.ptr = s->temp;
-	j = ft_strchr_int((char*)s->val.ptr, '.');
-	// ((char*)s->val.ptr)[j + (s->prcs ? s->prcs + 1 : -1)] = 0;
-	((char*)s->val.ptr)[j + (s->prcs ? s->prcs + 1 : 0)] = 0;
+		s->v.ptr = s->temp;
+	j = ft_strchr_int((char*)s->v.ptr, '.');
+	((char*)s->v.ptr)[j + (s->prcs ? s->prcs + 1 : 0)] = 0;
 	print_string(s);
-	if (s->flags & HASH_F && s->prcs == 0)
+	if (s->fl & HASH && s->prcs == 0)
 		print_character('.', s);
 	ft_memdel((void*)&s->temp2);
 }
-
-		

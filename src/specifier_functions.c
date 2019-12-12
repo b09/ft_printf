@@ -6,63 +6,62 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/10 21:42:51 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/11 21:31:32 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-
-void	print_dioupxxc(t_pf_sect *s)
+void			print_dioupxxc(t_pf_sect *s)
 {
-	int		i;
+	int			i;
 
 	i = ft_strchr_int("idc", s->spc);
 	if (s->spc == 'p')
-		s->val.ptr = va_arg(s->ap, void*);
+		s->v.ptr = va_arg(s->ap, void*);
 	else
 		parse_length(s);
 	s->i = i > -1 ? length_of_number(s) : length_of_unsigned(s);
-	if (s->flags & MINUS_F)
+	if (s->fl & MINUS_F)
 	{
-		if (i > -1 || (s->flags & HASH_F && s->spc != 'u') || s->spc == 'p')
+		if (i > -1 || (s->fl & HASH && s->spc != 'u') || s->spc == 'p')
 			i > -1 ? print_sign(s) : print_hash_flag(s);
 		print_padding(s, s->i, '0', 1);
 		if (s->spc != 'c')
-			i > -1 ? ft_putnbr_signed(s->val.llong, get_base(s->spc), s) :
-					ft_putnbr_unsigned(s->val.ll, get_base(s->spc), s);
+			i > -1 ? ft_putnbr_signed(s->v.llong, get_base(s->spc), s) :
+					ft_putnbr_unsigned(s->v.ll, get_base(s->spc), s);
 		else if (s->spc == 'c')
-			print_character(s->val.llong, s);
+			print_character(s->v.llong, s);
 		print_padding(s, (s->i > s->prcs) ? s->i : s->prcs, ' ', 0);
 	}
 	else
 		no_minus_flag(s);
 }
 
-void	print_str(t_pf_sect *s)
+void			print_str(t_pf_sect *s)
 {
 	int			str_length;
 
 	str_length = 0;
 	if (s->spc == 's')
 	{
-		s->val.ptr = va_arg(s->ap, char*);
-		if (!s->val.ptr)
-			s->val.ptr = "(null)";
-		str_length = s->prcs < (int)ft_strlen(s->val.ptr) && s->flags & PRECISN ?
-										s->prcs : ft_strlen(s->val.ptr);
-		s->flags |= STRNG;
+		s->v.ptr = va_arg(s->ap, char*);
+		if (!s->v.ptr)
+			s->v.ptr = "(null)";
+		str_length = s->prcs < (int)ft_strlen(s->v.ptr) && s->fl & PRECISN ?
+										s->prcs : ft_strlen(s->v.ptr);
+		s->fl |= STRNG;
 	}
-	if (s->flags & MINUS_F)
+	if (s->fl & MINUS_F)
 	{
 		s->spc == 's' ? print_string(s) : print_character(s->spc, s);
 		print_padding(s, s->spc == 's' ? str_length : 1, ' ', 0);
 	}
 	else
 	{
-		print_padding(s, 
+		print_padding(s,
 			s->spc == 's' ? str_length : 1,
-			(s->flags & ZERO_F) ? '0' : ' ',
+			(s->fl & ZERO_F) ? '0' : ' ',
 			0);
 		s->spc == 's' ? print_string(s) : print_character(s->spc, s);
 	}
@@ -70,67 +69,67 @@ void	print_str(t_pf_sect *s)
 
 static void		minus_flag_float(t_pf_sect *s)
 {
-		print_sign_float(s);
-		putfloat(s, s->prcs + 1, 0);
-		if ((((s->val.shdbl[4] & NZERO) == NZERO) && s->val.llong == 0))
+	sign_float(s);
+	putfloat(s, s->prcs + 1, 0);
+	if ((((s->v.sh[4] & NZERO) == NZERO) && s->v.llong == 0))
+	{
+		print_character('.', s);
+		while (s->prcs)
 		{
-			print_character('.', s);
-			while (s->prcs)
-			{
-				ft_printf("%d", 0);
-				--s->prcs;
-			}
+			ft_printf("%d", 0);
+			--s->prcs;
 		}
-		else
-			print_padding(s, (s->i > s->prcs) ? s->i : s->prcs, ' ', 0);
+	}
+	else
+		print_padding(s, (s->i > s->prcs) ? s->i : s->prcs, ' ', 0);
 }
 
-void	print_f(t_pf_sect *s)
+void			print_f(t_pf_sect *s)
 {
 	long double	copy;
 
-	copy = (s->flags & CAP_L_F) ? va_arg(s->ap, long double) : va_arg(s->ap, double);
-	s->val.lngdbl = copy;
-	s->prcs = !(s->flags & PRECISN) ? 6 : s->prcs;
-	s->i = length_of_float(s);		// must implement correctly, ie. what is the length of a float
-	if (s->flags & MINUS_F)
+	copy = (s->fl & CAP_L_F) ?
+					va_arg(s->ap, long double) : va_arg(s->ap, double);
+	s->v.lngd = copy;
+	s->prcs = !(s->fl & PRECISN) ? 6 : s->prcs;
+	s->i = length_of_float(s);
+	if (s->fl & MINUS_F)
 		minus_flag_float(s);
 	else
 	{
-		s->i >= s->width || s->prcs >= s->width || s->flags & ZERO_F ? print_sign_float(s) : 0;
-		if (s->i < s->width && s->flags & PRECISN && !(s->flags & ZERO_F))
-			// print_padding(s, s->i > s->prcs ? s->i : s->prcs, ' ', 0); // s->i is length, which includes precision, and is always greatter than prcs
+		s->i >= s->width || s->prcs >= s->width || s->fl & ZERO_F ?
+													sign_float(s) : 0;
+		if (s->i < s->width && s->fl & PRECISN && !(s->fl & ZERO_F))
 			print_padding(s, s->i, ' ', 0);
 		else
-			print_padding(s, s->i, s->flags & ZERO_F ? '0' : ' ', 0);
-		!(s->flags & ZERO_F) && s->i < s->width ? print_sign_float(s) : 0;
-		if ((s->flags & ZERO_F) || s->width > s->i)
+			print_padding(s, s->i, s->fl & ZERO_F ? '0' : ' ', 0);
+		!(s->fl & ZERO_F) && s->i < s->width ? sign_float(s) : 0;
+		if ((s->fl & ZERO_F) || s->width > s->i)
 			print_padding(s, s->i, '0', 1);
 		putfloat(s, s->prcs + 1, 0);
 	}
 }
 
-void	no_minus_flag(t_pf_sect *s)
+void			no_minus_flag(t_pf_sect *s)
 {
-	int		i;
+	int			i;
 
 	i = ft_strchr_int("idc", s->spc);
-
 	if (s->i >= s->width || s->prcs >= s->width ||
-						(!(s->flags & PRECISN) && s->flags & ZERO_F)) 
+						(!(s->fl & PRECISN) && s->fl & ZERO_F))
 		i > -1 ? print_sign(s) : print_hash_flag(s);
-	if (s->width > s->prcs && s->flags & PRECISN)
+	if (s->width > s->prcs && s->fl & PRECISN)
 		print_padding(s, s->i > s->prcs ? s->i : s->prcs, ' ', 0);
 	else
 		print_padding(s, s->i > s->prcs ? s->i : s->prcs,
-										s->flags & ZERO_F ? '0' : ' ', 0);
-	if (!(s->flags & PRTSIGN))
+										s->fl & ZERO_F ? '0' : ' ', 0);
+	if (!(s->fl & PRTSIGN))
 		i > -1 ? print_sign(s) : print_hash_flag(s);
-	if ((s->flags & ZERO_F) || s->prcs >= s->i)
+	if ((s->fl & ZERO_F) || s->prcs >= s->i)
 		print_padding(s, s->i, s->spc != 'c' ? '0' : ' ', 1);
-	if (s->spc != 'c') 
-		i > -1 ? ft_putnbr_signed(s->val.llong, get_base(s->spc), s) :
-					ft_putnbr_unsigned(s->val.ll, get_base(s->spc), s);
+	if (s->spc != 'c')
+		i > -1 ? ft_putnbr_signed(s->v.llong, get_base(s->spc), s) :
+					ft_putnbr_unsigned(s->v.ll, get_base(s->spc), s);
 	else if (s->spc == 'c')
-		print_character(s->val.ll, s);
+		print_character(s->v.ll, s);
 }

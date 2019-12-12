@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strchr_int.c                                    :+:    :+:            */
+/*   ft_pow.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2019/09/30 18:33:57 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/11 22:02:13 by bprado        ########   odam.nl         */
+/*   Created: 2019/12/11 21:47:01 by bprado         #+#    #+#                */
+/*   Updated: 2019/12/11 21:49:11 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-ssize_t		ft_strchr_int(const char *s, int c)
+long double		ft_pow(float nbr, float exp)
 {
-	ssize_t		i;
+	float	holder;
 
-	i = 0;
-	while (s[i] != 0)
+	holder = nbr;
+	while (exp > 0)
 	{
-		if (s[i] == (unsigned char)c)
-			return (i);
-		i++;
-		if (c == 0 && s[i] == 0)
-			return (i);
+		nbr *= holder;
+		--exp;
 	}
-	return (-1);
+	return (nbr);
 }

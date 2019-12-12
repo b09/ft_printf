@@ -6,14 +6,9 @@
 #    By: bprado <bprado@student.codam.nl>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/06/03 16:52:44 by bprado         #+#    #+#                 #
-#    Updated: 2019/12/09 12:30:17 by bprado        ########   odam.nl          #
+#    Updated: 2019/12/11 22:10:52 by bprado        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
-
-# https://stackoverflow.com/questions/14639794/getting-make-to-create-sect-files-in-a-specific-directory
-# https://stackoverflow.com/questions/3220277/what-do-the-makefile-symbols-and-mean
-# http://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html#Automatic-Variables
-
 
 NAME 	= libftprintf.a
 
@@ -25,19 +20,19 @@ LIB 	= ./libft
 
 INC 	= -I inc -I libft/includes
 
-s		= $(patsubst src/%.c,s/%.o,$(SRC))
+OBJ		= $(patsubst src/%.c,obj/%.o,$(SRC))
 
 
 all: $(NAME)
 
-$(NAME): $(s) libft/libft.a
+$(NAME): $(OBJ) libft/libft.a
 	@echo "compiling ..."
 	@cp libft/libft.a $(NAME)
-	@ar rc $(NAME) $(s)
+	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 
-s/%.o: src/%.c inc/ft_printf.h
-	@mkdir -p s
+obj/%.o: src/%.c inc/ft_printf.h
+	@mkdir -p obj
 	$(CC) -c $(CFLAGS) $(INC) -o $@ $<
 
 libft/libft.a: $(wildcard libft/*.c)
@@ -46,7 +41,7 @@ libft/libft.a: $(wildcard libft/*.c)
 clean:
 	@echo "cleaning ..."
 	@make clean -C $(LIB)
-	@rm -rf s
+	@rm -rf obj
 
 fclean:	clean
 	@make fclean -C $(LIB)
