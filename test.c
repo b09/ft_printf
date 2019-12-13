@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 01:48:12 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 02:00:47 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int		main(void)
 	// ft_printf("%*sBar\n", n, "");
 
 // testing line 121 on specifier_functions on no_minus_flag()
-	printf("<--%d ft_printf\n", ft_printf("%7.9x", 5463929));
-	printf("<--%d printf\n", printf("%7.9x", 5463929));
+	printf("<--%d ft_printf\n", ft_printf("%#010.f", 546.3929));
+	printf("<--%d printf\n", printf("%#010.f", 546.3929));
 	printf("\n");
 
 	printf("<--%d ft_printf\n", ft_printf("%#09.10X", 5463929));

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 01:54:35 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 02:07:49 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,6 @@ void			print_string(t_pf_sect *s)
 			return ;
 		print_character(*(char*)s->v.ptr, s);
 		s->v.ptr++;
-		s->prcs -= s->fl & PRECISN ? 1 : 0;
+		s->prcs -= s->spc == 's' && s->fl & PRECISN ? 1 : 0;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:04:47 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/11 22:23:15 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 02:02:23 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void			putfloat(t_pf_sect *s, int i, int str_i)
 	j = ft_strchr_int((char*)s->v.ptr, '.');
 	((char*)s->v.ptr)[j + (s->prcs ? s->prcs + 1 : 0)] = 0;
 	print_string(s);
-	if (s->fl & HASH && s->prcs == 0)
+	if ((s->fl & HASH) && s->prcs == 0)
 		print_character('.', s);
 	ft_memdel((void*)&s->temp2);
 }
