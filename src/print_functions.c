@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 18:56:54 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 23:51:47 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,17 @@ static void		print_padding2(t_pf_sect *s, int padd, char character)
 	if (s->v.ll != 0)
 	{
 		padd += s->spc == 'p' && character == ' ' &&
-										padd >= 0 && s->prcs >= s->i ? -2 : 0;
+									padd >= 0 && s->prcs >= s->i ? -2 : 0;
 		padd += s->spc == 'p' && character == '0' &&
-										padd >= 0 && s->prcs >= s->i ? 2 : 0;
+									padd >= 0 && s->prcs >= s->i ? 2 : 0;
 		padd += s->spc == 'x' && character == ' ' && (s->fl & HASH) &&
-										padd >= 0 && s->prcs >= s->i ? -2 : 0;
+									padd >= 0 && 1 + s->prcs >= s->i ? -2 : 0;
 		padd += s->spc == 'x' && character == '0' && (s->fl & HASH) &&
-										padd >= 0 && s->prcs >= s->i ? 2 : 0;
+									padd >= 0 && s->prcs >= s->i ? 2 : 0;
 		padd += s->spc == 'X' && character == ' ' && (s->fl & HASH) &&
-										padd >= 0 && s->prcs >= s->i ? -2 : 0;
+									padd >= 0 && 1 + s->prcs >= s->i ? -2 : 0;
 		padd += s->spc == 'X' && character == '0' && (s->fl & HASH) &&
-										padd >= 0 && s->prcs >= s->i ? 2 : 0;
+									padd >= 0 && s->prcs >= s->i ? 2 : 0;
 	}
 	while (padd > 0)
 	{
@@ -105,39 +105,9 @@ void			print_padding(t_pf_sect *s, int length, char chr, char flip)
 	else
 	{
 		padd = s->width - length;
-		if ((s->fl & SIGNED_F && chr == ' ') && ((s->v.llong >= 0 &&
-					s->fl & 0x18) || (s->v.llong < 0 && s->prcs >= s->i)))
-			--padd;
-		else if (s->fl & SIGNED_F && chr == '0' &&
-		(s->fl & (PLUS | SPACE)) && s->v.llong >= 0)
+		if (s->fl & SIGNED_F && ((s->v.llong >= 0 && s->fl & 0x18) ||
+		(chr == ' ' && s->v.llong < 0 && s->prcs >= s->i)))
 			--padd;
 	}
 	print_padding2(s, padd, chr);
-}
-
-void			print_string(t_pf_sect *s)
-{
-	char	*str;
-	int		i;
-
-	i = 0;
-	str = "(null)";
-	if (s->spc == 's' && s->v.ptr == 0)
-	{
-		while (*str)
-		{
-			print_character(*str, s);
-			++str;
-		}
-		return ;
-	}
-	str = s->v.ptr;
-	while (*str)
-	{
-		if (s->fl & PRECISN && !s->prcs && s->spc == 's')
-			return ;
-		print_character(*str, s);
-		str++;
-		s->prcs -= s->spc == 's' && s->fl & PRECISN ? 1 : 0;
-	}
 }

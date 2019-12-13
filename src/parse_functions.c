@@ -6,13 +6,13 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/12 23:24:38 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 21:05:08 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	parse_length(t_pf_sect *s)
+void			parse_length(t_pf_sect *s)
 {
 	union_output i;
 
@@ -37,7 +37,7 @@ void	parse_length(t_pf_sect *s)
 	}
 }
 
-void	parse_specifier(func_pointer arrpointer[128])
+void			parse_specifier(func_pointer arrpointer[128])
 {
 	int				i;
 
@@ -61,7 +61,7 @@ void	parse_specifier(func_pointer arrpointer[128])
 	arrpointer['f'] = print_f;
 }
 
-void	parse_flags(t_pf_sect *s)
+static void		parse_flags(t_pf_sect *s)
 {
 	while (ft_strchr_int("#0- +", s->str[s->i_str]) != -1)
 	{
@@ -72,7 +72,7 @@ void	parse_flags(t_pf_sect *s)
 	s->fl ^= ((s->fl & 0x18) == 0x18) ? SPACE : 0;
 }
 
-void	parse_width_precision(t_pf_sect *s)
+static void		parse_width_precision(t_pf_sect *s)
 {
 	s->width = ft_atoi(&(s->str[s->i_str]));
 	s->width = s->str[s->i_str] == '*' ? va_arg(s->ap, int) : s->width;
@@ -94,7 +94,7 @@ void	parse_width_precision(t_pf_sect *s)
 	}
 }
 
-void	parse_general(t_pf_sect *s)
+void			parse_general(t_pf_sect *s)
 {
 	parse_flags(s);
 	parse_width_precision(s);

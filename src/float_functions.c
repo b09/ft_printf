@@ -6,40 +6,11 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:04:47 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 19:42:05 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 20:03:43 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-int					length_of_float(t_pf_sect *s)
-{
-	int				i;
-	long double		original_float;
-
-	i = 0;
-	if (((s->v.sh[4] & NZERO) == NZERO) && s->v.llong == 0)
-		i = 2 + (s->prcs ? s->prcs + 1 : 0);
-	i = ((s->v.sh[4] & NINF) == NINF && s->v.llong == (1L << 63)) ? 4 : i;
-	i = ((s->v.sh[4] & INF) == INF && s->v.llong == (1L << 63)) ? 3 : i;
-	i = ((s->v.sh[4] & INF) == INF && s->v.llong != 0) ? 3 : i;
-	if (i)
-		return (i);
-	i = 2;
-	original_float = s->v.lngd;
-	i += s->fl & PRECISN ? s->prcs : 6;
-	i = s->fl & PRECISN && !s->prcs ? 1 : i;
-	if (original_float < 0)
-		original_float = -original_float;
-	while (original_float > 9)
-	{
-		original_float /= 10;
-		++i;
-	}
-	i += s->v.lngd < 0 ? 1 : 0;
-	i += s->fl & (HASH | PLUS) || (s->fl & SPACE && s->v.lngd > 0) ? 1 : 0;
-	return (i);
-}
 
 static int			float_exception(t_pf_sect *s)
 {

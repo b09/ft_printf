@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/06 18:11:44 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/06 18:23:44 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 19:46:42 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static char		*ft_itoa2_unsigned(char *str, unsigned long long holder, int i)
 
 char			*ft_itoa_unsigned(unsigned long long nbr, char negative)
 {
-	int			        i;
-	char	        	*str;
-    unsigned long long  holder;
+	int					i;
+	char				*str;
+	unsigned long long	holder;
 
 	holder = nbr;
 	i = 1;

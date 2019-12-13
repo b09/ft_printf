@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 19:37:54 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 23:10:27 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,52 +30,78 @@ int		main(void)
 // testing line 121 on specifier_functions on no_minus_flag()
 
 
-	printf("<--%d ft_printf\n", ft_printf("%#4.5x", 0xeaef));
-	printf("<--%d printf\n", printf("%#4.5x", 0xeaef));
+	printf("<--%d ft_printf\n", ft_printf("%#x", 0));
+	printf("<--%d printf\n", printf("%#x", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#.5x", 0xeaef));
-	printf("<--%d printf\n", printf("%#.5x", 0xeaef));
+	printf("<--%d ft_printf\n", ft_printf("%#3x", 0));
+	printf("<--%d printf\n", printf("%#3x", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#7x", 0xeaef));
-	printf("<--%d printf\n", printf("%#7x", 0xeaef));
+	printf("<--%d ft_printf\n", ft_printf("%#-3x", 0));
+	printf("<--%d printf\n", printf("%#-3x", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#010.f", 546.3929));
-	printf("<--%d printf\n", printf("%#010.f", 546.3929));
+	printf("<--%d ft_printf\n", ft_printf("this %#X number", 0));
+	printf("<--%d printf\n", printf("this %#X number", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#09.10X", 5463929));
-	printf("<--%d printf\n", printf("%#09.10X", 5463929));
+	printf("<--%d ft_printf\n", ft_printf("%#3X", 0));
+	printf("<--%d printf\n", printf("%#3X", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#09.10x", 5463929));
-	printf("<--%d printf\n", printf("%#09.10x", 5463929));
+	printf("<--%d ft_printf\n", ft_printf("%#-3X", 0));
+	printf("<--%d printf\n", printf("%#-3X", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#09.10p", 5463929));
-	printf("<--%d printf\n", printf("%#09.10p", 5463929));
+	printf("<--%d ft_printf\n", ft_printf("%#5.3x", 0x25));
+	printf("<--%d printf\n", printf("%#5.3X", 0x25));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#09.10o", 5463929));
-	printf("<--%d printf\n", printf("%#09.10o", 5463929));
+	printf("<--%d ft_printf\n", ft_printf("%#5.3u", 10));
+	printf("<--%d printf\n", printf("%#5.3u", 10));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#0.10X", 5463929));
-	printf("<--%d printf\n", printf("%#0.10X", 5463929));
+	printf("<--%d ft_printf\n", ft_printf("%-7.lf", 4234567899.5234567890));
+	printf("<--%d printf\n", printf("%-7.lf", 4234567899.5234567890));
 	printf("\n");
+
+
+	// printf("<--%d ft_printf\n", ft_printf("%#.5x", 0xeaef));
+	// printf("<--%d printf\n", printf("%#.5x", 0xeaef));
+	// printf("\n");
+
+	// printf("<--%d ft_printf\n", ft_printf("%#7x", 0xeaef));
+	// printf("<--%d printf\n", printf("%#7x", 0xeaef));
+	// printf("\n");
+
+	// printf("<--%d ft_printf\n", ft_printf("%#010.f", 546.3929));
+	// printf("<--%d printf\n", printf("%#010.f", 546.3929));
+	// printf("\n");
+
+	// printf("<--%d ft_printf\n", ft_printf("%#09.10X", 5463929));
+	// printf("<--%d printf\n", printf("%#09.10X", 5463929));
+	// printf("\n");
+
+	// printf("<--%d ft_printf\n", ft_printf("%#09.10x", 5463929));
+	// printf("<--%d printf\n", printf("%#09.10x", 5463929));
+	// printf("\n");
+
+	// printf("<--%d ft_printf\n", ft_printf("%#09.10p", 5463929));
+	// printf("<--%d printf\n", printf("%#09.10p", 5463929));
+	// printf("\n");
+
+	// printf("<--%d ft_printf\n", ft_printf("%#09.10o", 5463929));
+	// printf("<--%d printf\n", printf("%#09.10o", 5463929));
+	// printf("\n");
+
+	// printf("<--%d ft_printf\n", ft_printf("%#0.10X", 5463929));
+	// printf("<--%d printf\n", printf("%#0.10X", 5463929));
+	// printf("\n");
 	
-	printf("<--%d ft_printf\n", ft_printf("%.1u %5.3u", 10, 10));
-	printf("<--%d printf\n", printf("%.1u %5.3u", 10, 10));
-	printf("\n");
-
-	// while (1)
-	// {
-	// 	if (getchar())
-	// 		exit (0);
-	// }
-
+	// printf("<--%d ft_printf\n", ft_printf("%.1u %5.3u", 10, 10));
+	// printf("<--%d printf\n", printf("%.1u %5.3u", 10, 10));
+	// printf("\n");
 
 	// printf(" <--%d ft_printf\n", ft_printf("%#o", 0));
 	// printf(" <--%d printf\n", printf("%#o", 0));

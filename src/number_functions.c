@@ -6,28 +6,11 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:07:04 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 02:53:39 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 22:56:14 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-char			get_base(char format_spc)
-{
-	char			base;
-
-	base = 0;
-	base = format_spc == 'd' ? 10 : base;
-	base = format_spc == 'b' ? 2 : base;
-	base = format_spc == 'i' ? 10 : base;
-	base = format_spc == 'f' ? 10 : base;
-	base = format_spc == 'x' ? 16 : base;
-	base = format_spc == 'X' ? 16 : base;
-	base = format_spc == 'o' ? 8 : base;
-	base = format_spc == 'u' ? 10 : base;
-	base = format_spc == 'p' ? 16 : base;
-	return (base);
-}
 
 int				length_of_number(t_pf_sect *s)
 {
@@ -65,10 +48,8 @@ int				length_of_unsigned(t_pf_sect *s)
 		original_int /= base;
 		++counter;
 	}
-	if ((s->fl & HASH) && s->spc != 'o' && s->v.ll != 0)
+	if ((s->fl & HASH) && s->spc != 'o' && s->v.ll != 0 && s->spc != 'u')
 		counter += 2;
-	// if (s->fl & HASH && (counter - 1 == s->prcs) && (s->spc == 'x' || s->spc == 'X')) //  this did not work but trying to solve ft_printf("%#4.5x", 0xeaef));
-	// 	counter -= 2;
 	else if (s->spc == 'p')
 		counter += 2;
 	counter = (!s->v.ll && s->fl & PRECISN && !s->prcs) ? 0 : counter;
@@ -77,19 +58,6 @@ int				length_of_unsigned(t_pf_sect *s)
 	else if (s->fl & HASH && s->spc == 'o' && s->v.ll == 0)
 		counter = 1;
 	return (counter);
-}
-
-static void		putnbr_signed_exception(t_pf_sect *s)
-{
-	char			*stupidasslongnumber;
-
-	stupidasslongnumber = "9223372036854775808";
-	if (s->v.llong == -9223372036854775807 - 1)
-	{
-		s->v.ptr = stupidasslongnumber;
-		print_string(s);
-		return ;
-	}
 }
 
 void			ft_putnbr_signed(long long n, int base, t_pf_sect *s)
@@ -126,9 +94,9 @@ void			ft_putnbr_unsigned(u_int64_t i, int base, t_pf_sect *s)
 	u_int8_t		a;
 
 	a = 0;
-	if ((s->v.ll == 0 && (s->fl & PRECISN) && s->prcs == 0 &&
-	s->spc != 'o') || (s->v.ll == 0 && (s->fl & PRECISN) &&
-	s->prcs == 0 && s->spc == 'o' && !(s->fl & HASH)))
+	if (s->v.ll == 0 && s->prcs == 0 && (((s->fl & PRECISN) && (s->spc != 'o' ||
+	(s->spc == 'o' && !(s->fl & HASH)))) || ((s->spc == 'x' || s->spc == 'X') &&
+	s->fl & HASH)))
 		return ;
 	if (i > ((unsigned)base - 1))
 	{
@@ -145,4 +113,33 @@ void			ft_putnbr_unsigned(u_int64_t i, int base, t_pf_sect *s)
 		a = s->spc != 'X' ? 'a' + i - 10 : 'A' + i - 10;
 		print_character(a, s);
 	}
+}
+
+int				length_of_float(t_pf_sect *s)
+{
+	int				i;
+	long double		original_float;
+
+	i = 0;
+	if (((s->v.sh[4] & NZERO) == NZERO) && s->v.llong == 0)
+		i = 2 + (s->prcs ? s->prcs + 1 : 0);
+	i = ((s->v.sh[4] & NINF) == NINF && s->v.llong == (1L << 63)) ? 4 : i;
+	i = ((s->v.sh[4] & INF) == INF && s->v.llong == (1L << 63)) ? 3 : i;
+	i = ((s->v.sh[4] & INF) == INF && s->v.llong != 0) ? 3 : i;
+	if (i)
+		return (i);
+	i = 2;
+	original_float = s->v.lngd;
+	i += s->fl & PRECISN ? s->prcs : 6;
+	i = s->fl & PRECISN && !s->prcs ? 1 : i;
+	if (original_float < 0)
+		original_float = -original_float;
+	while (original_float > 9)
+	{
+		original_float /= 10;
+		++i;
+	}
+	i += s->v.lngd < 0 ? 1 : 0;
+	i += s->fl & (HASH | PLUS) || (s->fl & SPACE && s->v.lngd > 0) ? 1 : 0;
+	return (i);
 }
