@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:07:04 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/12 23:24:11 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 02:53:39 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int				length_of_unsigned(t_pf_sect *s)
 	}
 	if ((s->fl & HASH) && s->spc != 'o' && s->v.ll != 0)
 		counter += 2;
+	// if (s->fl & HASH && (counter - 1 == s->prcs) && (s->spc == 'x' || s->spc == 'X')) //  this did not work but trying to solve ft_printf("%#4.5x", 0xeaef));
+	// 	counter -= 2;
 	else if (s->spc == 'p')
 		counter += 2;
 	counter = (!s->v.ll && s->fl & PRECISN && !s->prcs) ? 0 : counter;

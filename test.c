@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 02:00:47 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 19:37:54 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ int		main(void)
 	// ft_printf("%*sBar\n", n, "");
 
 // testing line 121 on specifier_functions on no_minus_flag()
+
+
+	printf("<--%d ft_printf\n", ft_printf("%#4.5x", 0xeaef));
+	printf("<--%d printf\n", printf("%#4.5x", 0xeaef));
+	printf("\n");
+
+	printf("<--%d ft_printf\n", ft_printf("%#.5x", 0xeaef));
+	printf("<--%d printf\n", printf("%#.5x", 0xeaef));
+	printf("\n");
+
+	printf("<--%d ft_printf\n", ft_printf("%#7x", 0xeaef));
+	printf("<--%d printf\n", printf("%#7x", 0xeaef));
+	printf("\n");
+
 	printf("<--%d ft_printf\n", ft_printf("%#010.f", 546.3929));
 	printf("<--%d printf\n", printf("%#010.f", 546.3929));
 	printf("\n");
@@ -55,6 +69,12 @@ int		main(void)
 	printf("<--%d ft_printf\n", ft_printf("%.1u %5.3u", 10, 10));
 	printf("<--%d printf\n", printf("%.1u %5.3u", 10, 10));
 	printf("\n");
+
+	// while (1)
+	// {
+	// 	if (getchar())
+	// 		exit (0);
+	// }
 
 
 	// printf(" <--%d ft_printf\n", ft_printf("%#o", 0));

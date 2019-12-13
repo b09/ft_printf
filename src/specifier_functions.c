@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:18:01 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/11 21:31:32 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 16:21:43 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,8 @@ void			no_minus_flag(t_pf_sect *s)
 										s->fl & ZERO_F ? '0' : ' ', 0);
 	if (!(s->fl & PRTSIGN))
 		i > -1 ? print_sign(s) : print_hash_flag(s);
-	if ((s->fl & ZERO_F) || s->prcs >= s->i)
+	if ((s->fl & ZERO_F) || s->prcs >= s->i || (s->prcs + 1 == s->i &&
+					s->fl & HASH && (s->spc == 'x' || s->spc == 'X')))
 		print_padding(s, s->i, s->spc != 'c' ? '0' : ' ', 1);
 	if (s->spc != 'c')
 		i > -1 ? ft_putnbr_signed(s->v.llong, get_base(s->spc), s) :

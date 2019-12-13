@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 00:00:34 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 19:43:08 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void			print_f(t_pf_sect *s);
 
 int				length_of_float(t_pf_sect *s);
 void			putfloat(t_pf_sect *s, int i, int str_i);
-int				float_exception(t_pf_sect *s);
 void			sign_float(t_pf_sect *s);
 int				length_of_unsigned(t_pf_sect *s);
 void			ft_putnbr_unsigned(u_int64_t n, int base, t_pf_sect *s);

@@ -6,13 +6,13 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:04:47 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 02:02:23 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 19:42:05 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int				length_of_float(t_pf_sect *s)
+int					length_of_float(t_pf_sect *s)
 {
 	int				i;
 	long double		original_float;
@@ -41,7 +41,7 @@ int				length_of_float(t_pf_sect *s)
 	return (i);
 }
 
-int				float_exception(t_pf_sect *s)
+static int			float_exception(t_pf_sect *s)
 {
 	char			*str1;
 	char			*str2;
@@ -69,7 +69,7 @@ int				float_exception(t_pf_sect *s)
 	return (1);
 }
 
-static void		round_float(char *str, int i)
+static void			round_float(char *str, int i)
 {
 	if (str[i] != '9' && str[i] != '.')
 		++str[i];
@@ -97,7 +97,7 @@ static void		round_float(char *str, int i)
 	}
 }
 
-static char		*string_for_float(t_pf_sect *s, char flip, char *decimalstr)
+static char			*string_for_float(t_pf_sect *s, char flip, char *decimalstr)
 {
 	char			*entire_float;
 	char			*num_no_dec;
@@ -113,34 +113,16 @@ static char		*string_for_float(t_pf_sect *s, char flip, char *decimalstr)
 		copy = s->v.lngd < 0 ? -s->v.lngd : s->v.lngd;
 		num_no_dec = ft_itoa_unsigned(copy, 0);
 		entire_float = ft_strjoin(num_no_dec, decimalstr);
-		ft_memdel((void*)&num_no_dec);
+		free(num_no_dec);
 	}
 	else
 		entire_float = ft_strjoin("1", decimalstr);
-	ft_memdel((void*)&decimalstr);
+	free(decimalstr);
 	return (entire_float);
 }
 
-void			putfloat(t_pf_sect *s, int i, int str_i)
+static void			putfloat2(t_pf_sect *s, int j, int str_i)
 {
-	long double		copy;
-	int				j;
-
-	if (float_exception(s))
-		return ;
-	copy = s->v.lngd < 0 ? -s->v.lngd : s->v.lngd;
-	s->temp = string_for_float(s, 1, s->temp2);
-	j = s->temp[0];
-	str_i = ft_strchr_int(s->temp, 'a');
-	while (i)
-	{
-		copy *= 10.0;
-		s->temp[str_i] = ((int64_t)copy % 10) + '0';
-		copy -= (int64_t)copy;
-		--i;
-		++str_i;
-	}
-	--str_i;
 	if ((s->temp[str_i] - '0') % 10 > 4)
 	{
 		s->temp[str_i] = 0;
@@ -158,5 +140,28 @@ void			putfloat(t_pf_sect *s, int i, int str_i)
 	print_string(s);
 	if ((s->fl & HASH) && s->prcs == 0)
 		print_character('.', s);
-	ft_memdel((void*)&s->temp2);
+	free(s->v.ptr);
+}
+
+void				putfloat(t_pf_sect *s, int prcs, int str_i)
+{
+	long double		copy;
+	int				j;
+
+	if (float_exception(s))
+		return ;
+	copy = s->v.lngd < 0 ? -s->v.lngd : s->v.lngd;
+	s->temp = string_for_float(s, 1, s->temp2);
+	j = s->temp[0];
+	str_i = ft_strchr_int(s->temp, 'a');
+	while (prcs)
+	{
+		copy *= 10.0;
+		s->temp[str_i] = ((int64_t)copy % 10) + '0';
+		copy -= (int64_t)copy;
+		--prcs;
+		++str_i;
+	}
+	--str_i;
+	putfloat2(s, j, str_i);
 }

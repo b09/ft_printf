@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/05 14:07:25 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 02:07:49 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 18:56:54 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,17 @@ static void		print_padding2(t_pf_sect *s, int padd, char character)
 	if (s->v.ll != 0)
 	{
 		padd += s->spc == 'p' && character == ' ' &&
-										padd >=0 && s->prcs >= s->i ? -2 : 0;
+										padd >= 0 && s->prcs >= s->i ? -2 : 0;
 		padd += s->spc == 'p' && character == '0' &&
-										padd >=0 && s->prcs >= s->i ? 2 : 0;
+										padd >= 0 && s->prcs >= s->i ? 2 : 0;
 		padd += s->spc == 'x' && character == ' ' && (s->fl & HASH) &&
-										padd >=0 && s->prcs >= s->i ? -2 : 0;
+										padd >= 0 && s->prcs >= s->i ? -2 : 0;
 		padd += s->spc == 'x' && character == '0' && (s->fl & HASH) &&
-										padd >=0 && s->prcs >= s->i ? 2 : 0;
+										padd >= 0 && s->prcs >= s->i ? 2 : 0;
 		padd += s->spc == 'X' && character == ' ' && (s->fl & HASH) &&
-										padd >=0 && s->prcs >= s->i ? -2 : 0;
+										padd >= 0 && s->prcs >= s->i ? -2 : 0;
 		padd += s->spc == 'X' && character == '0' && (s->fl & HASH) &&
-										padd >=0 && s->prcs >= s->i ? 2 : 0;
+										padd >= 0 && s->prcs >= s->i ? 2 : 0;
 	}
 	while (padd > 0)
 	{
@@ -94,6 +94,9 @@ void			print_padding(t_pf_sect *s, int length, char chr, char flip)
 	padd = 0;
 	if (flip)
 	{
+		if ((s->prcs + 1 == s->i && s->fl & HASH && (s->spc == 'x' ||
+															s->spc == 'X')))
+			length -= 2;
 		padd = s->prcs - length;
 		if (s->fl & SIGNED_F && s->v.llong < 0)
 			++padd;
@@ -115,7 +118,9 @@ void			print_padding(t_pf_sect *s, int length, char chr, char flip)
 void			print_string(t_pf_sect *s)
 {
 	char	*str;
+	int		i;
 
+	i = 0;
 	str = "(null)";
 	if (s->spc == 's' && s->v.ptr == 0)
 	{
@@ -126,12 +131,13 @@ void			print_string(t_pf_sect *s)
 		}
 		return ;
 	}
-	while (*(char*)s->v.ptr)
+	str = s->v.ptr;
+	while (*str)
 	{
 		if (s->fl & PRECISN && !s->prcs && s->spc == 's')
 			return ;
-		print_character(*(char*)s->v.ptr, s);
-		s->v.ptr++;
+		print_character(*str, s);
+		str++;
 		s->prcs -= s->spc == 's' && s->fl & PRECISN ? 1 : 0;
 	}
 }
