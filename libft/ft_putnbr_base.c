@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/21 23:49:35 by bprado         #+#    #+#                */
-/*   Updated: 2019/10/23 18:30:45 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 23:53:16 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	ft_putnbr_base(long long n, int base)
 	if (n < 0)
 	{
 		n = -n;
-		// write(1, "-", 1);
 	}
 	i = n;
 	if (i > (base - 1))
