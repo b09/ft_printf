@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/11 21:27:29 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/13 00:00:34 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 # include <stdio.h> //for testing printf
 # include <stdarg.h>
-# include "libft.h"
+# include <libft.h>
 
 # define HASH 			1 << 0
 # define ZERO_F 		1 << 1
@@ -33,6 +33,7 @@
 # define WIDTH			1 << 12
 # define STRNG			1 << 13
 # define PRTSIGN		1 << 14
+# define SPRINTF		1 << 15
 # define NZERO			0x8000
 # define INF			0x7FFF
 # define NINF			0xFFFF
@@ -50,7 +51,6 @@ typedef struct	s_pf_sect
 {
 	const char*			str;
 	short				fl;
-	// char				buffer[32];
 	char				spc;
 	int					i;
 	union_output		v;
@@ -63,11 +63,14 @@ typedef struct	s_pf_sect
 	char				*temp;
 	char				*temp2;
 	int					fd;
+	char				*sprintf;
 }				t_pf_sect;
 
 typedef void (*func_pointer)(t_pf_sect *);
 
-int				ft_printf(const char * restrict format, ...);
+int				ft_printf(const char *format, ...);
+int				ft_vdprintf(int fd, const char *format, va_list ap);
+int				ft_dprintf(int fd, const char *format, ...);
 void			parse_flags(t_pf_sect *s);
 void			parse_width_precision(t_pf_sect *s);
 void			parse_length(t_pf_sect *s);
@@ -96,6 +99,6 @@ void			clean_struct(t_pf_sect *s);
 long double		ft_pow(float a, float b);
 void			no_minus_flag(t_pf_sect *s);
 void			print_dioupxxc(t_pf_sect *s);
-int				ft_dprintf(int fd, const char* restrict format, ...);
+void			print_n(t_pf_sect *s);
 
 #endif

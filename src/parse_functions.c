@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/11/03 19:16:18 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/11 21:45:40 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/12 23:24:38 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	parse_length(t_pf_sect *s)
 		i.llong = s->fl & HH_F ? (char)i.llong : i.llong;
 		s->v.llong = i.llong;
 	}
-	if (ft_strchr("ouxX", s->spc))
+	if (ft_strchr("bouxX", s->spc))
 	{
 		i.ll = s->fl & LL_F ? va_arg(s->ap, u_int64_t) : i.ll;
 		i.ll = s->fl & L_F ? va_arg(s->ap, unsigned long) : i.ll;
@@ -43,9 +43,13 @@ void	parse_specifier(func_pointer arrpointer[128])
 
 	i = 0;
 	while (i < 128)
-		arrpointer[i++] = print_str;
+	{
+		arrpointer[i] = print_str;
+		++i;
+	}
 	arrpointer['s'] = print_str;
 	arrpointer['c'] = print_dioupxxc;
+	arrpointer['b'] = print_dioupxxc;
 	arrpointer['p'] = print_dioupxxc;
 	arrpointer['d'] = print_dioupxxc;
 	arrpointer['i'] = print_dioupxxc;
@@ -53,6 +57,7 @@ void	parse_specifier(func_pointer arrpointer[128])
 	arrpointer['u'] = print_dioupxxc;
 	arrpointer['x'] = print_dioupxxc;
 	arrpointer['X'] = print_dioupxxc;
+	arrpointer['n'] = print_n;
 	arrpointer['f'] = print_f;
 }
 

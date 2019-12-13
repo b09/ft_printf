@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:07:04 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/11 21:12:35 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/12 23:24:11 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char			get_base(char format_spc)
 
 	base = 0;
 	base = format_spc == 'd' ? 10 : base;
+	base = format_spc == 'b' ? 2 : base;
 	base = format_spc == 'i' ? 10 : base;
 	base = format_spc == 'f' ? 10 : base;
 	base = format_spc == 'x' ? 16 : base;
