@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:07:04 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 22:56:14 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/14 17:28:02 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,20 @@ int				length_of_unsigned(t_pf_sect *s)
 
 	base = get_base(s->spc);
 	counter = 1;
-	original_int = s->v.ll;
+	original_int = s->v.ull;
 	while ((base > 0) && original_int > (base - 1))
 	{
 		original_int /= base;
 		++counter;
 	}
-	if ((s->fl & HASH) && s->spc != 'o' && s->v.ll != 0 && s->spc != 'u')
+	if ((s->fl & HASH) && s->spc != 'o' && s->v.ull != 0 && s->spc != 'u')
 		counter += 2;
 	else if (s->spc == 'p')
 		counter += 2;
-	counter = (!s->v.ll && s->fl & PRECISN && !s->prcs) ? 0 : counter;
-	if (s->fl & HASH && s->spc == 'o' && s->v.ll != 0)
+	counter = (!s->v.ull && s->fl & PRECISN && !s->prcs) ? 0 : counter;
+	if (s->fl & HASH && s->spc == 'o' && s->v.ull != 0)
 		counter += 1;
-	else if (s->fl & HASH && s->spc == 'o' && s->v.ll == 0)
+	else if (s->fl & HASH && s->spc == 'o' && s->v.ull == 0)
 		counter = 1;
 	return (counter);
 }
@@ -94,7 +94,7 @@ void			ft_putnbr_unsigned(u_int64_t i, int base, t_pf_sect *s)
 	u_int8_t		a;
 
 	a = 0;
-	if (s->v.ll == 0 && s->prcs == 0 && (((s->fl & PRECISN) && (s->spc != 'o' ||
+	if (s->v.ull == 0 && s->prcs == 0 && (((s->fl & PRECISN) && (s->spc != 'o' ||
 	(s->spc == 'o' && !(s->fl & HASH)))) || ((s->spc == 'x' || s->spc == 'X') &&
 	s->fl & HASH)))
 		return ;

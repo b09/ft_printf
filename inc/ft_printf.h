@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:27 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 21:05:04 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/14 18:09:08 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 
 # include <stdio.h> //for testing printf
 # include <stdarg.h>
-# include <libft.h>
+// # include "libft.h"
+# include "../libft/includes/libft.h"
 
 # define HASH 			1 << 0
 # define ZERO_F 		1 << 1
@@ -33,12 +34,13 @@
 # define WIDTH			1 << 12
 # define STRNG			1 << 13
 # define PRTSIGN		1 << 14
+# define FLOATEXCP		1 << 15
 # define NZERO			0x8000
 # define INF			0x7FFF
 # define NINF			0xFFFF
 typedef union	u_union_output
 {
-	u_int64_t			ll;
+	u_int64_t			ull;
 	long long			llong;
 	long double			lngd;
 	u_int16_t			sh[5];
@@ -51,9 +53,9 @@ typedef struct	s_pf_sect
 	const char*			str;
 	short				fl;
 	char				spc;
-	int					i;
+	int					len;
 	union_output		v;
-	int					i_str;
+	int					i;
 	int					width;
 	int					prcs;
 	int					length;
@@ -78,8 +80,8 @@ int				length_of_number(t_pf_sect *s);
 int				length_of_unsigned(t_pf_sect *s);
 void			ft_putnbr_signed(long long n, int base, t_pf_sect *s);
 void			ft_putnbr_unsigned(u_int64_t n, int base, t_pf_sect *s);
-void			parse_specifier(func_pointer arrpointer[128]);
-void			parse_general(t_pf_sect *s);
+void			populate_func_array(func_pointer arrpointer[128]);
+void			parse_format_string(t_pf_sect *s);
 void			print_sign(t_pf_sect *s);
 void			sign_float(t_pf_sect *s);
 void			print_hash_flag(t_pf_sect *s);

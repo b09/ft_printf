@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/12/04 21:04:47 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 20:03:43 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/14 17:58:31 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int			float_exception(t_pf_sect *s)
 		return (0);
 	print_string(s);
 	s->v.lngd = temp;
+	s->fl |= FLOATEXCP;
 	return (1);
 }
 

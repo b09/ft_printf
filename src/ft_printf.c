@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/03 16:49:24 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 21:03:36 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/14 17:37:26 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ static void		clean_struct(t_pf_sect *s)
 {
 	s->fl = 0;
 	s->spc = 0;
-	s->i = 0;
-	s->v.ll = 0;
+	s->len = 0;
+	s->v.ull = 0;
 	s->width = 0;
 	s->prcs = 0;
-	++s->i_str;
+	++s->i;
 }
 
 int				ft_vdprintf(int fd, const char *format, va_list ap)
@@ -32,21 +32,21 @@ int				ft_vdprintf(int fd, const char *format, va_list ap)
 	s.fd = fd;
 	s.str = format;
 	va_copy(s.ap, ap);
-	parse_specifier(arrpointer);
-	while (s.str[s.i_str] != 0)
+	populate_func_array(arrpointer);
+	while (s.str[s.i] != 0)
 	{
-		if (s.str[s.i_str] == '%' && s.str[s.i_str + 1] == 0)
+		if (s.str[s.i] == '%' && s.str[s.i + 1] == 0)
 			break ;
-		if (s.str[s.i_str] == '%')
+		if (s.str[s.i] == '%')
 		{
-			++s.i_str;
-			parse_general(&s);
+			++s.i;
+			parse_format_string(&s);
 			arrpointer[(int)s.spc](&s);
 			clean_struct(&s);
 		}
-		if (s.str[s.i_str] != 0 && s.str[s.i_str] != '%')
-			print_character(s.str[s.i_str], &s);
-		s.i_str += s.str[s.i_str] && s.str[s.i_str] != '%' ? 1 : 0;
+		if (s.str[s.i] != 0 && s.str[s.i] != '%')
+			print_character(s.str[s.i], &s);
+		s.i += s.str[s.i] && s.str[s.i] != '%' ? 1 : 0;
 	}
 	va_end(s.ap);
 	return (s.ret);

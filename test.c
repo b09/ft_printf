@@ -6,7 +6,7 @@
 /*   By: bprado <bprado@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/06/13 18:59:41 by bprado         #+#    #+#                */
-/*   Updated: 2019/12/13 23:10:27 by bprado        ########   odam.nl         */
+/*   Updated: 2019/12/14 17:08:57 by bprado        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,40 +30,40 @@ int		main(void)
 // testing line 121 on specifier_functions on no_minus_flag()
 
 
-	printf("<--%d ft_printf\n", ft_printf("%#x", 0));
-	printf("<--%d printf\n", printf("%#x", 0));
+	printf("<--%d ft_printf\n", ft_printf("%#p", 0));
+	printf("<--%d printf\n", printf("%#p", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#3x", 0));
-	printf("<--%d printf\n", printf("%#3x", 0));
+	printf("<--%d ft_printf\n", ft_printf("%#3p", 0));
+	printf("<--%d printf\n", printf("%#3p", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#-3x", 0));
-	printf("<--%d printf\n", printf("%#-3x", 0));
+	printf("<--%d ft_printf\n", ft_printf("%#-3p", 0));
+	printf("<--%d printf\n", printf("%#-3p", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("this %#X number", 0));
-	printf("<--%d printf\n", printf("this %#X number", 0));
+	printf("<--%d ft_printf\n", ft_printf("this %#p number", 0));
+	printf("<--%d printf\n", printf("this %#p number", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#3X", 0));
-	printf("<--%d printf\n", printf("%#3X", 0));
+	printf("<--%d ft_printf\n", ft_printf("%#3p", 0));
+	printf("<--%d printf\n", printf("%#3p", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#-3X", 0));
-	printf("<--%d printf\n", printf("%#-3X", 0));
+	printf("<--%d ft_printf\n", ft_printf("%#-3p", 0));
+	printf("<--%d printf\n", printf("%#-3p", 0));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#5.3x", 0x25));
-	printf("<--%d printf\n", printf("%#5.3X", 0x25));
+	printf("<--%d ft_printf\n", ft_printf("%53p", 0x25));
+	printf("<--%d printf\n", printf("%53p", 0x25));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%#5.3u", 10));
-	printf("<--%d printf\n", printf("%#5.3u", 10));
+	printf("<--%d ft_printf\n", ft_printf("%#5.3p" ));
+	printf("<--%d printf\n", printf("%#5.3p" ));
 	printf("\n");
 
-	printf("<--%d ft_printf\n", ft_printf("%-7.lf", 4234567899.5234567890));
-	printf("<--%d printf\n", printf("%-7.lf", 4234567899.5234567890));
+	printf("<--%d ft_printf\n", ft_printf("%-7.p", 4234567899.5234567890));
+	printf("<--%d printf\n", printf("%-7.p", 4234567899.5234567890));
 	printf("\n");
 
 
