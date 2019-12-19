@@ -94,9 +94,9 @@ void			ft_putnbr_unsigned(u_int64_t i, int base, t_pf_sect *s)
 	u_int8_t		a;
 
 	a = 0;
-	if (s->v.ull == 0 && s->prcs == 0 && (((s->fl & PRECISN) && (s->spc != 'o' ||
-	(s->spc == 'o' && !(s->fl & HASH)))) || ((s->spc == 'x' || s->spc == 'X') &&
-	s->fl & HASH)))
+	if (s->v.ull == 0 && s->prcs == 0 && (((s->fl & PRECISN) &&
+		(s->spc != 'o' || (s->spc == 'o' && !(s->fl & HASH)))) ||
+		((s->spc == 'x' || s->spc == 'X') && s->fl & HASH)))
 		return ;
 	if (i > ((unsigned)base - 1))
 	{

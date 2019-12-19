@@ -14,9 +14,7 @@
 
 # define FT_PRINTF
 
-# include <stdio.h> //for testing printf
 # include <stdarg.h>
-// # include "libft.h"
 # include "../libft/includes/libft.h"
 
 # define HASH 			1 << 0
