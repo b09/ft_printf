@@ -14,7 +14,7 @@
 
 void			parse_length(t_pf_sect *s)
 {
-	union_output i;
+	t_union_output i;
 
 	i.ull = 0;
 	if (ft_strchr("cdi", s->spc))
@@ -37,7 +37,7 @@ void			parse_length(t_pf_sect *s)
 	}
 }
 
-void			populate_func_array(func_pointer arrpointer[128])
+void			populate_func_array(t_func_pointer arrpointer[128])
 {
 	int				i;
 

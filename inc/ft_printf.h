@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF
-
-# define FT_PRINTF
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
 # include <stdarg.h>
 # include "../libft/includes/libft.h"
@@ -36,23 +35,23 @@
 # define NZERO			0x8000
 # define INF			0x7FFF
 # define NINF			0xFFFF
-typedef union	u_union_output
+
+typedef union			u_union_output
 {
 	u_int64_t			ull;
 	long long			llong;
 	long double			lngd;
 	u_int16_t			sh[5];
-	void*				ptr;
-		
-}				union_output;
+	void				*ptr;
+}						t_union_output;
 
-typedef struct	s_pf_sect
+typedef struct			s_pf_sect
 {
-	const char*			str;
+	const char			*str;
 	short				fl;
 	char				spc;
 	int					len;
-	union_output		v;
+	t_union_output		v;
 	int					i;
 	int					width;
 	int					prcs;
@@ -62,33 +61,34 @@ typedef struct	s_pf_sect
 	char				*temp;
 	char				*temp2;
 	int					fd;
-}				t_pf_sect;
+}						t_pf_sect;
 
-typedef void (*func_pointer)(t_pf_sect *);
+typedef void			(*t_func_pointer)(t_pf_sect *);
 
-int				ft_vdprintf(int fd, const char *format, va_list ap);
-int				ft_printf(const char *format, ...);
-int				ft_dprintf(int fd, const char *format, ...);
-void			print_character(char c, t_pf_sect *s);
-void			print_n(t_pf_sect *s);
-int				length_of_float(t_pf_sect *s);
-void			putfloat(t_pf_sect *s, int i, int str_i);
-char			get_base(char format_specifier);
-int				length_of_number(t_pf_sect *s);
-int				length_of_unsigned(t_pf_sect *s);
-void			ft_putnbr_signed(long long n, int base, t_pf_sect *s);
-void			ft_putnbr_unsigned(u_int64_t n, int base, t_pf_sect *s);
-void			populate_func_array(func_pointer arrpointer[128]);
-void			parse_format_string(t_pf_sect *s);
-void			print_sign(t_pf_sect *s);
-void			sign_float(t_pf_sect *s);
-void			print_hash_flag(t_pf_sect *s);
-void			print_padding(t_pf_sect *s, int length_of_output, char character, char flip);
-void			print_string(t_pf_sect *s);
-void			print_dioupxxc(t_pf_sect *s);
-void			print_str(t_pf_sect *s);
-void			print_f(t_pf_sect *s);
-void			putnbr_signed_exception(t_pf_sect *s);
-void			parse_length(t_pf_sect *s);
+int						ft_vdprintf(int fd, const char *format, va_list ap);
+int						ft_printf(const char *format, ...);
+int						ft_dprintf(int fd, const char *format, ...);
+void					print_character(char c, t_pf_sect *s);
+void					print_n(t_pf_sect *s);
+int						length_of_float(t_pf_sect *s);
+void					putfloat(t_pf_sect *s, int i, int str_i);
+char					get_base(char format_specifier);
+int						length_of_number(t_pf_sect *s);
+int						length_of_unsigned(t_pf_sect *s);
+void					ft_putnbr_signed(long long n, int base, t_pf_sect *s);
+void					ft_putnbr_unsigned(u_int64_t n, int base, t_pf_sect *s);
+void					populate_func_array(t_func_pointer arrpointer[128]);
+void					parse_format_string(t_pf_sect *s);
+void					print_sign(t_pf_sect *s);
+void					sign_float(t_pf_sect *s);
+void					print_hash_flag(t_pf_sect *s);
+void					print_padding(t_pf_sect *s, int length_of_output,
+										char character, char flip);
+void					print_string(t_pf_sect *s);
+void					print_dioupxxc(t_pf_sect *s);
+void					print_str(t_pf_sect *s);
+void					print_f(t_pf_sect *s);
+void					putnbr_signed_exception(t_pf_sect *s);
+void					parse_length(t_pf_sect *s);
 
 #endif

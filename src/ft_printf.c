@@ -26,7 +26,7 @@ static void		clean_struct(t_pf_sect *s)
 int				ft_vdprintf(int fd, const char *format, va_list ap)
 {
 	t_pf_sect		s;
-	func_pointer	arrpointer[128];
+	t_func_pointer	arrpointer[128];
 
 	ft_bzero(&s, sizeof(s));
 	s.fd = fd;
